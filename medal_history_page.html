@@ -10,8 +10,21 @@
       margin: 0;
       padding: 2rem;
     }
-    h1 {
+    .header {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1.5rem;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
       text-align: center;
+    }
+    .header img {
+      max-height: 80px;
+    }
+    .header h1 {
+      margin: 0;
+      font-size: 1.8rem;
       color: #2c3e50;
     }
     p.intro {
@@ -20,6 +33,7 @@
       font-size: 1.1rem;
       color: #444;
       line-height: 1.6;
+      text-align: center;
     }
     .grid {
       display: grid;
@@ -62,7 +76,11 @@
 </head>
 <body>
 
-  <h1>Galardonados con la Medalla<br>DPyC - Sociedad Mexicana de Física</h1>
+  <div class="header">
+    <img src="assets/img/DPyCLogoNoBG.png" alt="Logo DPyC">
+    <h1>Medalla<br>DPyC - Sociedad Mexicana de Física</h1>
+    <img src="assets/img/medallaDPyC.png" alt="Imagen de la Medalla">
+  </div>
 
   <p class="intro">
     La primera medalla fue entregada a Leon Lederman en 1999. Esta distinción representa el máximo reconocimiento que ofrece nuestra comunidad, y se otorga cada año a científicas y científicos, mexicanas(os) o extranjeras(os), que hayan contribuido notablemente al desarrollo de la física de partículas y campos en México, o a físicas(os) mexicanas(os) reconocidas(os) internacionalmente por sus aportaciones en esta área.
@@ -161,7 +179,9 @@
     </div>
     <div class="card">
       <div class="year">2022</div>
-      <div class="recipient"><div class="name">Cristophe Rayón</div></div>
+      <div class="recipient"><div class="name"><a href="https://en.wikipedia.org/wiki/Christophe_Royon" target="_blank">Cristophe Rayón</a></div>
+      <div class="reason">For his leadership in the discovery of odd-gluon state odderon from elastic proton-proton and proton-antiproton collisions at TOTEM and D0 detectors, his contributions to QCD and physics beyond the Standard Model, and for his support to the Mexican High Energy Physics community</div>
+    </div>
     </div>
     <div class="card">
       <div class="year">2023</div>
