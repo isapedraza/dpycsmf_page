@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Presidentes – División de Partículas y Campos, SMF</title>
+  <style>
+    :root{
+      --bg:#0b0c10; --panel:#14161a; --text:#e9edf1; --muted:#9ba7b4; --accent:#5ac8fa; --accent2:#7ef7c9;
+      --border:#242932;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Arial,sans-serif;background:linear-gradient(180deg,var(--bg),#0f1116 40%, #0c0d11);color:var(--text)}
+    header{padding:28px 16px 8px;max-width:1000px;margin:0 auto}
+    h1{margin:0 0 6px 0;font-weight:700;letter-spacing:.3px}
+    p.lead{margin:4px 0 0;color:var(--muted)}
+    .card{background:linear-gradient(180deg,#121419,#0f1216);border:1px solid var(--border);border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.25);max-width:1000px;margin:18px auto;padding:16px}
+    .tools{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:10px}
+    .tools input[type="search"]{flex:1;min-width:220px;padding:10px 12px;border-radius:10px;border:1px solid var(--border);background:#0d0f13;color:var(--text)}
+    .tools button{padding:10px 14px;border-radius:10px;border:1px solid var(--border);background:#0e1116;color:var(--text);cursor:pointer}
+    .tools button:hover{border-color:#2c3340}
+    table{width:100%;border-collapse:separate;border-spacing:0 8px}
+    thead th{font-size:.92rem;color:var(--muted);text-align:left;font-weight:600;padding:8px 12px}
+    tbody tr{background:#0f1217;border:1px solid var(--border)}
+    tbody td{padding:12px;border-top:1px solid var(--border);border-bottom:1px solid var(--border);vertical-align:middle}
+    tbody tr:first-child td{border-top-left-radius:12px;border-top-right-radius:12px}
+    tbody tr:last-child td{border-bottom-left-radius:12px;border-bottom-right-radius:12px}
+    th.sortable{cursor:pointer;user-select:none}
+    th.sortable span{color:var(--accent)}
+    .tag{display:inline-block;padding:2px 8px;border-radius:999px;border:1px solid var(--border);color:var(--muted);font-size:.8rem}
+    footer{max-width:1000px;margin:24px auto 40px;color:var(--muted);padding:0 16px;font-size:.9rem}
+    a{color:var(--accent)}
+    img.profile{width:40px;height:40px;border-radius:50%;object-fit:cover;margin-right:8px;vertical-align:middle}
+    .name-link{vertical-align:middle}
+    @media (max-width:640px){
+      thead{display:none}
+      tbody tr{display:grid;grid-template-columns:1fr;gap:6px;padding:10px;border-radius:12px}
+      tbody td{border:none;padding:2px 0}
+      tbody td::before{content:attr(data-label);display:block;color:var(--muted);font-size:.8rem;margin-bottom:2px}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Presidentes – División de Partículas y Campos (SMF)</h1>
+    <p class="lead">Listado histórico. La División de Partículas y Campos (DPyC) de la Sociedad Mexicana de Física (SMF) fue creada en diciembre de 1986 durante la II Escuela Mexicana de Partículas y Campos, celebrada en Cuernavaca Morelos, y quedó formalmente constítuida el 9 de enero de 1987 al sere aprobado su Reglamento por la Mesa Directiva de la SMF <a href='https://smf.mx/publicaciones/boletin-smf/' target='_blank' class='name-link'> (Ref. SMF Bol. Vol 1. Num. 1 )</a>. 
+  </header>
+
+  <section class="card">
+    <div class="tools">
+      <input id="q" type="search" placeholder="Filtrar por nombre o año… (ej. 2016, Isabel)" />
+      <button id="btnClear" title="Limpiar filtro">Limpiar</button>
+      <button id="btnCSV" title="Descargar CSV">Descargar CSV</button>
+      <span class="tag" id="countTag"></span>
+    </div>
+    <div class="table-wrap">
+      <table id="tbl">
+        <thead>
+          <tr>
+            <th class="sortable" data-key="presidente">Presidente <span>↕</span></th>
+            <th class="sortable" data-key="inicio">Inicio <span>↕</span></th>
+            <th class="sortable" data-key="termino">Término <span>↕</span></th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
+
+  <footer>
+    <p>Si detecta un error de ortografía o fechas, por favor  <a href="mailto:dpyc.smf.adms@gmail.com?subject=Corrección%20Presidentes%20DPyC-SMF">repórtelo</a>.</p>
+  </footer>
+<!-- <img src='assets/img/presidentsDPyC/.png' class='profile'><a href='' target='_blank' class='name-link'> </a> -->
+
+  <script>
+    const data = [
+      {presidente:"<img src='assets/img/presidentsDPyC/PEDRAZAIsabel.png' class='profile'><a href='http://cern.ch/isapedraza' target='_blank' class='name-link'>Isabel Pedraza</a>", inicio:2025, termino:2027},
+      {presidente:"<img src='assets/img/presidentsDPyC/BARRANCOJuan.png' class='profile'> <a href='https://www.dci.ugto.mx/depfisica/index.php/investigadores/dr-juan-barranco-monarca' target='_blank' class='name-link'>Juan Barranco Monarca</a>", inicio:2023, termino:2025},
+      {presidente:"<img src='assets/img/presidentsDPyC/CABALLEROKaren.png' class='profile'><a href='https://fae.cudi.edu.mx/karen-salome-caballero-mora' target='_blank' class='name-link'>Karen Salomé Caballero Mora</a>", inicio:2021, termino:2023},
+      {presidente:"<img src='assets/img/presidentsDPyC/CARRILLOSalvador.jpg' class='profile'><a href='https://investigacion.ibero.mx/investigador/salvador-carrillo-moreno' target='_blank' class='name-link'> Salvador Carrillo Moreno (QEPD)</a>", inicio:2020, termino:2021},
+      {presidente:"<img src='assets/img/presidentsDPyC/DELACRUZEduard.png' class='profile'><a href='https://eduard.web.cern.ch' target='_blank' class='name-link'>Eduard de la Cruz Burelo</a>", inicio:2018, termino:2020},
+      {presidente:"<img src='assets/img/presidentsDPyC/FERNANDEZArturo.png' class='profile'><a href='https://ippog.org/members/mexico' target='_blank' class='name-link'>Arturo Fermández Téllez</a>", inicio:2016, termino:2018},
+      {presidente:"<img src='assets/img/presidentsDPyC/NAPSUCIALEMauro.jpg' class='profile'><a href='http://www.dci.ugto.mx/depfisica/index.php/investigadores/dr-mauro-napsuciale-mendivil target='_blank' class='name-link'> Mauro Napsuciale Mendivil</a>", inicio:2014, termino:2016},
+      {presidente:"<img src='assets/img/presidentsDPyC/SALAZARHumberto.jpg' class='profile'><a href='https://altasenergias.buap.mx/?q=node/54' target='_blank' class='name-link'>Humberto Salazar Ibargüen</a>", inicio:2012, termino:2014},
+      {presidente:"<img src='assets/img/presidentsDPyC/CONTRERASGuillermo.png' class='profile'><a href='https://www.coniunctus.amc.edu.mx/cvpremios/Guillermo_Contreras_Nuno.pdf' target='_blank' class='name-link'> Guillermo Contreras</a>", inicio:2010, termino:2012},
+      {presidente:"<img src='assets/img/presidentsDPyC/AYALAAlejandro.png' class='profile'><a href='https://sigi.nucleares.unam.mx/sgiicn/people/user/view/id/5' target='_blank' class='name-link'>Alejandro Ayala Mercado </a>", inicio:2008, termino:2010},
+      {presidente:"<img src='assets/img/presidentsDPyC/CASTILLAHeriberto.png' class='profile'><a href='https://www.cinvestav.mx/investigacion/directorio-de-investigacion/heriberto-castilla-valdez' target='_blank' class='name-link'> Heriberto Castilla</a>", inicio:2006, termino:2008},
+      {presidente:"<img src='assets/img/presidentsDPyC/VILLASENORLuis.png' class='profile'><a href='http://www.fismat.umich.mx/mcif/CVs/resumenes-curriculares/resumen-curricular-villasenor.htm' target='_blank' class='name-link'> Luis Manuel Villaseñor Cendejas</a>", inicio:2004, termino:2006},
+      {presidente:"<img src='assets/img/presidentsDPyC/MONDRAGONMyriam.png' class='profile'><a href='https://es.wikipedia.org/wiki/Myriam_Mondragón_Ceballos' target='_blank' class='name-link'> Myriam Montragón Ceballos</a>", inicio:2002, termino:2004},
+      {presidente:"<img src='assets/img/presidentsDPyC/DIAZLorenzo.png' class='profile'><a href='https://www.buap.mx/content/lorenzo-díaz-cruz-el-científico-que-escudriña-la-poesía-del-universo' target='_blank' class='name-link'>Justiniano Lorenzo Diaz Cruz</a> ", inicio:2000, termino:2002},
+      {presidente:"<img src='assets/img/presidentsDPyC/HERRERAGerardo.png' class='profile'><a href='https://es.wikipedia.org/wiki/Gerardo_Herrera_Corral' target='_blank' class='name-link'> Gerardo Herrera Corral</a>", inicio:1998, termino:2000},
+      {presidente:"<img src='assets/img/presidentsDPyC/DOLIVOJuanCarlos.png' class='profile'><a href='https://sigi.nucleares.unam.mx/sgiicn/people/user/view/id/22' target='_blank' class='name-link'>Juan Carlos d'Olivo Saez</a>", inicio:1996, termino:1998},
+      {presidente:"<img src='assets/img/presidentsDPyC/URRUTIALuis.png' class='profile'><a href='https://sigi.nucleares.unam.mx/sgiicn/people/user/view/id/70' target='_blank' class='name-link'>Luis Fernando Urrutia Ríos </a>", inicio:1994, termino:1996},
+      {presidente:"<img src='assets/img/presidentsDPyC/ZEPEDAArnulfo.png' class='profile'><a href='https://home.cern/news/obituary/cern/arnulfo-zepeda-dominguez-1943-2020' target='_blank' class='name-link'> Arnulfo Zepeda Domínguez (QEPD) </a>", inicio:1992, termino:1994},
+      {presidente:"<img src='assets/img/presidentsDPyC/JUAREZRebeca.png' class='profile'><a href='https://inspirehep.net/authors/983052' target='_blank' class='name-link'> Sara Rebeca Juárez Wysozka</a>", inicio:1990, termino:1992},
+      {presidente:"<img src='assets/img/presidentsDPyC/PEREZMiguel.png' class='profile'><a href='https://cinvestav.mx/investigacion/directorio-de-investigacion/miguel-angel-perez-angon' target='_blank' class='name-link'> Miguel Ángel Pérez Angón</a>", inicio:1988, termino:1990},
+      {presidente:"<img src='assets/img/presidentsDPyC/TORRESManuel.jpg' class='profile'><a href='https://www.fisica.unam.mx/organizacion/personal.php?id=63&lang=es' target='_blank' class='name-link'> Manuel Torres</a>", inicio:1987, termino:1988},
+      {presidente:"<img src='assets/img/presidentsDPyC/HUERTARodrigo.png' class='profile'><a href='https://cinvestav.mx/investigacion/directorio-de-investigacion/rodrigo-huerta-quintanilla' target='_blank' class='name-link'> Rodrigo Huerta Quitanilla</a> ", inicio:1986, termino:1987}
+    ];
+
+    let sortKey = 'inicio';
+    let sortAsc = false;
+
+    const tbody = document.querySelector('#tbl tbody');
+    const q = document.getElementById('q');
+    const countTag = document.getElementById('countTag');
+
+    function render(rows){
+      tbody.innerHTML = '';
+      rows.forEach(r=>{
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td data-label="Presidente">${r.presidente}</td>
+          <td data-label="Inicio">${r.inicio}</td>
+          <td data-label="Término">${r.termino}</td>`;
+        tbody.appendChild(tr);
+      });
+      countTag.textContent = `${rows.length} registro(s)`;
+    }
+
+    function sortRows(rows){
+      return [...rows].sort((a,b)=>{
+        const A = a[sortKey];
+        const B = b[sortKey];
+        if (A===B) return 0;
+        if (typeof A === 'number' && typeof B === 'number'){
+          return sortAsc ? A-B : B-A;
+        }
+        return sortAsc ? String(A).localeCompare(String(B)) : String(B).localeCompare(String(A));
+      });
+    }
+
+    function filterRows(rows, term){
+      term = term.trim().toLowerCase();
+      if(!term) return rows;
+      return rows.filter(r=>
+        String(r.presidente).toLowerCase().includes(term) ||
+        String(r.inicio).includes(term) ||
+        String(r.termino).includes(term)
+      );
+    }
+
+    // Initial render
+    render(sortRows(data));
+
+    // Search
+    q.addEventListener('input', ()=>{
+      render(sortRows(filterRows(data, q.value)));
+    });
+
+    // Clear
+    document.getElementById('btnClear').addEventListener('click', ()=>{
+      q.value=''; render(sortRows(data)); q.focus();
+    });
+
+    // Sorting
+    document.querySelectorAll('th.sortable').forEach(th=>{
+      th.addEventListener('click', ()=>{
+        const key = th.getAttribute('data-key');
+        if (sortKey === key){ sortAsc = !sortAsc; }
+        else { sortKey = key; sortAsc = key!== 'presidente'; }
+        render(sortRows(filterRows(data, q.value)));
+      });
+    });
+
+    // Download CSV
+    document.getElementById('btnCSV').addEventListener('click', ()=>{
+      const rows = [['Presidente','Inicio','Término'], ...sortRows(filterRows(data, q.value)).map(r=>[r.presidente,r.inicio,r.termino])];
+      const csv = rows.map(r => r.map(v => `"${String(v).replaceAll('"','""')}"`).join(',')).join('\n');
+      const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = 'presidentes-dpyc-smf.csv'; a.click();
+      URL.revokeObjectURL(url);
+    });
+  </script>
+</body>
+</html>
