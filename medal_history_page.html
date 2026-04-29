@@ -55,22 +55,21 @@
       pointer-events: none;
     }
 
-    .header-logos {
+    .header-title-row {
       display: flex;
       justify-content: center;
       align-items: center;
       gap: 2rem;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1.25rem;
       flex-wrap: wrap;
     }
-    .header-logos img {
-      height: 72px;
+    .header-title-row img {
+      height: 80px;
       object-fit: contain;
+      flex-shrink: 0;
     }
-    .header-divider {
-      width: 1px;
-      height: 60px;
-      background: var(--border-strong);
+    .header-title-center {
+      flex: 0 1 auto;
     }
 
     .eyebrow {
@@ -319,14 +318,15 @@
 <body>
 
   <header class="header">
-    <div class="header-logos">
+    <p class="eyebrow">División de Partículas y Campos · SMF</p>
+    <div class="header-title-row">
       <img src="assets/img/DPyCLogoNoBG.png" alt="Logo DPyC">
-      <div class="header-divider"></div>
+      <div class="header-title-center">
+        <h1>Medalla DPyC</h1>
+        <p class="header-sub">Sociedad Mexicana de Física</p>
+      </div>
       <img src="assets/img/medallaDPyC.png" alt="Medalla DPyC">
     </div>
-    <p class="eyebrow">División de Partículas y Campos · SMF</p>
-    <h1>Medalla DPyC</h1>
-    <p class="header-sub">Sociedad Mexicana de Física</p>
     <p class="intro-text">
       La primera medalla fue entregada a Leon Lederman en 1999. Esta distinción representa el máximo reconocimiento que ofrece nuestra comunidad, y se otorga cada año a científicas y científicos, mexicanas(os) o extranjeras(os), que hayan contribuido notablemente al desarrollo de la física de partículas y campos en México, o a físicas(os) mexicanas(os) reconocidas(os) internacionalmente por sus aportaciones en esta área.
     </p>
