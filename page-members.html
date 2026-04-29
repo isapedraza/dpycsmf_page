@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Miembros · DPyC SMF</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/x-icon" href="assets/img/favicon.png"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --cream: #faf8f4; --cream-dark: #f2ede4;
+      --gold: #b8860b; --gold-light: #d4a82a; --gold-pale: #f5edd0;
+      --ink: #1a1a1a; --ink-mid: #3d3d3d; --ink-soft: #6b6b6b;
+      --border: #e0d8cc; --border-strong: #c8bfb0; --white: #ffffff;
+      --nav-h: 60px;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', system-ui, sans-serif; color: var(--ink); background: var(--cream); }
+
+    nav.topnav {
+      position: fixed; top: 0; left: 0; right: 0; height: var(--nav-h);
+      z-index: 1000; background: rgba(250,248,244,0.96);
+      backdrop-filter: blur(10px); border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; padding: 0 1.5rem; gap: 1rem;
+    }
+    .nav-brand { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--ink); text-decoration: none; white-space: nowrap; flex-shrink: 0; }
+    .nav-brand span { color: var(--gold); }
+    .nav-spacer { flex: 1; }
+    .nav-back { font-size: 0.8rem; color: var(--ink-soft); text-decoration: none; transition: color 0.15s; }
+    .nav-back:hover { color: var(--gold); }
+
+    .page-header { padding-top: var(--nav-h); background: var(--white); border-bottom: 1px solid var(--border); position: relative; overflow: hidden; }
+    .page-header::before {
+      content: ''; position: absolute; inset: 0;
+      background: repeating-linear-gradient(-45deg, transparent, transparent 40px, rgba(184,134,11,0.04) 40px, rgba(184,134,11,0.04) 41px);
+      pointer-events: none;
+    }
+    .page-header-inner {
+      max-width: 1100px; margin: 0 auto; padding: 3rem 2rem;
+      display: grid; grid-template-columns: 1fr auto;
+      gap: 2rem; align-items: center; position: relative; z-index: 1;
+    }
+    .page-eyebrow { font-size: 11px; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.6rem; }
+    .page-header h1 { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 3.5vw, 2.6rem); font-weight: 600; color: var(--ink); line-height: 1.12; margin-bottom: 0.5rem; }
+    .page-header-desc { font-size: 0.93rem; color: var(--ink-soft); line-height: 1.75; max-width: 520px; }
+    .header-stat { background: var(--gold-pale); border: 1px solid #e8d9a8; border-radius: 14px; padding: 1.2rem 1.8rem; text-align: center; flex-shrink: 0; }
+    .header-stat .num { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 600; color: var(--gold); display: block; }
+    .header-stat .lbl { font-size: 11px; color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.08em; }
+
+    main { max-width: 1100px; margin: 0 auto; padding: 2rem 2rem 5rem; }
+
+    .toolbar { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-bottom: 1.5rem; }
+    .toolbar input[type="search"] {
+      flex: 1; min-width: 220px; padding: 9px 16px;
+      border: 1px solid var(--border-strong); border-radius: 999px;
+      background: var(--white); color: var(--ink);
+      font-family: 'DM Sans', sans-serif; font-size: 0.85rem; outline: none;
+      transition: border-color 0.15s;
+    }
+    .toolbar input[type="search"]:focus { border-color: var(--gold); }
+    .toolbar input::placeholder { color: var(--ink-soft); }
+    .count-tag { font-size: 0.78rem; padding: 5px 12px; border-radius: 999px; background: var(--cream-dark); border: 1px solid var(--border); color: var(--ink-soft); white-space: nowrap; }
+
+    /* ══ TABLE ══ */
+    .table-wrap { background: var(--white); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; }
+
+    table { width: 100%; border-collapse: collapse; }
+    thead th {
+      font-size: 0.75rem; font-weight: 500; color: var(--ink-soft);
+      text-align: left; padding: 0.85rem 1.1rem;
+      background: var(--cream-dark); border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+    }
+    thead th.sortable { cursor: pointer; user-select: none; }
+    thead th.sortable:hover { color: var(--gold); }
+    .sort-icon { margin-left: 3px; opacity: 0.4; font-size: 0.65rem; }
+
+    tbody tr { border-bottom: 1px solid var(--border); transition: background 0.1s; }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: var(--cream); }
+    tbody tr.hidden { display: none; }
+
+    tbody td { padding: 0.85rem 1.1rem; font-size: 0.86rem; color: var(--ink-mid); vertical-align: middle; }
+
+    .inst-cell { font-weight: 500; color: var(--ink); }
+    .unit-cell { color: var(--ink-soft); font-size: 0.82rem; }
+
+    .rep-cell { display: flex; align-items: center; gap: 8px; }
+    .rep-avatar {
+      width: 30px; height: 30px; border-radius: 50%;
+      background: var(--cream-dark); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.68rem; font-weight: 500; color: var(--ink-soft);
+      flex-shrink: 0;
+    }
+    .rep-name { color: var(--ink); font-size: 0.84rem; }
+    .rep-name.qepd { color: var(--ink-soft); font-style: italic; }
+    .rep-none { color: var(--border-strong); font-size: 0.8rem; }
+
+    .count-pill {
+      display: inline-flex; align-items: center; justify-content: center;
+      min-width: 28px; padding: 3px 10px;
+      border-radius: 999px; font-size: 0.75rem; font-weight: 500;
+    }
+    .count-pill.has { background: var(--gold-pale); border: 1px solid #e8d9a8; color: var(--gold); }
+    .count-pill.none { background: var(--cream-dark); border: 1px solid var(--border); color: var(--ink-soft); }
+
+    .note-badge {
+      display: inline-block; font-size: 0.68rem; padding: 1px 7px;
+      border-radius: 4px; background: var(--cream-dark); color: var(--ink-soft);
+      border: 1px solid var(--border); margin-top: 2px;
+    }
+
+    /* no results */
+    .no-results { text-align: center; padding: 3rem; color: var(--ink-soft); font-size: 0.9rem; }
+
+    footer { background: var(--white); border-top: 1px solid var(--border); padding: 1.4rem 2rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; font-size: 0.78rem; color: var(--ink-soft); }
+    footer a { color: var(--ink-soft); text-decoration: none; }
+    footer a:hover { color: var(--gold); }
+
+    @media (max-width: 720px) {
+      .page-header-inner { grid-template-columns: 1fr; }
+      .header-stat { display: none; }
+      thead .hide-sm { display: none; }
+      tbody td.hide-sm { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="topnav">
+    <a class="nav-brand" href="index.html">DPyC · <span>SMF</span></a>
+    <div class="nav-spacer"></div>
+    <a class="nav-back" href="index.html">← Inicio</a>
+  </nav>
+
+  <div class="page-header">
+    <div class="page-header-inner">
+      <div>
+        <p class="page-eyebrow">División de Partículas y Campos · SMF</p>
+        <h1>Instituciones y Representantes</h1>
+        <p class="page-header-desc">Listado de instituciones miembro de la DPyC, su representante más reciente y el número de miembros registrados por adscripción.</p>
+      </div>
+      <div class="header-stat">
+        <span class="num">21</span>
+        <span class="lbl">instituciones miembro</span>
+      </div>
+    </div>
+  </div>
+
+  <main>
+    <div class="toolbar">
+      <input type="search" id="searchInput" placeholder="Buscar institución, unidad o representante…"/>
+      <span class="count-tag" id="countTag">21 instituciones</span>
+    </div>
+
+    <div class="table-wrap">
+      <table id="tbl">
+        <thead>
+          <tr>
+            <th class="sortable" data-key="inst" style="width:30%">Institución <span class="sort-icon">↕</span></th>
+            <th class="sortable hide-sm" data-key="unit" style="width:22%">Unidad académica <span class="sort-icon">↕</span></th>
+            <th class="sortable" data-key="rep" style="width:28%">Representante <span class="sort-icon">↕</span></th>
+            <th class="sortable" data-key="count" style="width:10%; text-align:center">Miembros <span class="sort-icon">↕</span></th>
+          </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+
+    <p style="font-size:0.78rem; color:var(--ink-soft); margin-top:1rem;">
+      ¿Hay un error o cambio de representante? <a href="mailto:dpyc.smf.adms@gmail.com?subject=Actualización%20representante%20DPyC" style="color:var(--gold);">Notifícanos aquí</a>.
+    </p>
+  </main>
+
+  <footer>
+    <span>© 2025 División de Partículas y Campos · Sociedad Mexicana de Física</span>
+    <span><a href="index.html">Inicio</a> · <a href="mailto:dpyc.smf.adms@gmail.com">dpyc.smf.adms@gmail.com</a></span>
+  </footer>
+
+  <script>
+    const rows = [
+      { inst: "Benemérita Universidad Autónoma de Puebla", unit: "Instituto de Física (IFUAP)", rep: "Alfonso Rosado", qepd: false, count: 3 },
+      { inst: "Benemérita Universidad Autónoma de Puebla", unit: "Facultad de Ciencias Físico-Matemáticas", rep: "Lorenzo Díaz Cruz", qepd: false, count: 8 },
+      { inst: "CINVESTAV", unit: "Departamento de Física", rep: "Eduard De La Cruz Burelo", qepd: false, count: 25 },
+      { inst: "CINVESTAV-Mérida", unit: "Departamento de Física", rep: "Guillermo Contreras", qepd: false, count: 0 },
+      { inst: "ESFM – Instituto Politécnico Nacional", unit: "Departamento de Física", rep: "", qepd: false, count: 0 },
+      { inst: "Universidad Autónoma de San Luis Potosí", unit: "Instituto de Física", rep: "Mariana Kirbash", qepd: false, count: 2 },
+      { inst: "Universidad de Colima", unit: "Instituto de Física", rep: "Alfredo Aranda", qepd: false, count: 1 },
+      { inst: "Universidad de Guanajuato", unit: "Departamento de Física", rep: "David Delepine", qepd: false, count: 17 },
+      { inst: "Universidad de Guadalajara", unit: "Centro Universitario de los Valles", rep: "Víctor Manuel Castillo", qepd: false, count: 0 },
+      { inst: "Universidad Michoacana de San Nicolás de Hidalgo", unit: "EFM / Instituto de Física y Matemáticas", rep: "Alfredo Raya", qepd: false, count: 6 },
+      { inst: "Universidad Nacional Autónoma de México", unit: "FES Cuautitlán", rep: "Ricardo Gaitán", qepd: false, count: 0 },
+      { inst: "Universidad Nacional Autónoma de México", unit: "Instituto de Ciencias Nucleares", rep: "Alexis Aguilar-Arevalo", qepd: false, count: 16 },
+      { inst: "Universidad Nacional Autónoma de México", unit: "Instituto de Física", rep: "Jens Erler", qepd: false, count: 15 },
+      { inst: "Universidad Nacional Autónoma de México", unit: "Facultad de Ciencias", rep: "Gabriela Murguía", qepd: false, count: 11 },
+      { inst: "Universidad Iberoamericana", unit: "—", rep: "Salvador Carrillo Moreno", qepd: true, count: 1 },
+      { inst: "Universidad Autónoma de Chiapas", unit: "Escuela de Física", rep: "Karen S. Caballero Mora", qepd: false, count: 2 },
+      { inst: "Universidad Autónoma del Estado de Hidalgo", unit: "Escuela de Física", rep: "Roberto Noriega Papaqui", qepd: false, count: 1 },
+      { inst: "Universidad Autónoma de Coahuila", unit: "—", rep: "Germán Calderón", qepd: false, count: 0 },
+      { inst: "Universidad de Sonora", unit: "Instituto de Investigación en Física", rep: "José F. Benítez", qepd: false, count: 2 },
+      { inst: "Universidad Autónoma de Sinaloa", unit: "FCFM", rep: "Ildefonso León Monzón", qepd: false, count: 6 },
+      { inst: "INAOE", unit: "—", rep: "", qepd: false, count: 1 },
+    ];
+
+    let sortKey = 'inst';
+    let sortAsc = true;
+    const tbody = document.getElementById('tbody');
+    const countTag = document.getElementById('countTag');
+
+    function initials(name) {
+      if (!name) return '?';
+      return name.replace(/\s*\(.*\)/, '').split(' ').filter(Boolean).slice(0,2).map(w=>w[0]).join('').toUpperCase();
+    }
+
+    function render(data) {
+      tbody.innerHTML = '';
+      if (!data.length) {
+        tbody.innerHTML = `<tr><td colspan="4"><div class="no-results">Sin resultados para esa búsqueda.</div></td></tr>`;
+        countTag.textContent = '0 instituciones';
+        return;
+      }
+      data.forEach(r => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>
+            <div class="inst-cell">${r.inst}</div>
+          </td>
+          <td class="unit-cell hide-sm">${r.unit}</td>
+          <td>
+            ${r.rep
+              ? `<div class="rep-cell">
+                  <div class="rep-avatar">${initials(r.rep)}</div>
+                  <span class="rep-name${r.qepd ? ' qepd' : ''}">${r.rep}${r.qepd ? ' <span class="note-badge">In memoriam</span>' : ''}</span>
+                </div>`
+              : `<span class="rep-none">Por confirmar</span>`}
+          </td>
+          <td style="text-align:center">
+            <span class="count-pill ${r.count > 0 ? 'has' : 'none'}">${r.count > 0 ? r.count : '—'}</span>
+          </td>`;
+        tbody.appendChild(tr);
+      });
+      countTag.textContent = `${data.length} institución${data.length !== 1 ? 'es' : ''}`;
+    }
+
+    function sorted(data) {
+      return [...data].sort((a, b) => {
+        let A = a[sortKey], B = b[sortKey];
+        if (sortKey === 'count') return sortAsc ? A - B : B - A;
+        A = String(A).toLowerCase(); B = String(B).toLowerCase();
+        return sortAsc ? A.localeCompare(B) : B.localeCompare(A);
+      });
+    }
+
+    function filtered(data, term) {
+      if (!term) return data;
+      term = term.toLowerCase();
+      return data.filter(r =>
+        r.inst.toLowerCase().includes(term) ||
+        r.unit.toLowerCase().includes(term) ||
+        r.rep.toLowerCase().includes(term)
+      );
+    }
+
+    function refresh() {
+      const term = document.getElementById('searchInput').value.trim();
+      render(sorted(filtered(rows, term)));
+    }
+
+    document.getElementById('searchInput').addEventListener('input', refresh);
+
+    document.querySelectorAll('th.sortable').forEach(th => {
+      th.addEventListener('click', () => {
+        const key = th.dataset.key;
+        sortAsc = sortKey === key ? !sortAsc : (key !== 'count');
+        sortKey = key;
+        document.querySelectorAll('.sort-icon').forEach(s => s.textContent = '↕');
+        th.querySelector('.sort-icon').textContent = sortAsc ? '↑' : '↓';
+        refresh();
+      });
+    });
+
+    refresh();
+  </script>
+</body>
+</html>
