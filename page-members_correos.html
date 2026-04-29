@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Miembros · DPyC SMF</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/x-icon" href="assets/img/favicon.png"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --cream: #faf8f4; --cream-dark: #f2ede4;
+      --gold: #b8860b; --gold-light: #d4a82a; --gold-pale: #f5edd0;
+      --ink: #1a1a1a; --ink-mid: #3d3d3d; --ink-soft: #6b6b6b;
+      --border: #e0d8cc; --border-strong: #c8bfb0; --white: #ffffff;
+      --nav-h: 60px;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', system-ui, sans-serif; color: var(--ink); background: var(--cream); }
+
+    nav.topnav {
+      position: fixed; top: 0; left: 0; right: 0; height: var(--nav-h);
+      z-index: 1000; background: rgba(250,248,244,0.96);
+      backdrop-filter: blur(10px); border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; padding: 0 1.5rem; gap: 1rem;
+    }
+    .nav-brand { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--ink); text-decoration: none; white-space: nowrap; flex-shrink: 0; }
+    .nav-brand span { color: var(--gold); }
+    .nav-spacer { flex: 1; }
+    .nav-back { font-size: 0.8rem; color: var(--ink-soft); text-decoration: none; transition: color 0.15s; }
+    .nav-back:hover { color: var(--gold); }
+
+    .page-header { padding-top: var(--nav-h); background: var(--white); border-bottom: 1px solid var(--border); position: relative; overflow: hidden; }
+    .page-header::before {
+      content: ''; position: absolute; inset: 0;
+      background: repeating-linear-gradient(-45deg, transparent, transparent 40px, rgba(184,134,11,0.04) 40px, rgba(184,134,11,0.04) 41px);
+      pointer-events: none;
+    }
+    .page-header-inner { max-width: 1100px; margin: 0 auto; padding: 3rem 2rem; display: grid; grid-template-columns: 1fr auto; gap: 2rem; align-items: center; position: relative; z-index: 1; }
+    .page-eyebrow { font-size: 11px; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.6rem; }
+    .page-header h1 { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 3.5vw, 2.6rem); font-weight: 600; color: var(--ink); line-height: 1.12; margin-bottom: 0.5rem; }
+    .page-header-desc { font-size: 0.93rem; color: var(--ink-soft); line-height: 1.75; max-width: 520px; }
+    .header-stat { background: var(--gold-pale); border: 1px solid #e8d9a8; border-radius: 14px; padding: 1.2rem 1.8rem; text-align: center; flex-shrink: 0; }
+    .header-stat .num { font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 600; color: var(--gold); display: block; }
+    .header-stat .lbl { font-size: 11px; color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.08em; }
+
+    main { max-width: 1100px; margin: 0 auto; padding: 2rem 2rem 5rem; }
+
+    /* toolbar */
+    .toolbar { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-bottom: 1.75rem; }
+    .toolbar input[type="search"] {
+      flex: 1; min-width: 220px; padding: 9px 16px;
+      border: 1px solid var(--border-strong); border-radius: 999px;
+      background: var(--white); color: var(--ink);
+      font-family: 'DM Sans', sans-serif; font-size: 0.85rem; outline: none;
+      transition: border-color 0.15s;
+    }
+    .toolbar input[type="search"]:focus { border-color: var(--gold); }
+    .toolbar input::placeholder { color: var(--ink-soft); }
+    .tool-btn {
+      font-family: 'DM Sans', sans-serif; font-size: 0.8rem; padding: 8px 16px;
+      border: 1px solid var(--border-strong); border-radius: 999px;
+      background: var(--white); color: var(--ink-soft); cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+    }
+    .tool-btn:hover { background: var(--gold-pale); color: var(--ink); }
+    .tool-btn.active { background: var(--ink); color: var(--white); border-color: var(--ink); }
+    .count-tag { font-size: 0.78rem; padding: 5px 12px; border-radius: 999px; background: var(--cream-dark); border: 1px solid var(--border); color: var(--ink-soft); white-space: nowrap; }
+
+    /* institution blocks */
+    .inst-block { margin-bottom: 1.25rem; }
+    .inst-block.hidden { display: none; }
+
+    .inst-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0.85rem 1.2rem;
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: 12px; cursor: pointer;
+      transition: border-color 0.15s, background 0.15s;
+      user-select: none;
+    }
+    .inst-header:hover { border-color: var(--border-strong); background: var(--cream); }
+    .inst-block.open .inst-header { border-radius: 12px 12px 0 0; border-bottom-color: var(--gold-pale); background: var(--gold-pale); }
+
+    .inst-left { display: flex; align-items: center; gap: 12px; }
+    .inst-flag {
+      width: 36px; height: 36px; border-radius: 8px;
+      background: var(--cream-dark); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem; flex-shrink: 0;
+    }
+    .inst-name { font-size: 0.93rem; font-weight: 500; color: var(--ink); }
+    .inst-sub { font-size: 0.75rem; color: var(--ink-soft); margin-top: 1px; }
+
+    .inst-right { display: flex; align-items: center; gap: 10px; }
+    .inst-count {
+      font-size: 0.75rem; padding: 3px 10px; border-radius: 999px;
+      background: var(--gold-pale); border: 1px solid #e8d9a8;
+      color: var(--gold); font-weight: 500;
+    }
+    .inst-block.open .inst-count { background: var(--white); }
+    .inst-chevron { color: var(--ink-soft); font-size: 0.75rem; transition: transform 0.2s; }
+    .inst-block.open .inst-chevron { transform: rotate(180deg); }
+
+    .inst-members {
+      display: none;
+      background: var(--white);
+      border: 1px solid var(--border); border-top: none;
+      border-radius: 0 0 12px 12px;
+      padding: 0.75rem 1.2rem;
+    }
+    .inst-block.open .inst-members { display: block; }
+
+    .members-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 0; }
+    .member-row {
+      display: flex; align-items: center; gap: 8px;
+      padding: 0.45rem 0.5rem; border-radius: 6px;
+      transition: background 0.1s;
+    }
+    .member-row:hover { background: var(--cream); }
+    .member-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--border-strong); flex-shrink: 0; }
+    .member-email { font-size: 0.8rem; color: var(--ink-soft); font-family: monospace; }
+    .member-row.highlight .member-email { color: var(--gold); font-weight: 500; }
+
+    /* category filter pills */
+    .cat-filters { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 1.25rem; }
+    .cat-btn {
+      font-family: 'DM Sans', sans-serif; font-size: 0.75rem; padding: 5px 14px;
+      border: 1px solid var(--border-strong); border-radius: 999px;
+      background: var(--white); color: var(--ink-soft); cursor: pointer;
+      transition: background 0.15s, color 0.15s, border-color 0.15s;
+    }
+    .cat-btn:hover { background: var(--cream-dark); }
+    .cat-btn.active { background: var(--ink); color: var(--white); border-color: var(--ink); }
+
+    footer { background: var(--white); border-top: 1px solid var(--border); padding: 1.4rem 2rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; font-size: 0.78rem; color: var(--ink-soft); }
+    footer a { color: var(--ink-soft); text-decoration: none; }
+    footer a:hover { color: var(--gold); }
+
+    @media (max-width: 640px) {
+      .page-header-inner { grid-template-columns: 1fr; }
+      .header-stat { display: none; }
+      .members-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="topnav">
+    <a class="nav-brand" href="index.html">DPyC · <span>SMF</span></a>
+    <div class="nav-spacer"></div>
+    <a class="nav-back" href="index.html">← Inicio</a>
+  </nav>
+
+  <div class="page-header">
+    <div class="page-header-inner">
+      <div>
+        <p class="page-eyebrow">División de Partículas y Campos · SMF</p>
+        <h1>Miembros</h1>
+        <p class="page-header-desc">Directorio de miembros de la DPyC agrupados por institución. Haz clic en una institución para ver su lista de miembros.</p>
+      </div>
+      <div class="header-stat">
+        <span class="num" id="totalCount">172</span>
+        <span class="lbl">miembros registrados</span>
+      </div>
+    </div>
+  </div>
+
+  <main>
+    <div class="toolbar">
+      <input type="search" id="searchInput" placeholder="Buscar por correo o institución…"/>
+      <button class="tool-btn" id="btnExpandAll">Expandir todo</button>
+      <button class="tool-btn" id="btnCollapseAll">Colapsar todo</button>
+      <span class="count-tag" id="countTag"></span>
+    </div>
+
+    <div class="cat-filters" id="catFilters">
+      <button class="cat-btn active" data-cat="all">Todas</button>
+      <button class="cat-btn" data-cat="mx">México</button>
+      <button class="cat-btn" data-cat="int">Internacional</button>
+      <button class="cat-btn" data-cat="unam">UNAM</button>
+      <button class="cat-btn" data-cat="cinvestav">CINVESTAV</button>
+      <button class="cat-btn" data-cat="buap">BUAP</button>
+      <button class="cat-btn" data-cat="ugto">U. Guanajuato</button>
+    </div>
+
+    <div id="instList"></div>
+  </main>
+
+  <footer>
+    <span>© 2025 División de Partículas y Campos · Sociedad Mexicana de Física</span>
+    <span><a href="index.html">Inicio</a> · <a href="mailto:dpyc.smf.adms@gmail.com">dpyc.smf.adms@gmail.com</a></span>
+  </footer>
+
+  <script>
+    const institutions = [
+      {
+        name: "UNAM – Instituto de Ciencias Nucleares",
+        short: "ICN–UNAM",
+        icon: "🔬",
+        cats: ["mx","unam"],
+        members: ["alberto@nucleares.unam.mx","alexis@nucleares.unam.mx","antonio.ortiz@nucleares.unam.mx","ayala@nucleares.unam.mx","bijker@nucleares.unam.mx","cesar.fernandez@nucleares.unam.mx","dolivo@nucleares.unam.mx","ecuautle@nucleares.unam.mx","garcia@nucleares.unam.mx","guypaic@nucleares.unam.mx","hess@nucleares.unam.mx","lukas@nucleares.unam.mx","sarira@nucleares.unam.mx","urrutia@nucleares.unam.mx","vergara@nucleares.unam.mx","wolbi@nucleares.unam.mx"]
+      },
+      {
+        name: "UNAM – Instituto de Física",
+        short: "IF–UNAM",
+        icon: "⚛",
+        cats: ["mx","unam"],
+        members: ["aurore@fisica.unam.mx","bespro@fisica.unam.mx","epeinado@fisica.unam.mx","ericvj@fisica.unam.mx","erler@fisica.unam.mx","grabski@fisica.unam.mx","gustavobh@estudiantes.fisica.unam.mx","hleonvar@fisica.unam.mx","m.catalina@fisica.unam.mx","macorra@fisica.unam.mx","matias@fisica.unam.mx","myriam@fisica.unam.mx","ramos@fisica.unam.mx","toledo@fisica.unam.mx","torres@fisica.unam.mx"]
+      },
+      {
+        name: "UNAM – Facultad de Ciencias",
+        short: "FC–UNAM",
+        icon: "🎓",
+        cats: ["mx","unam"],
+        members: ["ansac@ciencias.unam.mx","bernardo.apr@ciencias.unam.mx","francsam@ciencias.unam.mx","jorgejaber@ciencias.unam.mx","leonm@ciencias.unam.mx","lserkin@ciencias.unam.mx","luis.hernandez@ciencias.unam.mx","marianab@ciencias.unam.mx","mchernicoff@ciencias.unam.mx","murguia@ciencias.unam.mx","pdr.mrcd@ciencias.unam.mx"]
+      },
+      {
+        name: "UNAM – Instituto de Matemáticas",
+        short: "IM–UNAM",
+        icon: "📐",
+        cats: ["mx","unam"],
+        members: ["federico@matem.unam.mx"]
+      },
+      {
+        name: "CINVESTAV – Departamento de Física",
+        short: "CINVESTAV Física",
+        icon: "🔭",
+        cats: ["mx","cinvestav"],
+        members: ["aguevara@fis.cinvestav.mx","aplorenz@fis.cinvestav.mx","bcorduz@fis.cinvestav.mx","bmarin@fis.cinvestav.mx","egarces@fis.cinvestav.mx","gerardo.herrera@fis.cinvestav.mx","ghernandez@fis.cinvestav.mx","glopez@fis.cinvestav.mx","iheredia@fis.cinvestav.mx","jrendon@fis.cinvestav.mx","kiel@fis.cinvestav.mx","leonm@fis.cinvestav.mx","lopezr@fis.cinvestav.mx","luis.montano@fis.cinvestav.mx","mduran@fis.cinvestav.mx","miguel-angel.perez@fis.cinvestav.mx","omr@fis.cinvestav.mx","proig@fis.cinvestav.mx","rblopez@fis.cinvestav.mx","rhernand@fis.cinvestav.mx","rreyes@fis.cinvestav.mx"]
+      },
+      {
+        name: "CINVESTAV",
+        short: "CINVESTAV",
+        icon: "🔬",
+        cats: ["mx","cinvestav"],
+        members: ["alberto.sanchez.hdez@cinvestav.mx","e.delacruz.burelo@cinvestav.mx","heriberto.castilla@cinvestav.mx","pablo.roig@cinvestav.mx"]
+      },
+      {
+        name: "BUAP – Facultad de Ciencias Físico Matemáticas",
+        short: "FCFM–BUAP",
+        icon: "🏛",
+        cats: ["mx","buap"],
+        members: ["afernand@fcfm.buap.mx","barradas@fcfm.buap.mx","cramirez@fcfm.buap.mx","gtejeda@fcfm.buap.mx","hsalazar@fcfm.buap.mx","irais.bautista@fcfm.buap.mx","mim@fcfm.buap.mx","omartin@fcfm.buap.mx"]
+      },
+      {
+        name: "BUAP – Instituto de Física (IFUAP)",
+        short: "IFUAP–BUAP",
+        icon: "⚡",
+        cats: ["mx","buap"],
+        members: ["aherrera@ifuap.buap.mx","ldiaz@ifuap.buap.mx","rosado@sirio.ifuap.buap.mx"]
+      },
+      {
+        name: "BUAP",
+        short: "BUAP",
+        icon: "🏫",
+        cats: ["mx","buap"],
+        members: ["at224470108@alm.buap.mx","cecilia.uribe@correo.buap.mx","felix.gonzalezc@correo.buap.mx","isabel.pedraza@correo.buap.mx","jeduardo.rosales@correo.buap.mx","olga.felix@correo.buap.mx","yael.vasquezb@alumno.buap.mx"]
+      },
+      {
+        name: "Universidad de Guanajuato – Departamento de Física",
+        short: "UdeG Física",
+        icon: "🌿",
+        cats: ["mx","ugto"],
+        members: ["america@fisica.ugto.mx","carolup@fisica.ugto.mx","dchavez@fisica.ugto.mx","delepine@fisica.ugto.mx","gerardo@fisica.ugto.mx","kagihecha@fisica.ugto.mx","lucio@fisica.ugto.mx","marco@fisica.ugto.mx","mauro@fisica.ugto.mx","medinamluis@fisica.ugto.mx","oloaiza@fisica.ugto.mx","raziel@fisica.ugto.mx","selimibn@fisica.ugto.mx","vanniagm@fisica.ugto.mx","vaquera@fisica.ugto.mx"]
+      },
+      {
+        name: "Universidad de Guanajuato",
+        short: "UdeG",
+        icon: "🌿",
+        cats: ["mx","ugto"],
+        members: ["g.niz@ugto.mx","jbarranco@ugto.mx"]
+      },
+      {
+        name: "Universidad Michoacana de San Nicolás de Hidalgo",
+        short: "UMSNH",
+        icon: "🏛",
+        cats: ["mx"],
+        members: ["adnan.bashir@umich.mx","alfredo.raya@umich.mx","axel.weber@umich.mx","cederik.de.leon@umich.mx","juan.arteaga@umich.mx","raul.torres@umich.mx"]
+      },
+      {
+        name: "UASLP – Instituto de Física",
+        short: "IF–UASLP",
+        icon: "⚗",
+        cats: ["mx"],
+        members: ["mariana@ifisica.uaslp.mx","morelos@dec1.ifisica.uaslp.mx"]
+      },
+      {
+        name: "Universidad Autónoma de Sinaloa",
+        short: "UAS",
+        icon: "🏖",
+        cats: ["mx"],
+        members: ["cvalerio@uas.edu.mx","est.david.rope@uas.edu.mx","isadoji@uas.edu.mx","juan.cabanillas@info.uas.edu.mx","podesta.pedro@uas.edu.mx","roger@uas.edu.mx"]
+      },
+      {
+        name: "UAM – Unidad Xochimilco",
+        short: "UAM Xochimilco",
+        icon: "🏙",
+        cats: ["mx"],
+        members: ["admau@xanum.uam.mx"]
+      },
+      {
+        name: "UAM – Unidad Iztapalapa",
+        short: "UAM Iztapalapa",
+        icon: "🏙",
+        cats: ["mx"],
+        members: ["lhernandez.rosas@izt.uam.mx"]
+      },
+      {
+        name: "Universidad Autónoma de Querétaro",
+        short: "UAQ",
+        icon: "🏔",
+        cats: ["mx"],
+        members: ["ahalmada@uaq.mx"]
+      },
+      {
+        name: "Universidad Autónoma de Nuevo León",
+        short: "UANL",
+        icon: "🏭",
+        cats: ["mx"],
+        members: ["francisco.floresbz@uanl.edu.mx","nallaly.matacrr@uanl.edu.mx"]
+      },
+      {
+        name: "Universidad Autónoma de Chiapas",
+        short: "UNACH",
+        icon: "🌴",
+        cats: ["mx"],
+        members: ["karen.mora@unach.mx","marco.bedolla@unach.mx"]
+      },
+      {
+        name: "Universidad Autónoma del Estado de Hidalgo",
+        short: "UAEH",
+        icon: "🏡",
+        cats: ["mx"],
+        members: ["lao_lopez@uaeh.edu.mx"]
+      },
+      {
+        name: "Universidad de Sonora",
+        short: "UNISON",
+        icon: "☀️",
+        cats: ["mx"],
+        members: ["jose.benitez@unison.mx","lizardo.valencia@unison.mx"]
+      },
+      {
+        name: "Universidad de Colima",
+        short: "UCol",
+        icon: "🌋",
+        cats: ["mx"],
+        members: ["fefo@ucol.mx"]
+      },
+      {
+        name: "Universidad Iberoamericana",
+        short: "Ibero",
+        icon: "🎓",
+        cats: ["mx"],
+        members: ["cristina.oropeza@ibero.mx"]
+      },
+      {
+        name: "Universidad de las Américas Puebla (UDLAP)",
+        short: "UDLAP",
+        icon: "🎓",
+        cats: ["mx"],
+        members: ["martin.hentschinski@udlap.mx"]
+      },
+      {
+        name: "INAOE – Instituto Nacional de Astrofísica, Óptica y Electrónica",
+        short: "INAOE",
+        icon: "🔭",
+        cats: ["mx"],
+        members: ["alberto@inaoep.mx"]
+      },
+      {
+        name: "MCTP – Mesoamerican Centre for Theoretical Physics",
+        short: "MCTP",
+        icon: "🌎",
+        cats: ["mx"],
+        members: ["lxgutierrez@mctp.mx"]
+      },
+      {
+        name: "Tecnológico Nacional de México – Tehuacán",
+        short: "TecNM Tehuacán",
+        icon: "🔧",
+        cats: ["mx"],
+        members: ["rogelio.rr@tehuacan.tecnm.mx"]
+      },
+      {
+        name: "CERN",
+        short: "CERN",
+        icon: "⚛",
+        cats: ["int"],
+        members: ["arelycg@cern.ch","cesar.ramirez@cern.ch","jesus.guillermo.contreras.nuno@cern.ch"]
+      },
+      {
+        name: "Jefferson Lab (JLab)",
+        short: "JLab",
+        icon: "🔬",
+        cats: ["int"],
+        members: ["acastill@jlab.org","chgarcia@jlab.org"]
+      },
+      {
+        name: "DESY (Alemania)",
+        short: "DESY",
+        icon: "🇩🇪",
+        cats: ["int"],
+        members: ["michel.hernandez.villanueva@desy.de"]
+      },
+      {
+        name: "IFIC – Universidad de Valencia (España)",
+        short: "IFIC Valencia",
+        icon: "🇪🇸",
+        cats: ["int"],
+        members: ["andrea.lami@ific.uv.es"]
+      },
+      {
+        name: "Universidad de Buenos Aires (Argentina)",
+        short: "UBA",
+        icon: "🇦🇷",
+        cats: ["int"],
+        members: ["sassot@df.uba.ar"]
+      },
+      {
+        name: "University of Texas at Austin (EE.UU.)",
+        short: "UT Austin",
+        icon: "🇺🇸",
+        cats: ["int"],
+        members: ["michellecc@utexas.edu"]
+      },
+      {
+        name: "Sin institución identificada",
+        short: "Otros",
+        icon: "📧",
+        cats: [],
+        members: ["aelfric_ed@hotmail.com","algo_vicm@yahoo.com.mx","emilianoreynacruz@hotmail.com","feryuphy@yahoo.com.mx","gmaury2004@yahoo.com.mx","hdurand_manterola@yahoo.com","javier_vega_h@hotmail.com","jorge_isidro@yahoo.com","jr_ariana@hotmail.com","marcofis@yahoo.com.mx","marxil89vdb@hotmail.com","mmerchandd_5@hotmail.com","omar_fcfm@hotmail.com","profamonica@yahoo.com.mx","raven_7.5@hotmail.com","rubenmorones@yahoo.com.mx","sasamo@hotmail.com","sunaxe@yahoo.com","w_gonzalez_olivares@hotmail.com"]
+      }
+    ];
+
+    let activeCat = 'all';
+    let searchTerm = '';
+
+    const listEl = document.getElementById('instList');
+    const countTag = document.getElementById('countTag');
+    const totalEl = document.getElementById('totalCount');
+
+    // total
+    const totalMembers = institutions.reduce((s, i) => s + i.members.length, 0);
+    totalEl.textContent = totalMembers;
+
+    function buildList() {
+      listEl.innerHTML = '';
+      let visibleInst = 0, visibleMembers = 0;
+
+      institutions.forEach((inst, idx) => {
+        // category filter
+        const catMatch = activeCat === 'all' || inst.cats.includes(activeCat);
+
+        // search filter on inst name or members
+        const term = searchTerm.toLowerCase();
+        const filteredMembers = term
+          ? inst.members.filter(m => m.toLowerCase().includes(term))
+          : inst.members;
+        const instNameMatch = inst.name.toLowerCase().includes(term) || inst.short.toLowerCase().includes(term);
+        const displayMembers = (term && !instNameMatch) ? filteredMembers : inst.members;
+
+        if (!catMatch || (term && !instNameMatch && filteredMembers.length === 0)) return;
+
+        visibleInst++;
+        visibleMembers += displayMembers.length;
+
+        const block = document.createElement('div');
+        block.className = 'inst-block' + (term ? ' open' : '');
+        block.dataset.idx = idx;
+
+        block.innerHTML = `
+          <div class="inst-header" onclick="toggleBlock(this.parentElement)">
+            <div class="inst-left">
+              <div class="inst-flag">${inst.icon}</div>
+              <div>
+                <div class="inst-name">${inst.name}</div>
+                <div class="inst-sub">${inst.short}</div>
+              </div>
+            </div>
+            <div class="inst-right">
+              <span class="inst-count">${displayMembers.length} miembro${displayMembers.length !== 1 ? 's' : ''}</span>
+              <span class="inst-chevron">▾</span>
+            </div>
+          </div>
+          <div class="inst-members">
+            <div class="members-grid">
+              ${displayMembers.map(m => {
+                const hl = term && m.toLowerCase().includes(term);
+                return `<div class="member-row${hl ? ' highlight' : ''}">
+                  <div class="member-dot"></div>
+                  <span class="member-email">${m}</span>
+                </div>`;
+              }).join('')}
+            </div>
+          </div>`;
+
+        listEl.appendChild(block);
+      });
+
+      countTag.textContent = `${visibleInst} institución${visibleInst !== 1 ? 'es' : ''} · ${visibleMembers} miembro${visibleMembers !== 1 ? 's' : ''}`;
+    }
+
+    function toggleBlock(block) {
+      block.classList.toggle('open');
+    }
+
+    // category filters
+    document.querySelectorAll('.cat-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        activeCat = btn.dataset.cat;
+        buildList();
+      });
+    });
+
+    // search
+    document.getElementById('searchInput').addEventListener('input', e => {
+      searchTerm = e.target.value.trim();
+      buildList();
+    });
+
+    // expand/collapse all
+    document.getElementById('btnExpandAll').addEventListener('click', () => {
+      document.querySelectorAll('.inst-block').forEach(b => b.classList.add('open'));
+    });
+    document.getElementById('btnCollapseAll').addEventListener('click', () => {
+      document.querySelectorAll('.inst-block').forEach(b => b.classList.remove('open'));
+    });
+
+    buildList();
+  </script>
+</body>
+</html>
