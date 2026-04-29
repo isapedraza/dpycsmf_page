@@ -1,344 +1,659 @@
 <!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <meta name="description" content="" />
-        <meta name="author" content="" />
-        <title>División de Partículas y Campos</title>
-        <link href="css/styles.css" rel="stylesheet" />
-        <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
-        <link rel="icon" type="image/x-icon" href="assets/img/favicon.png" />
-        <script data-search-pseudo-elements defer src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/js/all.min.js" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.24.1/feather.min.js" crossorigin="anonymous"></script>
-    </head>
-    <body>
-        <div id="layoutDefault">
-            <div id="layoutDefault_content">
-                <main>
-                    <!-- Navbar-->
-                    <nav class="navbar navbar-marketing navbar-expand-lg bg-transparent navbar-light fixed-top">
-                        <div class="container px-5">
-                            <a class="navbar-brand text-primary" href="index.html">División de Partículas y Campos</a>
-                            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><i data-feather="menu"></i></button>
-                            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                                <ul class="navbar-nav ms-auto me-lg-5">
-                                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
-                                     <!-- <li class="nav-item dropdown dropdown-xl no-caret">
-                                      <a class="nav-link dropdown-toggle" id="navbarDropdownDemos" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            Landings
-                                            <i class="fas fa-chevron-right dropdown-arrow"></i>
-                                        </a>
-                                        <div class="dropdown-menu dropdown-menu-end animated--fade-in-up me-lg-n25 me-xl-n15" aria-labelledby="navbarDropdownDemos">
-                                            <div class="row g-0">
-                                                <div class="col-lg-5 p-lg-3 bg-img-cover overlay overlay-primary overlay-70 d-none d-lg-block" style="background-image: url('assets/img/backgrounds/bg-dropdown-xl.jpg')">
-                                                    <div class="d-flex h-100 w-100 align-items-center justify-content-center">
-                                                        <div class="text-white text-center z-1">
-                                                            <div class="mb-3">Multipurpose landing pages for a variety of projects.</div>
-                                                            <a class="btn btn-white btn-sm text-primary fw-500" href="index.html">View All</a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-7 p-lg-5">
-                                                    <div class="row">
-                                                        <div class="col-lg-6">
-                                                            <h6 class="dropdown-header text-primary">Applications</h6>
-                                                            <a class="dropdown-item" href="landing-app-mobile.html">Mobile App</a>
-                                                            <a class="dropdown-item" href="landing-app-desktop.html">Desktop App</a>
-                                                            <div class="dropdown-divider border-0"></div>
-                                                            <h6 class="dropdown-header text-primary">Business</h6>
-                                                            <a class="dropdown-item" href="landing-multipurpose.html">Multipurpose</a>
-                                                            <a class="dropdown-item" href="landing-agency.html">Agency</a>
-                                                            <a class="dropdown-item" href="landing-press.html">Press</a>
-                                                            <a class="dropdown-item" href="landing-directory.html">Directory</a>
-                                                            <a class="dropdown-item" href="landing-rental.html">Rental</a>
-                                                            <a class="dropdown-item" href="landing-real-estate.html">Real Estate</a>
-                                                            <a class="dropdown-item" href="landing-classifieds.html">Classifieds</a>
-                                                            <div class="dropdown-divider border-0"></div>
-                                                            <h6 class="dropdown-header text-primary">Lead Generation</h6>
-                                                            <a class="dropdown-item" href="landing-lead-capture.html">Lead Capture</a>
-                                                            <div class="dropdown-divider border-0 d-lg-none"></div>
-                                                        </div>
-                                                        <div class="col-lg-6">
-                                                            <h6 class="dropdown-header text-primary">Personal</h6>
-                                                            <a class="dropdown-item" href="landing-resume.html">Resume</a>
-                                                            <a class="dropdown-item" href="landing-portfolio.html">Portfolio</a>
-                                                            <div class="dropdown-divider border-0"></div>
-                                                            <h6 class="dropdown-header text-primary">Header Styles</h6>
-                                                            <a class="dropdown-item" href="header-basic.html">Basic</a>
-                                                            <a class="dropdown-item" href="header-basic-signup.html">Basic (Signup)</a>
-                                                            <a class="dropdown-item" href="header-graphic.html">Graphic</a>
-                                                            <a class="dropdown-item" href="header-graphic-signup.html">Graphic (Signup)</a>
-                                                            <a class="dropdown-item" href="header-inner-page.html">Inner Page</a>
-                                                            <a class="dropdown-item" href="header-nav-only.html">Nav Only</a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li> -->
-                                    <!--<li class="nav-item dropdown dropdown-xl no-caret">
-                                        <a class="nav-link dropdown-toggle" id="navbarDropdownPages" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            Pages
-                                            <i class="fas fa-chevron-right dropdown-arrow"></i>
-                                        </a>
-                                        <div class="dropdown-menu dropdown-menu-end me-lg-n20 me-xl-n15 animated--fade-in-up" aria-labelledby="navbarDropdownPages">
-                                            <div class="row g-0">
-                                                <div class="col-lg-4 p-lg-5">
-                                                    <h6 class="dropdown-header text-primary">Company</h6>
-                                                    <a class="dropdown-item" href="page-basic.html">Basic Page</a>
-                                                    <a class="dropdown-item" href="page-company-about.html">About</a>
-                                                    <a class="dropdown-item" href="page-company-pricing.html">Pricing</a>
-                                                    <a class="dropdown-item" href="page-company-contact.html">Contact</a>
-                                                    <a class="dropdown-item" href="page-company-team.html">Team</a>
-                                                    <a class="dropdown-item" href="page-company-terms.html">Terms</a>
-                                                    <div class="dropdown-divider border-0"></div>
-                                                    <h6 class="dropdown-header text-primary">Support</h6>
-                                                    <a class="dropdown-item" href="page-help-center.html">Help Center</a>
-                                                    <a class="dropdown-item" href="page-help-knowledgebase.html">Knowledgebase</a>
-                                                    <a class="dropdown-item" href="page-help-message-center.html">Message Center</a>
-                                                    <a class="dropdown-item" href="page-help-support-ticket.html">Support Ticket</a>
-                                                    <div class="dropdown-divider border-0 d-lg-none"></div>
-                                                </div>
-                                                <div class="col-lg-4 p-lg-5">
-                                                    <h6 class="dropdown-header text-primary">Careers</h6>
-                                                    <a class="dropdown-item" href="page-careers-overview.html">Careers List</a>
-                                                    <a class="dropdown-item" href="page-careers-listing.html">Position Details</a>
-                                                    <div class="dropdown-divider border-0"></div>
-                                                    <h6 class="dropdown-header text-primary">Blog</h6>
-                                                    <a class="dropdown-item" href="page-blog-overview.html">Overview</a>
-                                                    <a class="dropdown-item" href="page-blog-post.html">Post</a>
-                                                    <a class="dropdown-item" href="page-blog-archive.html">Archive</a>
-                                                    <div class="dropdown-divider border-0"></div>
-                                                    <h6 class="dropdown-header text-primary">Portfolio</h6>
-                                                    <a class="dropdown-item" href="page-portfolio-grid.html">Grid</a>
-                                                    <a class="dropdown-item" href="page-portfolio-large-grid.html">Large Grid</a>
-                                                    <a class="dropdown-item" href="page-portfolio-masonry.html">Masonry</a>
-                                                    <a class="dropdown-item" href="page-portfolio-case-study.html">Case Study</a>
-                                                    <a class="dropdown-item" href="page-portfolio-project.html">Project</a>
-                                                    <div class="dropdown-divider border-0 d-lg-none"></div>
-                                                </div>
-                                                <div class="col-lg-4 p-lg-5">
-                                                    <h6 class="dropdown-header text-primary">Error</h6>
-                                                    <a class="dropdown-item" href="page-error-400.html">400 Error</a>
-                                                    <a class="dropdown-item" href="page-error-401.html">401 Error</a>
-                                                    <a class="dropdown-item" href="page-error-404-1.html">404 Error (Option 1)</a>
-                                                    <a class="dropdown-item" href="page-error-404-2.html">404 Error (Option 2)</a>
-                                                    <a class="dropdown-item" href="page-error-500.html">500 Error</a>
-                                                    <a class="dropdown-item" href="page-error-503.html">503 Error</a>
-                                                    <a class="dropdown-item" href="page-error-504.html">504 Error</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>-->
-                                    <!--<li class="nav-item dropdown no-caret">
-                                        <a class="nav-link dropdown-toggle" id="navbarDropdownDocs" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            Miembros
-                                            <i class="fas fa-chevron-right dropdown-arrow"></i>
-                                        </a>
-                                        <div class="dropdown-menu dropdown-menu-end animated--fade-in-up" aria-labelledby="navbarDropdownDocs">
-                                            <a class="dropdown-item py-3" href="dpyc.html" target="_blank">
-                                                <div class="icon-stack bg-primary-soft text-primary me-4"><i data-feather="book-open"></i></div>
-                                                <div>
-                                                    <div class="small text-gray-500">DPyC-SMF</div>
-                                                    División de Partículas y Campos de la Sociedad Mexicana de Física
-                                                </div> -->
-                                           <!-- </a>
-                                            <div class="dropdown-divider m-0"></div>
-                                            <a class="dropdown-item py-3" href="https://docs.startbootstrap.com/sb-ui-kit-pro/components" target="_blank">
-                                                <div class="icon-stack bg-primary-soft text-primary me-4"><i data-feather="code"></i></div>
-                                                <div>
-                                                    <div class="small text-gray-500">Components</div>
-                                                    Code snippets and reference
-                                                </div>
-                                            </a> -->
-                                            <div class="dropdown-divider m-0"></div>
-                                            <a class="dropdown-item py-3" href="https://docs.startbootstrap.com/sb-ui-kit-pro/changelog" target="_blank">
-                                                <!--<div class="icon-stack bg-primary-soft text-primary me-4"><i data-feather="file-text"></i></div>
-                                                <div>
-                                                    <div class="small text-gray-500">Changelog</div>
-                                                    Updates and changes
-                                                </div>-->
-                                            </a> 
-                                        </div>
-                                    </li>
-                                </ul>
-                               <!-- <a class="btn fw-500 ms-lg-4 btn-primary" href="https://shop.startbootstrap.com/sb-ui-kit-pro">
-                                    Buy Now
-                                    <i class="ms-2" data-feather="arrow-right"></i>
-                                </a> -->
-                            </div>
-                        </div>
-                    </nav>
-                    <!-- Page Header-->
-                    <!--<header class="page-header-ui page-header-ui-dark bg-gradient-primary-to-secondary">-->
-                         <!--<header class="page-header-ui page-header-ui-dark bg-img-cover overlay overlay-80" style="background-image: url('https://source.unsplash.com/faEfWCdOKIg/1500x900')">-->
-                         <header class="page-header-ui page-header-ui-dark bg-img-cover overlay overlay-30" style="background-image: url('https://media-cldnry.s-nbcnews.com/image/upload/t_fit-1240w,f_auto,q_auto:best/newscms/2018_43/2615806/181023-mach-3d-dipole-integration-panoramic-poster-se-206p.jpg')">   
-                        <div class="page-header-ui-content py-5 position-relative">
-                            <div class="container px-5 text-center">
-                                <div class="row gx-5 justify-content-center">
-                                    <div class="col-lg-8">
-                                        <h1 class="page-header-ui-title mb-3">División de Partículas y Campos</h1>
-                                        <h1 class="page-header-ui-title mb-3">Sociedad Mexicana de Física</h1>
-                                        <p class="page-header-ui-text mb-0">A showcase of project's we've worked on </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="svg-border-rounded text-light">
-                            <!-- Rounded SVG Border-->
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 144.54 17.34" preserveAspectRatio="none" fill="currentColor"><path d="M144.54,17.34H0V0H144.54ZM0,0S32.36,17.34,72.27,17.34,144.54,0,144.54,0"></path></svg>
-                        </div>
-                    </header>
-                    <section class="bg-light pb-10">
-                        <div class="container px-5">
-                            <div class="row gx-5">
-                                <!--<div class="col-md-6 col-xl-4 mb-5 mt-n5">
-                                    <a class="card card-portfolio h-100" href="page-underconstruction.html">
-                                        <img class="card-img-top" src="assets/img/illustrations/503-error-service-unavailable.svg" alt="..." />
-                                        <div class="card-body"><div class="card-title">Noticias</div></div>
-                                    </a>
-                                </div>
-                                <div class="col-md-6 col-xl-4 mb-5 mt-md-n5">
-                                    <a class="card card-portfolio h-100" href="#!">
-                                        <img class="card-img-top" src="https://source.unsplash.com/Ecnx13MEPK0/700x500" alt="..." />
-                                        <div class="card-body"><div class="card-title">Miembros</div></div>
-                                    </a>
-                                </div>
-                                <div class="col-md-6 col-xl-4 mb-5 mt-xl-n5">
-                                    <a class="card card-portfolio h-100" href="https://indico.nucleares.unam.mx/category/15/">
-                                        <img class="card-img-top" src="assets/img/illustrations/windows.svg" alt="..." />
-                                        <div class="card-body"><div class="card-title">Redes de Invetigación</div></div>
-                                    </a>
-                                </div>-->
-                                <div class="col-md-6 col-xl-4 mb-5">
-                                    <a class="card card-portfolio h-100" href="#!">
-                                        <img class="card-img-top" src="assets/img/illustrations/Achievement-pana.svg" width="300" height="220" alt="..." />
-                                        <div class="card-body"><div class="card-title">Concursos y Premios</div></div>
-                                    </a>
-                                </div>
-                                <div class="col-md-6 col-xl-4 mb-5">
-                                    <a class="card card-portfolio h-100" href="https://indico.nucleares.unam.mx/category/15/">
-                                        <img class="card-img-top" src="assets/img/illustrations/Confirmedattendancebro.svg" width="300" height="220"  alt="..." />
-                                        <div class="card-body"><div class="card-title">Eventos</div></div>
-                                    </a>
-                                </div>
-                                <div class="col-md-6 col-xl-4 mb-5">
-                                    <a class="card card-portfolio h-100" href="page-teamv2.html">
-                                        <img class="card-img-top" src="assets/img/illustrations/Aboutuspagepana.svg" width="300" height="220" alt="..." />
-                                        <div class="card-body"><div class="card-title">Quienes somos</div></div>
-                                    </a>
-                                </div>
-                                <!--<div class="col-md-6 col-xl-4 mb-5">
-                                    <a class="card card-portfolio h-100" href="#!">
-                                        <img class="card-img-top" src="https://source.unsplash.com/Zr7MxECDTQ8/700x500" alt="..." />
-                                        <div class="card-body"><div class="card-title">Foros</div></div>
-                                    </a>
-                                </div>
-                                <div class="col-md-6 col-xl-4 mb-5">
-                                    <a class="card card-portfolio h-100" href="#!">
-                                        <img class="card-img-top" src="https://source.unsplash.com/QcyenJDqDzw/700x500" alt="..." />
-                                        <div class="card-body"><div class="card-title">Contenido</div></div>
-                                    </a>
-                                </div>
-                                <div class="col-md-6 col-xl-4 mb-5">
-                                    <a class="card card-portfolio h-100" href="#!">
-                                        <img class="card-img-top" src="https://source.unsplash.com/TIutDBFEtcY/700x500" alt="..." />
-                                        <div class="card-body"><div class="card-title">Book Stand</div></div>
-                                    </a>
-                                </div>-->
-                            </div>
-                        </div>
-                    </section>
-                    <section class="bg-white py-10">
-                        <div class="container px-5">
-                            <div class="row gx-5 justify-content-center">
-                                <div class="col-xl-6 col-lg-8 col-md-10 text-center py-5">
-                                    <h2>Ready to get Started?</h2>
-                                    <p class="lead text-gray-500 mb-5">We'd love to hear from you about your reasearch and needs.</p>
-                                    <a class="btn btn-primary fw-500" href="mailto:dpyc.smf.adms@gmail.com">Contact us</a> 
-                                </div>
-                            </div>
-                        </div>
-                        <div class="svg-border-rounded text-dark">
-                            <!-- Rounded SVG Border-->
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 144.54 17.34" preserveAspectRatio="none" fill="currentColor"><path d="M144.54,17.34H0V0H144.54ZM0,0S32.36,17.34,72.27,17.34,144.54,0,144.54,0"></path></svg>
-                        </div>
-                    </section>
-                </main>
-            </div>
-            <div id="layoutDefault_footer">
-                <footer class="footer pt-10 pb-5 mt-auto bg-dark footer-dark">
-                    <div class="container px-5">
-                        <div class="row gx-5">
-                            <div class="col-lg-3">
-                                <div class="footer-brand">DPyC-SMF</div>
-                                <!--<div class="icon-list-social mb-5">
-                                    <a class="icon-list-social-link" href="#!"><i class="fab fa-instagram"></i></a>
-                                    <a class="icon-list-social-link" href="#!"><i class="fab fa-facebook"></i></a>
-                                    <a class="icon-list-social-link" href="#!"><i class="fab fa-github"></i></a>
-                                    <a class="icon-list-social-link" href="#!"><i class="fab fa-twitter"></i></a>
-                                </div>-->
-                            </div>
-                            <!--<div class="col-lg-9">
-                                <div class="row gx-5">
-                                    <div class="col-lg-3 col-md-6 mb-5 mb-lg-0">
-                                        <div class="text-uppercase-expanded text-xs mb-4">Product</div>
-                                        <ul class="list-unstyled mb-0">
-                                            <li class="mb-2"><a href="#!">Landing</a></li>
-                                            <li class="mb-2"><a href="#!">Pages</a></li>
-                                            <li class="mb-2"><a href="#!">Sections</a></li>
-                                            <li class="mb-2"><a href="#!">Documentation</a></li>
-                                            <li><a href="#!">Changelog</a></li>
-                                        </ul>
-                                    </div>
-                                    <div class="col-lg-3 col-md-6 mb-5 mb-lg-0">
-                                        <div class="text-uppercase-expanded text-xs mb-4">Technical</div>
-                                        <ul class="list-unstyled mb-0">
-                                            <li class="mb-2"><a href="#!">Documentation</a></li>
-                                            <li class="mb-2"><a href="#!">Changelog</a></li>
-                                            <li class="mb-2"><a href="#!">Theme Customizer</a></li>
-                                            <li><a href="#!">UI Kit</a></li>
-                                        </ul>
-                                    </div>
-                                    <div class="col-lg-3 col-md-6 mb-5 mb-md-0">
-                                        <div class="text-uppercase-expanded text-xs mb-4">Includes</div>
-                                        <ul class="list-unstyled mb-0">
-                                            <li class="mb-2"><a href="#!">Utilities</a></li>
-                                            <li class="mb-2"><a href="#!">Components</a></li>
-                                            <li class="mb-2"><a href="#!">Layouts</a></li>
-                                            <li class="mb-2"><a href="#!">Code Samples</a></li>
-                                            <li class="mb-2"><a href="#!">Products</a></li>
-                                            <li class="mb-2"><a href="#!">Affiliates</a></li>
-                                            <li><a href="#!">Updates</a></li>
-                                        </ul>
-                                    </div>
-                                    <div class="col-lg-3 col-md-6">
-                                        <div class="text-uppercase-expanded text-xs mb-4">Legal</div>
-                                        <ul class="list-unstyled mb-0">
-                                            <li class="mb-2"><a href="#!">Privacy Policy</a></li>
-                                            <li class="mb-2"><a href="#!">Terms and Conditions</a></li>
-                                            <li><a href="#!">License</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>-->
-                        <hr class="my-5" />
-                        <div class="row gx-5 align-items-center">
-                            <div class="col-md-6 small">Copyright &copy; isaP 2022</div>
-                            <div class="col-md-6 text-md-end small">
-                                <a href="#!">Privacy Policy</a>
-                                &middot;
-                                <a href="#!">Terms &amp; Conditions</a>
-                            </div>
-                        </div>
-                    </div>
-                </footer>
-            </div>
+<html lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>División de Partículas y Campos · SMF</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/x-icon" href="assets/img/favicon.png"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream:         #faf8f4;
+      --cream-dark:    #f2ede4;
+      --gold:          #b8860b;
+      --gold-light:    #d4a82a;
+      --gold-pale:     #f5edd0;
+      --ink:           #1a1a1a;
+      --ink-mid:       #3d3d3d;
+      --ink-soft:      #6b6b6b;
+      --border:        #e0d8cc;
+      --border-strong: #c8bfb0;
+      --white:         #ffffff;
+      --nav-h:         60px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', system-ui, sans-serif;
+      color: var(--ink);
+      background: var(--cream);
+    }
+
+    /* ══ NAVBAR ══ */
+    nav.topnav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: var(--nav-h);
+      z-index: 1000;
+      background: rgba(250,248,244,0.96);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      padding: 0 1.5rem;
+    }
+    .nav-brand {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      color: var(--ink);
+      text-decoration: none;
+      white-space: nowrap;
+      margin-right: 1.5rem;
+      flex-shrink: 0;
+    }
+    .nav-brand span { color: var(--gold); }
+
+    .nav-menu {
+      display: flex;
+      align-items: center;
+      list-style: none;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .nav-menu::-webkit-scrollbar { display: none; }
+    .nav-menu > li { position: relative; }
+
+    .nav-menu > li > a,
+    .nav-menu > li > button {
+      display: block;
+      padding: 0 0.75rem;
+      height: var(--nav-h);
+      line-height: var(--nav-h);
+      font-size: 0.8rem;
+      color: var(--ink-soft);
+      text-decoration: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      white-space: nowrap;
+      transition: color 0.15s;
+    }
+    .nav-menu > li > a:hover,
+    .nav-menu > li > button:hover,
+    .nav-menu > li.open > button { color: var(--ink); }
+    .nav-menu > li > a.highlight { color: var(--gold); font-weight: 500; }
+
+    .dropdown-panel {
+      display: none;
+      position: absolute;
+      top: calc(var(--nav-h) - 1px);
+      left: 0;
+      min-width: 210px;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-top: 2px solid var(--gold);
+      border-radius: 0 0 10px 10px;
+      padding: 0.4rem 0;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.09);
+    }
+    .nav-menu > li.open .dropdown-panel { display: block; }
+    .dropdown-panel a {
+      display: block;
+      padding: 0.55rem 1.1rem;
+      font-size: 0.8rem;
+      color: var(--ink-soft);
+      text-decoration: none;
+      transition: background 0.1s, color 0.1s;
+    }
+    .dropdown-panel a:hover { background: var(--gold-pale); color: var(--ink); }
+    .dropdown-panel .sep { height: 1px; background: var(--border); margin: 0.3rem 0; }
+    .caret { font-size: 0.6rem; margin-left: 3px; opacity: 0.5; }
+
+    .nav-toggle {
+      display: none;
+      margin-left: auto;
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--ink);
+      padding: 5px 10px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    /* ══ HERO ══ */
+    .hero {
+      padding-top: var(--nav-h);
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        -45deg,
+        transparent, transparent 40px,
+        rgba(184,134,11,0.04) 40px,
+        rgba(184,134,11,0.04) 41px
+      );
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 3.5rem 2rem 0;
+      display: grid;
+      grid-template-columns: 1fr 400px;
+      gap: 3rem;
+      align-items: end;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-left { padding-bottom: 3.5rem; }
+    .hero-logos-row {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      margin-bottom: 1.75rem;
+    }
+    .hero-logos-row img { height: 60px; object-fit: contain; }
+    .hero-logos-row .vline { width: 1px; height: 44px; background: var(--border-strong); }
+
+    .hero-eyebrow {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.7rem;
+    }
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 600;
+      color: var(--ink);
+      line-height: 1.12;
+      margin-bottom: 1rem;
+    }
+    .hero-desc {
+      font-size: 0.97rem;
+      color: var(--ink-soft);
+      line-height: 1.8;
+      max-width: 460px;
+      margin-bottom: 2rem;
+    }
+    .hero-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+
+    .btn-gold {
+      background: var(--gold);
+      color: #fff;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 500;
+      font-size: 0.88rem;
+      padding: 11px 26px;
+      border-radius: 999px;
+      text-decoration: none;
+      transition: background 0.15s;
+    }
+    .btn-gold:hover { background: var(--gold-light); }
+    .btn-outline {
+      border: 1px solid var(--border-strong);
+      color: var(--ink-mid);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.88rem;
+      padding: 11px 26px;
+      border-radius: 999px;
+      text-decoration: none;
+      transition: background 0.15s;
+    }
+    .btn-outline:hover { background: var(--cream-dark); }
+
+    .hero-right { align-self: end; }
+    .hero-img-wrap {
+      border-radius: 14px 14px 0 0;
+      overflow: hidden;
+      height: 320px;
+    }
+    .hero-img-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    /* stats bar */
+    .stats-bar {
+      background: var(--gold-pale);
+      border-top: 1px solid #e8d9a8;
+      border-bottom: 1px solid #e8d9a8;
+      padding: 1rem 1.5rem;
+      display: flex;
+      justify-content: center;
+      gap: 3rem;
+      flex-wrap: wrap;
+    }
+    .stat { text-align: center; }
+    .stat-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--gold);
+      display: block;
+    }
+    .stat-label { font-size: 11px; color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.08em; }
+
+    /* ══ SECTIONS ══ */
+    .section { padding: 4.5rem 2rem; }
+    .container { max-width: 1100px; margin: 0 auto; }
+    .section-label {
+      font-size: 11px; font-weight: 500; letter-spacing: 0.15em;
+      text-transform: uppercase; color: var(--gold); margin-bottom: 0.6rem;
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.5rem, 2.5vw, 2rem);
+      font-weight: 600; color: var(--ink);
+      margin-bottom: 0.9rem; line-height: 1.2;
+    }
+    .section-body {
+      font-size: 0.95rem; color: var(--ink-soft);
+      line-height: 1.8; max-width: 580px;
+    }
+
+    /* ── ABOUT ── */
+    #about { background: var(--white); }
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem; align-items: center; margin-top: 2.5rem;
+    }
+    .about-img img {
+      width: 100%; height: 300px; object-fit: cover;
+      border-radius: 14px; border: 1px solid var(--border);
+    }
+    .about-pillars { margin-top: 1.75rem; display: flex; flex-direction: column; gap: 1rem; }
+    .pillar { display: flex; gap: 0.9rem; align-items: flex-start; }
+    .pillar-icon {
+      width: 38px; height: 38px; border-radius: 10px;
+      background: var(--gold-pale); border: 1px solid #e8d9a8;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem; flex-shrink: 0;
+    }
+    .pillar-text h4 { font-size: 0.88rem; font-weight: 500; color: var(--ink); margin-bottom: 2px; }
+    .pillar-text p { font-size: 0.82rem; color: var(--ink-soft); line-height: 1.6; }
+
+    /* ── ACTIVITIES ── */
+    #activities { background: var(--cream); }
+    .act-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.1rem; margin-top: 2rem;
+    }
+    .act-card {
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: 14px; padding: 1.4rem;
+      transition: box-shadow 0.2s, border-color 0.2s;
+    }
+    .act-card:hover { box-shadow: 0 4px 18px rgba(0,0,0,0.07); border-color: var(--border-strong); }
+    .act-icon { font-size: 1.4rem; margin-bottom: 0.65rem; }
+    .act-card h3 { font-size: 0.92rem; font-weight: 500; color: var(--ink); margin-bottom: 0.35rem; }
+    .act-card p { font-size: 0.82rem; color: var(--ink-soft); line-height: 1.65; }
+
+    /* ── HIGHLIGHTS ── */
+    #highlights { background: var(--white); }
+    .hl-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 1.25rem; margin-top: 2rem;
+    }
+    .hl-card {
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: 14px; overflow: hidden;
+      text-decoration: none; color: var(--ink); display: block;
+      transition: box-shadow 0.2s, border-color 0.2s;
+    }
+    .hl-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.08); border-color: var(--border-strong); }
+    .hl-card-img {
+      height: 170px; background: var(--cream-dark);
+      position: relative; overflow: hidden;
+    }
+    .hl-card-img img { width: 100%; height: 100%; object-fit: cover; }
+    .hl-badge {
+      position: absolute; top: 10px; left: 10px;
+      background: rgba(255,255,255,0.92);
+      border: 1px solid var(--border); border-radius: 999px;
+      font-size: 0.72rem; padding: 3px 10px;
+      color: var(--gold); font-weight: 500;
+    }
+    .hl-card-body { padding: 1.1rem 1.2rem; }
+    .hl-card-body h3 { font-size: 0.97rem; font-weight: 500; color: var(--ink); margin-bottom: 0.35rem; }
+    .hl-card-body p { font-size: 0.82rem; color: var(--ink-soft); line-height: 1.6; }
+    .hl-link { display: inline-block; margin-top: 0.65rem; font-size: 0.8rem; color: var(--gold); font-weight: 500; }
+
+    /* ── CONTACT ── */
+    #contact { background: var(--cream); text-align: center; }
+    #contact .section-body { margin: 0 auto 0.5rem; }
+    .contact-chips {
+      display: flex; gap: 10px; justify-content: center;
+      flex-wrap: wrap; margin-top: 1.5rem;
+    }
+    .contact-chips a {
+      display: flex; align-items: center; gap: 8px;
+      padding: 9px 18px;
+      border: 1px solid var(--border-strong);
+      border-radius: 999px;
+      color: var(--ink-soft); text-decoration: none;
+      font-size: 0.83rem; background: var(--white);
+      transition: background 0.15s, border-color 0.15s, color 0.15s;
+    }
+    .contact-chips a:hover { background: var(--gold-pale); border-color: #e8d9a8; color: var(--ink); }
+
+    /* ══ FOOTER ══ */
+    footer {
+      background: var(--white);
+      border-top: 1px solid var(--border);
+      padding: 1.4rem 2rem;
+      display: flex; align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap; gap: 1rem;
+      font-size: 0.78rem; color: var(--ink-soft);
+    }
+    footer a { color: var(--ink-soft); text-decoration: none; }
+    footer a:hover { color: var(--gold); }
+
+    /* ══ RESPONSIVE ══ */
+    @media (max-width: 820px) {
+      .hero-inner { grid-template-columns: 1fr; }
+      .hero-right { display: none; }
+      .about-grid, .hl-grid { grid-template-columns: 1fr; }
+      .nav-menu { display: none; }
+      .nav-toggle { display: block; }
+      nav.topnav.open .nav-menu {
+        display: flex; flex-direction: column;
+        position: absolute; top: var(--nav-h); left: 0; right: 0;
+        background: var(--white);
+        border-bottom: 1px solid var(--border);
+        padding: 0.5rem 0 1rem; align-items: stretch;
+      }
+      nav.topnav.open .nav-menu > li > a,
+      nav.topnav.open .nav-menu > li > button {
+        height: auto; line-height: 1; padding: 0.7rem 1.5rem;
+      }
+      .dropdown-panel {
+        position: static; border-radius: 0; box-shadow: none;
+        border: none; border-top: 1px solid var(--border);
+        background: var(--cream); padding-left: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ══ NAVBAR ══ -->
+  <nav class="topnav" id="topnav">
+    <a class="nav-brand" href="index.html">DPyC · <span>SMF</span></a>
+    <button class="nav-toggle" onclick="document.getElementById('topnav').classList.toggle('open')">☰</button>
+    <ul class="nav-menu">
+
+      <li>
+        <button onclick="toggleDD(this)">Quiénes Somos <span class="caret">▾</span></button>
+        <div class="dropdown-panel">
+          <a href="page-about.html">Acerca de la DPyC</a>
+          <div class="sep"></div>
+          <a href="page-teamv2.html">Mandatos y Coordinaciones</a>
+          <a href="page-presidentes-DPyC.html">Lista de presidentes anteriores</a>
         </div>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-        <script src="js/scripts.js"></script>
-    </body>
+      </li>
+
+      <li>
+        <button onclick="toggleDD(this)">Miembros <span class="caret">▾</span></button>
+        <div class="dropdown-panel">
+          <a href="page-members.html">Instituciones y representantes</a>
+        </div>
+      </li>
+
+      <li><a class="highlight" href="medal_history_page.html">Medallas</a></li>
+
+      <li>
+        <button onclick="toggleDD(this)">Mandatos/Organización <span class="caret">▾</span></button>
+        <div class="dropdown-panel">
+          <a href="page-teamv2.html">Organización 2025–2027</a>
+          <a href="page-presidentes-DPyC.html">Lista de presidentes anteriores</a>
+        </div>
+      </li>
+
+      <li><a href="page-news.html">Noticias</a></li>
+
+      <li>
+        <button onclick="toggleDD(this)">Libros/Artículos <span class="caret">▾</span></button>
+        <div class="dropdown-panel">
+          <a href="page-publications.html">Publicaciones destacadas</a>
+        </div>
+      </li>
+
+      <li><a href="page-research.html">Líneas de Investigación</a></li>
+      <li><a href="page-events.html">Eventos</a></li>
+
+      <li>
+        <button onclick="toggleDD(this)">Contáctanos <span class="caret">▾</span></button>
+        <div class="dropdown-panel">
+          <a href="page-contact.html">Contacto general</a>
+          <a href="page-acoso.html">Acoso</a>
+          <a href="page-directory.html">Directorio por institución</a>
+        </div>
+      </li>
+
+    </ul>
+  </nav>
+
+  <!-- ══ HERO ══ -->
+  <div class="hero">
+    <div class="hero-inner">
+      <div class="hero-left">
+        <div class="hero-logos-row">
+          <img src="assets/img/DPyCLogoNoBG.png" alt="Logo DPyC">
+          <div class="vline"></div>
+          <img src="assets/img/medallaDPyC.png" alt="Medalla DPyC">
+        </div>
+        <p class="hero-eyebrow">Sociedad Mexicana de Física</p>
+        <h1>División de<br>Partículas y Campos</h1>
+        <p class="hero-desc">Comunidad científica dedicada al estudio de las partículas fundamentales, las fuerzas que las gobiernan y la estructura más profunda del universo.</p>
+        <div class="hero-actions">
+          <a href="#about" class="btn-gold">Conoce la División</a>
+          <a href="page-teamv2.html" class="btn-outline">Organización 2025–2027</a>
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="hero-img-wrap">
+          <img src="assets/img/backgrounds/LHCUniverse.jpg" alt="LHC — CERN">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- stats bar -->
+  <div class="stats-bar">
+    <div class="stat"><span class="stat-num">25+</span><span class="stat-label">años de historia</span></div>
+    <div class="stat"><span class="stat-num">32</span><span class="stat-label">medallistas DPyC</span></div>
+    <div class="stat"><span class="stat-num">30+</span><span class="stat-label">instituciones miembro</span></div>
+    <div class="stat"><span class="stat-num">1999</span><span class="stat-label">primera medalla</span></div>
+  </div>
+
+  <!-- ══ ABOUT ══ -->
+  <section class="section" id="about">
+    <div class="container">
+      <p class="section-label">Acerca de la DPyC</p>
+      <div class="about-grid">
+        <div>
+          <h2 class="section-title">Impulsando la física de frontera en México</h2>
+          <p class="section-body">La División de Partículas y Campos (DPyC) de la Sociedad Mexicana de Física agrupa a investigadoras e investigadores dedicados al estudio de las partículas elementales y los campos fundamentales. Desde su fundación, la DPyC ha sido el espacio de encuentro, debate y colaboración de la comunidad mexicana de altas energías, tanto teórica como experimental.</p>
+          <div class="about-pillars">
+            <div class="pillar">
+              <div class="pillar-icon">⚛</div>
+              <div class="pillar-text">
+                <h4>Investigación de frontera</h4>
+                <p>Participación en experimentos internacionales en CERN, Fermilab, HAWC y otras instalaciones de clase mundial.</p>
+              </div>
+            </div>
+            <div class="pillar">
+              <div class="pillar-icon">🎓</div>
+              <div class="pillar-text">
+                <h4>Formación de recursos humanos</h4>
+                <p>Concursos de veranos en el extranjero, talleres y estancias que impulsan a jóvenes físicas y físicos mexicanos.</p>
+              </div>
+            </div>
+            <div class="pillar">
+              <div class="pillar-icon">🤝</div>
+              <div class="pillar-text">
+                <h4>Comunidad inclusiva</h4>
+                <p>Compromiso con la equidad de género, la diversidad y la creación de entornos seguros en la física.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="about-img">
+          <img src="assets/img/backgrounds/LHCUniverse.jpg" alt="LHC — CERN">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ ACTIVITIES ══ -->
+  <section class="section" id="activities">
+    <div class="container">
+      <p class="section-label">Lo que hacemos</p>
+      <h2 class="section-title">Actividades de la División</h2>
+      <div class="act-grid">
+        <div class="act-card">
+          <div class="act-icon">🏅</div>
+          <h3>Medalla DPyC</h3>
+          <p>Desde 1999, el máximo reconocimiento de nuestra comunidad para quienes han contribuido notablemente al desarrollo de la física de partículas en México.</p>
+        </div>
+        <div class="act-card">
+          <div class="act-icon">✈️</div>
+          <h3>Veranos en el Extranjero</h3>
+          <p>Convocatoria anual para que estudiantes mexicanos realicen estancias de investigación en laboratorios y universidades del mundo.</p>
+        </div>
+        <div class="act-card">
+          <div class="act-icon">📅</div>
+          <h3>Congreso de la SMF</h3>
+          <p>Organización de sesiones especializadas en física de partículas y campos dentro del congreso anual de la Sociedad Mexicana de Física.</p>
+        </div>
+        <div class="act-card">
+          <div class="act-icon">📡</div>
+          <h3>Coordinación Experimental</h3>
+          <p>Articulación de los grupos mexicanos que participan en experimentos internacionales: ATLAS, CMS, ALICE, NA62, HAWC y más.</p>
+        </div>
+        <div class="act-card">
+          <div class="act-icon">📢</div>
+          <h3>Divulgación Científica</h3>
+          <p>Comunicación de los avances de la física de partículas a la sociedad, a través de charlas, publicaciones y redes sociales.</p>
+        </div>
+        <div class="act-card">
+          <div class="act-icon">⚖️</div>
+          <h3>Comité de Género</h3>
+          <p>Protocolos de actuación ante acoso, promoción de la paridad y generación de estadísticas de inclusión en la comunidad.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ HIGHLIGHTS ══ -->
+  <section class="section" id="highlights">
+    <div class="container">
+      <p class="section-label">Páginas destacadas</p>
+      <h2 class="section-title">Explora la DPyC</h2>
+      <div class="hl-grid">
+        <a class="hl-card" href="medal_history_page.html">
+          <div class="hl-card-img">
+            <img src="assets/img/medallaDPyC.png" alt="Medalla DPyC" style="object-fit:contain;padding:2rem;background:var(--cream-dark);">
+            <span class="hl-badge">Medalla DPyC</span>
+          </div>
+          <div class="hl-card-body">
+            <h3>Historial de galardonados</h3>
+            <p>Desde Leon Lederman en 1999 hasta el Dr. Jürgen Engelfried en 2024 — el máximo reconocimiento de la División.</p>
+            <span class="hl-link">Ver historial →</span>
+          </div>
+        </a>
+        <a class="hl-card" href="page-teamv2.html">
+          <div class="hl-card-img">
+            <img src="assets/img/presidentsDPyC/PEDRAZAIsabel.png" alt="Mesa directiva">
+            <span class="hl-badge">Organización</span>
+          </div>
+          <div class="hl-card-body">
+            <h3>Mesa directiva 2025–2027</h3>
+            <p>Presidencia, vicepresidencia, tesorería y coordinaciones que guían a la DPyC en el periodo actual.</p>
+            <span class="hl-link">Ver organización →</span>
+          </div>
+        </a>
+        <a class="hl-card" href="page-presidentes-DPyC.html">
+          <div class="hl-card-img">
+            <img src="assets/img/presidentsDPyC/HUERTARodrigo.png" alt="Presidentes históricos">
+            <span class="hl-badge">Historia</span>
+          </div>
+          <div class="hl-card-body">
+            <h3>Presidentes anteriores</h3>
+            <p>Listado histórico de las y los presidentes de la DPyC desde su fundación en 1986, con búsqueda y descarga CSV.</p>
+            <span class="hl-link">Ver presidentes →</span>
+          </div>
+        </a>
+        <a class="hl-card" href="https://www.facebook.com/DPyC.SMF/" target="_blank">
+          <div class="hl-card-img" style="background:var(--cream-dark);display:flex;align-items:center;justify-content:center;">
+            <span style="font-size:3.5rem;">📘</span>
+            <span class="hl-badge">Redes sociales</span>
+          </div>
+          <div class="hl-card-body">
+            <h3>Facebook DPyC · SMF</h3>
+            <p>Síguenos para enterarte de convocatorias, eventos, noticias y actividades de la comunidad.</p>
+            <span class="hl-link">Visitar página →</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ CONTACT ══ -->
+  <section class="section" id="contact" style="text-align:center;">
+    <div class="container">
+      <p class="section-label">Contacto</p>
+      <h2 class="section-title">¿Quieres saber más?</h2>
+      <p class="section-body" style="margin:0 auto 0.5rem;">Escríbenos, síguenos en redes o consulta el directorio de instituciones miembro.</p>
+      <div class="contact-chips">
+        <a href="mailto:dpyc.smf.adms@gmail.com">✉️ &nbsp;dpyc.smf.adms@gmail.com</a>
+        <a href="https://www.facebook.com/DPyC.SMF/" target="_blank">📘 &nbsp;Facebook DPyC · SMF</a>
+        <a href="page-directory.html">🏛 &nbsp;Directorio por institución</a>
+        <a href="page-acoso.html">🛡 &nbsp;Reporte de acoso</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ FOOTER ══ -->
+  <footer>
+    <span>© 2025 División de Partículas y Campos · Sociedad Mexicana de Física</span>
+    <span>
+      <a href="page-contact.html">Contacto</a> ·
+      <a href="page-acoso.html">Acoso</a> ·
+      <a href="mailto:dpyc.smf.adms@gmail.com">dpyc.smf.adms@gmail.com</a>
+    </span>
+  </footer>
+
+  <script>
+    function toggleDD(btn) {
+      const li = btn.parentElement;
+      const isOpen = li.classList.contains('open');
+      document.querySelectorAll('.nav-menu > li').forEach(l => l.classList.remove('open'));
+      if (!isOpen) li.classList.add('open');
+    }
+    document.addEventListener('click', e => {
+      if (!e.target.closest('.nav-menu')) {
+        document.querySelectorAll('.nav-menu > li').forEach(l => l.classList.remove('open'));
+      }
+    });
+  </script>
+</body>
 </html>

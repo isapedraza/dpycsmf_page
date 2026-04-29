@@ -1,147 +1,355 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>DPyC 2025–2027 · Mandatos y Coordinaciones</title>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Mandatos y Coordinaciones 2025–2027 · DPyC SMF</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/x-icon" href="assets/img/favicon.png"/>
   <style>
-    :root{
-      --glass: rgba(0,0,0,.55);
-      --text:#f4f7fb; --muted:#cdd6e1; --accent:#66fcf1; --accent2:#ffd166;
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream:         #faf8f4;
+      --cream-dark:    #f2ede4;
+      --gold:          #b8860b;
+      --gold-light:    #d4a82a;
+      --gold-pale:     #f5edd0;
+      --ink:           #1a1a1a;
+      --ink-mid:       #3d3d3d;
+      --ink-soft:      #6b6b6b;
+      --border:        #e0d8cc;
+      --border-strong: #c8bfb0;
+      --white:         #ffffff;
+      --nav-h:         60px;
     }
-    *{box-sizing:border-box}
-    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Arial,sans-serif;color:var(--text);
-      background:url("assets/img/backgrounds/LHCUniverse.jpg") center/cover fixed no-repeat;}
-    header{padding:32px 16px;text-align:center;background:linear-gradient(to bottom, rgba(0,0,0,.7), rgba(0,0,0,.35));}
-    h1{margin:0;font-size:2rem;letter-spacing:.2px}
-    .sub{margin:6px 0 0;color:var(--muted)}
-    nav{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:10px 0 0}
-    nav a{color:var(--accent);text-decoration:none;border:1px solid rgba(255,255,255,.15);padding:8px 12px;border-radius:999px;background:rgba(0,0,0,.35)}
 
-    .wrap{max-width:1200px;margin:24px auto;padding:0 16px}
-    .section-title{margin:18px 0 8px;font-size:1.25rem;color:#fff}
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', system-ui, sans-serif; color: var(--ink); background: var(--cream); }
 
-    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px}
-    .card{background:var(--glass);backdrop-filter: blur(6px); border:1px solid rgba(255,255,255,.12);
-      border-radius:18px;overflow:hidden;box-shadow:0 12px 30px rgba(0,0,0,.35);transition:transform .2s ease}
-    .card:hover{transform:translateY(-6px)}
-    .hero{position:relative;height:160px;background:#0d1320}
-    .hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:contrast(1.1) saturate(1.1)}
-    .badge{position:absolute;left:12px;top:12px;background:rgba(0,0,0,.55);padding:4px 10px;border-radius:999px;font-size:.8rem;border:1px solid rgba(255,255,255,.15)}
-    .body{padding:14px}
-    .role{margin:0 0 4px;font-weight:700}
-    .desc{margin:0;color:var(--muted);font-size:.95rem}
-    .period{margin-top:10px;color:var(--accent2);font-weight:600}
+    /* ══ NAVBAR ══ */
+    nav.topnav {
+      position: fixed; top: 0; left: 0; right: 0;
+      height: var(--nav-h); z-index: 1000;
+      background: rgba(250,248,244,0.96);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; padding: 0 1.5rem;
+    }
+    .nav-brand {
+      font-family: 'Playfair Display', serif; font-size: 1rem;
+      color: var(--ink); text-decoration: none;
+      white-space: nowrap; margin-right: 1.5rem; flex-shrink: 0;
+    }
+    .nav-brand span { color: var(--gold); }
+    .nav-back {
+      font-size: 0.8rem; color: var(--ink-soft); text-decoration: none;
+      display: flex; align-items: center; gap: 6px;
+      transition: color 0.15s;
+    }
+    .nav-back:hover { color: var(--gold); }
+    .nav-spacer { flex: 1; }
+    .nav-pill {
+      font-size: 0.78rem; color: var(--ink-soft);
+      border: 1px solid var(--border-strong);
+      border-radius: 999px; padding: 5px 14px;
+      text-decoration: none; background: var(--white);
+      transition: background 0.15s, color 0.15s;
+    }
+    .nav-pill:hover { background: var(--gold-pale); color: var(--ink); }
 
-    footer{margin:28px auto 36px;text-align:center;color:var(--muted);background:rgba(0,0,0,.4);padding:10px 16px;border-top:1px solid rgba(255,255,255,.12)}
-    @media (max-width:520px){.hero{height:140px}}
+    /* ══ PAGE HEADER ══ */
+    .page-header {
+      padding-top: var(--nav-h);
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      position: relative; overflow: hidden;
+    }
+    .page-header::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: repeating-linear-gradient(
+        -45deg, transparent, transparent 40px,
+        rgba(184,134,11,0.04) 40px, rgba(184,134,11,0.04) 41px
+      );
+      pointer-events: none;
+    }
+    .page-header-inner {
+      max-width: 1100px; margin: 0 auto;
+      padding: 3rem 2rem 3rem;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 2rem; align-items: center;
+      position: relative; z-index: 1;
+    }
+    .page-eyebrow {
+      font-size: 11px; font-weight: 500; letter-spacing: 0.15em;
+      text-transform: uppercase; color: var(--gold); margin-bottom: 0.6rem;
+    }
+    .page-header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      font-weight: 600; color: var(--ink); line-height: 1.15;
+      margin-bottom: 0.5rem;
+    }
+    .page-header-desc {
+      font-size: 0.93rem; color: var(--ink-soft); line-height: 1.75; max-width: 520px;
+    }
+    .period-badge {
+      background: var(--gold-pale);
+      border: 1px solid #e8d9a8;
+      border-radius: 12px;
+      padding: 1rem 1.5rem;
+      text-align: center;
+      flex-shrink: 0;
+    }
+    .period-badge .period-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem; font-weight: 600; color: var(--gold);
+      display: block;
+    }
+    .period-badge .period-label {
+      font-size: 11px; color: var(--ink-soft);
+      text-transform: uppercase; letter-spacing: 0.08em;
+    }
+
+    /* ══ MAIN ══ */
+    main { max-width: 1100px; margin: 0 auto; padding: 2.5rem 2rem 4rem; }
+
+    .section-label {
+      font-size: 11px; font-weight: 500; letter-spacing: 0.15em;
+      text-transform: uppercase; color: var(--gold); margin-bottom: 0.5rem;
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem; font-weight: 600; color: var(--ink);
+      margin-bottom: 1.5rem; line-height: 1.2;
+    }
+    .divider { height: 1px; background: var(--border); margin: 3rem 0; }
+
+    /* ══ CARDS ══ */
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.25rem; }
+
+    .card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      transition: box-shadow 0.2s, border-color 0.2s, transform 0.2s;
+    }
+    .card:hover {
+      box-shadow: 0 6px 24px rgba(0,0,0,0.09);
+      border-color: var(--border-strong);
+      transform: translateY(-3px);
+    }
+
+    .card-img {
+      position: relative; height: 180px;
+      background: var(--cream-dark); overflow: hidden;
+    }
+    .card-img img {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: top center;
+    }
+    .card-badge {
+      position: absolute; left: 10px; top: 10px;
+      background: rgba(255,255,255,0.92);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      font-size: 0.72rem; padding: 3px 10px;
+      color: var(--gold); font-weight: 500;
+    }
+
+    .card-body { padding: 1.1rem 1.2rem; }
+    .card-name {
+      font-size: 1rem; font-weight: 500; color: var(--ink);
+      margin-bottom: 2px;
+    }
+    .card-role {
+      font-size: 0.8rem; color: var(--gold); font-weight: 500;
+      margin-bottom: 0.5rem;
+    }
+    .card-desc {
+      font-size: 0.82rem; color: var(--ink-soft); line-height: 1.65;
+    }
+    .card-period {
+      display: inline-block; margin-top: 0.75rem;
+      font-size: 0.75rem; font-weight: 500;
+      color: var(--ink-soft);
+      background: var(--cream-dark);
+      border: 1px solid var(--border);
+      border-radius: 999px; padding: 3px 10px;
+    }
+
+    /* ══ FOOTER ══ */
+    footer {
+      background: var(--white); border-top: 1px solid var(--border);
+      padding: 1.4rem 2rem;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 1rem;
+      font-size: 0.78rem; color: var(--ink-soft);
+    }
+    footer a { color: var(--ink-soft); text-decoration: none; }
+    footer a:hover { color: var(--gold); }
+
+    @media (max-width: 640px) {
+      .page-header-inner { grid-template-columns: 1fr; }
+      .period-badge { display: none; }
+    }
   </style>
 </head>
 <body>
-  <header>
-    <h1>División de Partículas y Campos · Mandatos y Coordinaciones</h1>
-    <p class="sub">Periodo 2025–2027</p>
-    <nav>
-      <a href="page-presidentes-DPyC.html" target="_blank">↗ Lista de presidentes anteriores</a>
-    </nav>
-  </header>
 
-  <main class="wrap">
+  <!-- ══ NAVBAR ══ -->
+  <nav class="topnav">
+    <a class="nav-brand" href="index.html">DPyC · <span>SMF</span></a>
+    <div class="nav-spacer"></div>
+    <a class="nav-back" href="index.html">← Inicio</a>
+    &nbsp;&nbsp;
+    <a class="nav-pill" href="page-presidentes-DPyC.html">Lista de presidentes anteriores ↗</a>
+  </nav>
+
+  <!-- ══ PAGE HEADER ══ -->
+  <div class="page-header">
+    <div class="page-header-inner">
+      <div>
+        <p class="page-eyebrow">División de Partículas y Campos · SMF</p>
+        <h1>Mandatos y Coordinaciones</h1>
+        <p class="page-header-desc">Personas e instancias que guían la vida académica, institucional y comunitaria de la DPyC durante el periodo 2025–2027.</p>
+      </div>
+      <div class="period-badge">
+        <span class="period-num">2025–2027</span>
+        <span class="period-label">Periodo activo</span>
+      </div>
+    </div>
+  </div>
+
+  <main>
+
+    <!-- Mandatos principales -->
+    <p class="section-label">Mesa directiva</p>
     <h2 class="section-title">Mandatos principales</h2>
-    <section class="grid">
-      <article class="card">
-        <div class="hero"><img src="assets/img/presidentsDPyC/PEDRAZAIsabel.png" alt="Vicepresidencia"><span class="badge">Presidencia</span></div>
-        <div class="body">
-          <h2 class="name">Isabel Pedraza</h2>
-          <h3 class="role">Presidencia</h3>
-          <p class="desc"></p>
-          <p class="period">Mandato 2025–2027</p>
-        </div>
-      </article>
-      <article class="card">
-        <div class="hero"><img src="assets/img/presidentsDPyC/MAURYHumberto.png" alt="Vicepresidencia"><span class="badge">Vicepresidencia</span></div>
-        <div class="body">
-          <h3 class="role">Vicepresidencia</h3>
-          <p class="desc">Apoya a la Presidencia, coordina la agenda estratégica y asume representación en su ausencia.</p>
-          <p class="period">Mandato 2025–2027</p>
-        </div>
-      </article>
-      <article class="card">
-        <div class="hero"><img src="assets/img/mandates/tesoreria.jpg" alt="Tesorería"><span class="badge">Tesorería</span></div>
-        <div class="body">
-          <h3 class="role">Tesorería</h3>
-          <p class="desc">Gestión financiera, transparencia en ingresos y egresos, y reportes periódicos a la comunidad.</p>
-          <p class="period">Mandato 2025–2027</p>
-        </div>
-      </article>
-      <!--<article class="card">
-        <div class="hero"><img src="assets/img/mandates/diversidad.jpg" alt="Diversidad e inclusión"><span class="badge">Diversidad</span></div>
-        <div class="body">
-          <h3 class="role">Diversidad</h3>
-          <p class="desc">Promueve un entorno seguro, inclusivo y libre de discriminación; atiende reportes con confidencialidad.</p>
-          <p class="period">Mandato 2025–2027</p>
-        </div>
-      </article>
-      <article class="card">
-        <div class="hero"><img src="assets/img/mandates/tecnologia.jpg" alt="Tecnología"><span class="badge">Tecnología</span></div>
-        <div class="body">
-          <h3 class="role">Tecnología</h3>
-          <p class="desc">Infraestructura digital, sitio web, listas de correo y soporte técnico para actividades y eventos.</p>
-          <p class="period">Mandato 2025–2027</p>
-        </div>
-      </article>-->
-      <article class="card">
-        <div class="hero"><img src="assets/img/mandates/miembros.jpg" alt="Miembros"><span class="badge">Miembros</span></div>
-        <div class="body">
-          <h3 class="role">Miembros</h3>
-          <p class="desc">Afiliaciones, padrón, convocatorias y vinculación con la comunidad de partículas y campos.</p>
-          <p class="period">Mandato 2025–2027</p>
-        </div>
-      </article>
-    </section>
+    <div class="grid">
 
+      <article class="card">
+        <div class="card-img">
+          <img src="assets/img/presidentsDPyC/PEDRAZAIsabel.png" alt="Isabel Pedraza">
+          <span class="card-badge">Presidencia</span>
+        </div>
+        <div class="card-body">
+          <p class="card-name">Isabel Pedraza</p>
+          <p class="card-role">Presidencia</p>
+          <p class="card-desc">Representación y dirección general de la División ante la SMF y la comunidad internacional.</p>
+          <span class="card-period">Mandato 2025–2027</span>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-img">
+          <img src="assets/img/presidentsDPyC/MAURYHumberto.png" alt="Vicepresidencia">
+          <span class="card-badge">Vicepresidencia</span>
+        </div>
+        <div class="card-body">
+          <p class="card-name">Humberto Maury</p>
+          <p class="card-role">Vicepresidencia</p>
+          <p class="card-desc">Apoya a la Presidencia, coordina la agenda estratégica y asume representación en su ausencia.</p>
+          <span class="card-period">Mandato 2025–2027</span>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-img">
+          <img src="assets/img/mandates/tesoreria.jpg" alt="Tesorería">
+          <span class="card-badge">Tesorería</span>
+        </div>
+        <div class="card-body">
+          <p class="card-name"></p>
+          <p class="card-role">Tesorería</p>
+          <p class="card-desc">Gestión financiera, transparencia en ingresos y egresos, y reportes periódicos a la comunidad.</p>
+          <span class="card-period">Mandato 2025–2027</span>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-img">
+          <img src="assets/img/mandates/miembros.jpg" alt="Miembros">
+          <span class="card-badge">Miembros</span>
+        </div>
+        <div class="card-body">
+          <p class="card-name"></p>
+          <p class="card-role">Miembros</p>
+          <p class="card-desc">Afiliaciones, padrón, convocatorias y vinculación con la comunidad de partículas y campos.</p>
+          <span class="card-period">Mandato 2025–2027</span>
+        </div>
+      </article>
+
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Coordinaciones -->
+    <p class="section-label">Comités y coordinaciones</p>
     <h2 class="section-title">Coordinaciones / Comités</h2>
-    <section class="grid">
+    <div class="grid">
+
       <article class="card">
-        <div class="hero"><img src="assets/img/committees/genero.jpg" alt="Comité de Género"><span class="badge">Género</span></div>
-        <div class="body">
-          <h3 class="role">Comité de Diversidad</h3>
-          <p class="desc">Equidad, inclusión y protocolos ante situaciones de acoso o discriminación dentro de la DPyC.</p>
+        <div class="card-img">
+          <img src="assets/img/committees/genero.jpg" alt="Comité de Género">
+          <span class="card-badge">Diversidad</span>
+        </div>
+        <div class="card-body">
+          <p class="card-role">Comité de Diversidad</p>
+          <p class="card-desc">Equidad, inclusión y protocolos ante situaciones de acoso o discriminación dentro de la DPyC.</p>
         </div>
       </article>
+
       <article class="card">
-        <div class="hero"><img src="assets/img/committees/comunicacion.jpg" alt="Comunicación e Imagen"><span class="badge">Comunicación</span></div>
-        <div class="body">
-          <h3 class="role">Comunicación, Imagen y Divulgación</h3>
-          <p class="desc">Estrategia de comunicación institucional, redes sociales, boletines y materiales audiovisuales.</p>
+        <div class="card-img">
+          <img src="assets/img/committees/comunicacion.jpg" alt="Comunicación e Imagen">
+          <span class="card-badge">Comunicación</span>
+        </div>
+        <div class="card-body">
+          <p class="card-role">Comunicación, Imagen y Divulgación</p>
+          <p class="card-desc">Estrategia de comunicación institucional, redes sociales, boletines y materiales audiovisuales.</p>
         </div>
       </article>
+
       <article class="card">
-        <div class="hero"><img src="assets/img/committees/plataforma.jpg" alt="Plataforma Digital"><span class="badge">Plataforma</span></div>
-        <div class="body">
-          <h3 class="role">Plataforma Digital y Gestión de Información</h3>
-          <p class="desc">Mantenimiento del sitio, listas y documentación; acceso transparente y actualizado.</p>
+        <div class="card-img">
+          <img src="assets/img/committees/plataforma.jpg" alt="Plataforma Digital">
+          <span class="card-badge">Plataforma</span>
+        </div>
+        <div class="card-body">
+          <p class="card-role">Plataforma Digital y Gestión de Información</p>
+          <p class="card-desc">Mantenimiento del sitio, listas y documentación; acceso transparente y actualizado.</p>
         </div>
       </article>
+
       <article class="card">
-        <div class="hero"><img src="assets/img/committees/veranos.jpg" alt="Concurso Veranos"><span class="badge">Veranos</span></div>
-        <div class="body">
-          <h3 class="role">Concurso de Veranos en el Extranjero</h3>
-          <p class="desc">Convocatoria, selección y acompañamiento para estancias de verano internacionales.</p>
+        <div class="card-img">
+          <img src="assets/img/committees/veranos.jpg" alt="Concurso Veranos">
+          <span class="card-badge">Veranos</span>
         </div>
-      <!--</article>
-      <article class="card">
-        <div class="hero"><img src="assets/img/committees/medalla.jpg" alt="Medalla DPyC"><span class="badge">Medalla</span></div>
-        <div class="body">
-          <h3 class="role">Concurso de la Medalla de la DPyC</h3>
-          <p class="desc">Organización y evaluación del reconocimiento anual a la excelencia en la comunidad.</p>
+        <div class="card-body">
+          <p class="card-role">Concurso de Veranos en el Extranjero</p>
+          <p class="card-desc">Convocatoria, selección y acompañamiento para estancias de verano internacionales.</p>
         </div>
-      </article>-->
-    </section>
+      </article>
+
+    </div>
+
   </main>
 
   <footer>
-    © 2025 División de Partículas y Campos – Sociedad Mexicana de Física
+    <span>© 2025 División de Partículas y Campos · Sociedad Mexicana de Física</span>
+    <span>
+      <a href="index.html">Inicio</a> ·
+      <a href="page-presidentes-DPyC.html">Presidentes anteriores</a> ·
+      <a href="mailto:dpyc.smf.adms@gmail.com">dpyc.smf.adms@gmail.com</a>
+    </span>
   </footer>
+
 </body>
 </html>

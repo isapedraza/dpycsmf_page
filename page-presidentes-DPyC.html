@@ -1,177 +1,409 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Presidentes – División de Partículas y Campos, SMF</title>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Presidentes · DPyC SMF</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/x-icon" href="assets/img/favicon.png"/>
   <style>
-    :root{
-      --bg:#0b0c10; --panel:#14161a; --text:#e9edf1; --muted:#9ba7b4; --accent:#5ac8fa; --accent2:#7ef7c9;
-      --border:#242932;
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream:         #faf8f4;
+      --cream-dark:    #f2ede4;
+      --gold:          #b8860b;
+      --gold-light:    #d4a82a;
+      --gold-pale:     #f5edd0;
+      --ink:           #1a1a1a;
+      --ink-mid:       #3d3d3d;
+      --ink-soft:      #6b6b6b;
+      --border:        #e0d8cc;
+      --border-strong: #c8bfb0;
+      --white:         #ffffff;
+      --nav-h:         60px;
     }
-    *{box-sizing:border-box}
-    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Arial,sans-serif;background:linear-gradient(180deg,var(--bg),#0f1116 40%, #0c0d11);color:var(--text)}
-    header{padding:28px 16px 8px;max-width:1000px;margin:0 auto}
-    h1{margin:0 0 6px 0;font-weight:700;letter-spacing:.3px}
-    p.lead{margin:4px 0 0;color:var(--muted)}
-    .card{background:linear-gradient(180deg,#121419,#0f1216);border:1px solid var(--border);border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.25);max-width:1000px;margin:18px auto;padding:16px}
-    .tools{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:10px}
-    .tools input[type="search"]{flex:1;min-width:220px;padding:10px 12px;border-radius:10px;border:1px solid var(--border);background:#0d0f13;color:var(--text)}
-    .tools button{padding:10px 14px;border-radius:10px;border:1px solid var(--border);background:#0e1116;color:var(--text);cursor:pointer}
-    .tools button:hover{border-color:#2c3340}
-    table{width:100%;border-collapse:separate;border-spacing:0 8px}
-    thead th{font-size:.92rem;color:var(--muted);text-align:left;font-weight:600;padding:8px 12px}
-    tbody tr{background:#0f1217;border:1px solid var(--border)}
-    tbody td{padding:12px;border-top:1px solid var(--border);border-bottom:1px solid var(--border);vertical-align:middle}
-    tbody tr:first-child td{border-top-left-radius:12px;border-top-right-radius:12px}
-    tbody tr:last-child td{border-bottom-left-radius:12px;border-bottom-right-radius:12px}
-    th.sortable{cursor:pointer;user-select:none}
-    th.sortable span{color:var(--accent)}
-    .tag{display:inline-block;padding:2px 8px;border-radius:999px;border:1px solid var(--border);color:var(--muted);font-size:.8rem}
-    footer{max-width:1000px;margin:24px auto 40px;color:var(--muted);padding:0 16px;font-size:.9rem}
-    a{color:var(--accent)}
-    img.profile{width:40px;height:40px;border-radius:50%;object-fit:cover;margin-right:8px;vertical-align:middle}
-    .name-link{vertical-align:middle}
-    @media (max-width:640px){
-      thead{display:none}
-      tbody tr{display:grid;grid-template-columns:1fr;gap:6px;padding:10px;border-radius:12px}
-      tbody td{border:none;padding:2px 0}
-      tbody td::before{content:attr(data-label);display:block;color:var(--muted);font-size:.8rem;margin-bottom:2px}
+
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', system-ui, sans-serif; color: var(--ink); background: var(--cream); }
+
+    /* ══ NAVBAR ══ */
+    nav.topnav {
+      position: fixed; top: 0; left: 0; right: 0;
+      height: var(--nav-h); z-index: 1000;
+      background: rgba(250,248,244,0.96);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; padding: 0 1.5rem; gap: 1rem;
+    }
+    .nav-brand {
+      font-family: 'Playfair Display', serif; font-size: 1rem;
+      color: var(--ink); text-decoration: none;
+      white-space: nowrap; flex-shrink: 0;
+    }
+    .nav-brand span { color: var(--gold); }
+    .nav-spacer { flex: 1; }
+    .nav-back {
+      font-size: 0.8rem; color: var(--ink-soft); text-decoration: none;
+      display: flex; align-items: center; gap: 6px; transition: color 0.15s;
+    }
+    .nav-back:hover { color: var(--gold); }
+
+    /* ══ PAGE HEADER ══ */
+    .page-header {
+      padding-top: var(--nav-h);
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      position: relative; overflow: hidden;
+    }
+    .page-header::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: repeating-linear-gradient(
+        -45deg, transparent, transparent 40px,
+        rgba(184,134,11,0.04) 40px, rgba(184,134,11,0.04) 41px
+      );
+      pointer-events: none;
+    }
+    .page-header-inner {
+      max-width: 1000px; margin: 0 auto;
+      padding: 3rem 2rem;
+      position: relative; z-index: 1;
+    }
+    .page-eyebrow {
+      font-size: 11px; font-weight: 500; letter-spacing: 0.15em;
+      text-transform: uppercase; color: var(--gold); margin-bottom: 0.6rem;
+    }
+    .page-header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      font-weight: 600; color: var(--ink); line-height: 1.15;
+      margin-bottom: 0.6rem;
+    }
+    .page-header-desc {
+      font-size: 0.93rem; color: var(--ink-soft); line-height: 1.75;
+      max-width: 680px;
+    }
+    .page-header-desc a { color: var(--gold); text-decoration: none; }
+    .page-header-desc a:hover { text-decoration: underline; }
+
+    /* ══ MAIN ══ */
+    main { max-width: 1000px; margin: 0 auto; padding: 2rem 2rem 4rem; }
+
+    /* ══ TOOLBAR ══ */
+    .toolbar {
+      display: flex; gap: 10px; flex-wrap: wrap;
+      align-items: center; margin-bottom: 1.5rem;
+    }
+    .toolbar input[type="search"] {
+      flex: 1; min-width: 200px;
+      padding: 9px 14px;
+      border: 1px solid var(--border-strong);
+      border-radius: 999px;
+      background: var(--white);
+      color: var(--ink);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.85rem;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+    .toolbar input[type="search"]:focus { border-color: var(--gold); }
+    .toolbar input[type="search"]::placeholder { color: var(--ink-soft); }
+
+    .tool-btn {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.8rem; padding: 8px 16px;
+      border: 1px solid var(--border-strong);
+      border-radius: 999px;
+      background: var(--white);
+      color: var(--ink-soft);
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s, border-color 0.15s;
+    }
+    .tool-btn:hover { background: var(--gold-pale); border-color: #e8d9a8; color: var(--ink); }
+
+    .count-badge {
+      font-size: 0.78rem; padding: 5px 12px;
+      border-radius: 999px;
+      background: var(--cream-dark);
+      border: 1px solid var(--border);
+      color: var(--ink-soft);
+    }
+
+    /* ══ TABLE ══ */
+    .table-wrap {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+
+    table { width: 100%; border-collapse: collapse; }
+
+    thead th {
+      font-size: 0.78rem; font-weight: 500;
+      color: var(--ink-soft);
+      text-align: left;
+      padding: 0.85rem 1.1rem;
+      background: var(--cream-dark);
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+    }
+    thead th.sortable { cursor: pointer; user-select: none; }
+    thead th.sortable:hover { color: var(--gold); }
+    .sort-icon { margin-left: 4px; opacity: 0.4; font-size: 0.7rem; }
+
+    tbody tr {
+      border-bottom: 1px solid var(--border);
+      transition: background 0.12s;
+    }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: var(--cream); }
+
+    tbody td {
+      padding: 0.85rem 1.1rem;
+      font-size: 0.88rem;
+      color: var(--ink-mid);
+      vertical-align: middle;
+    }
+
+    .profile-cell { display: flex; align-items: center; gap: 10px; }
+    .avatar {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      object-fit: cover; object-position: top center;
+      border: 1px solid var(--border);
+      flex-shrink: 0;
+      background: var(--cream-dark);
+    }
+    .avatar-placeholder {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: var(--cream-dark);
+      flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.75rem; color: var(--ink-soft);
+    }
+    .name-link {
+      color: var(--ink); text-decoration: none; font-weight: 500;
+      transition: color 0.15s;
+    }
+    .name-link:hover { color: var(--gold); }
+    .name-note {
+      font-size: 0.75rem; color: var(--ink-soft);
+      font-style: italic; margin-top: 1px;
+    }
+
+    .year-badge {
+      display: inline-block;
+      font-family: 'Playfair Display', serif;
+      font-size: 0.88rem; color: var(--ink-mid);
+    }
+    .period-pill {
+      display: inline-block;
+      font-size: 0.75rem; padding: 3px 10px;
+      border-radius: 999px;
+      background: var(--gold-pale);
+      border: 1px solid #e8d9a8;
+      color: var(--gold);
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    .no-results {
+      text-align: center; padding: 3rem 1rem;
+      color: var(--ink-soft); font-size: 0.9rem;
+    }
+
+    /* ══ FOOTER ══ */
+    footer {
+      background: var(--white); border-top: 1px solid var(--border);
+      padding: 1.4rem 2rem;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 1rem;
+      font-size: 0.78rem; color: var(--ink-soft);
+    }
+    footer a { color: var(--ink-soft); text-decoration: none; }
+    footer a:hover { color: var(--gold); }
+
+    @media (max-width: 600px) {
+      thead { display: none; }
+      tbody tr { display: flex; flex-direction: column; padding: 0.75rem 1rem; gap: 4px; }
+      tbody td { padding: 0; border: none; }
+      tbody td::before { content: attr(data-label); display: block; font-size: 0.72rem; color: var(--ink-soft); margin-bottom: 2px; }
     }
   </style>
 </head>
 <body>
-  <header>
-    <h1>Presidentes – División de Partículas y Campos (SMF)</h1>
-    <p class="lead">Listado histórico. La División de Partículas y Campos (DPyC) de la Sociedad Mexicana de Física (SMF) fue creada en diciembre de 1986 durante la II Escuela Mexicana de Partículas y Campos, celebrada en Cuernavaca Morelos, y quedó formalmente constítuida el 9 de enero de 1987 al sere aprobado su Reglamento por la Mesa Directiva de la SMF <a href='https://smf.mx/publicaciones/boletin-smf/' target='_blank' class='name-link'> (Ref. SMF Bol. Vol 1. Num. 1 )</a>. 
-  </header>
 
-  <section class="card">
-    <div class="tools">
-      <input id="q" type="search" placeholder="Filtrar por nombre o año… (ej. 2016, Isabel)" />
-      <button id="btnClear" title="Limpiar filtro">Limpiar</button>
-      <button id="btnCSV" title="Descargar CSV">Descargar CSV</button>
-      <span class="tag" id="countTag"></span>
+  <!-- ══ NAVBAR ══ -->
+  <nav class="topnav">
+    <a class="nav-brand" href="index.html">DPyC · <span>SMF</span></a>
+    <div class="nav-spacer"></div>
+    <a class="nav-back" href="index.html">← Inicio</a>
+  </nav>
+
+  <!-- ══ PAGE HEADER ══ -->
+  <div class="page-header">
+    <div class="page-header-inner">
+      <p class="page-eyebrow">División de Partículas y Campos · SMF</p>
+      <h1>Presidentes históricos</h1>
+      <p class="page-header-desc">
+        Listado histórico de las y los presidentes de la DPyC. La División fue creada en diciembre de 1986 durante la II Escuela Mexicana de Partículas y Campos en Cuernavaca, Morelos, y quedó formalmente constituida el 9 de enero de 1987 al aprobarse su Reglamento por la Mesa Directiva de la SMF
+        <a href="https://smf.mx/publicaciones/boletin-smf/" target="_blank">(Ref. SMF Bol. Vol 1. Núm. 1)</a>.
+      </p>
     </div>
+  </div>
+
+  <main>
+    <div class="toolbar">
+      <input id="q" type="search" placeholder="Filtrar por nombre o año… (ej. 2016, Isabel)"/>
+      <button class="tool-btn" id="btnClear">Limpiar</button>
+      <button class="tool-btn" id="btnCSV">Descargar CSV</button>
+      <span class="count-badge" id="countTag"></span>
+    </div>
+
     <div class="table-wrap">
       <table id="tbl">
         <thead>
           <tr>
-            <th class="sortable" data-key="presidente">Presidente <span>↕</span></th>
-            <th class="sortable" data-key="inicio">Inicio <span>↕</span></th>
-            <th class="sortable" data-key="termino">Término <span>↕</span></th>
+            <th class="sortable" data-key="nombre" style="width:55%">Presidente <span class="sort-icon">↕</span></th>
+            <th class="sortable" data-key="inicio" style="width:20%">Inicio <span class="sort-icon">↕</span></th>
+            <th class="sortable" data-key="termino" style="width:20%">Término <span class="sort-icon">↕</span></th>
+            <th style="width:5%"></th>
           </tr>
         </thead>
-        <tbody></tbody>
+        <tbody id="tbody"></tbody>
       </table>
     </div>
-  </section>
+
+    <p style="font-size:0.78rem;color:var(--ink-soft);margin-top:1rem;">
+      ¿Detectas un error? <a href="mailto:dpyc.smf.adms@gmail.com?subject=Corrección%20Presidentes%20DPyC-SMF" style="color:var(--gold);">Repórtalo aquí</a>.
+    </p>
+  </main>
 
   <footer>
-    <p>Si detecta un error de ortografía o fechas, por favor  <a href="mailto:dpyc.smf.adms@gmail.com?subject=Corrección%20Presidentes%20DPyC-SMF">repórtelo</a>.</p>
+    <span>© 2025 División de Partículas y Campos · Sociedad Mexicana de Física</span>
+    <span>
+      <a href="index.html">Inicio</a> ·
+      <a href="page-teamv2.html">Organización 2025–2027</a> ·
+      <a href="mailto:dpyc.smf.adms@gmail.com">dpyc.smf.adms@gmail.com</a>
+    </span>
   </footer>
-<!-- <img src='assets/img/presidentsDPyC/.png' class='profile'><a href='' target='_blank' class='name-link'> </a> -->
 
   <script>
     const data = [
-      {presidente:"<img src='assets/img/presidentsDPyC/PEDRAZAIsabel.png' class='profile'><a href='http://cern.ch/isapedraza' target='_blank' class='name-link'>Isabel Pedraza</a>", inicio:2025, termino:2027},
-      {presidente:"<img src='assets/img/presidentsDPyC/BARRANCOJuan.png' class='profile'> <a href='https://www.dci.ugto.mx/depfisica/index.php/investigadores/dr-juan-barranco-monarca' target='_blank' class='name-link'>Juan Barranco Monarca</a>", inicio:2023, termino:2025},
-      {presidente:"<img src='assets/img/presidentsDPyC/CABALLEROKaren.png' class='profile'><a href='https://fae.cudi.edu.mx/karen-salome-caballero-mora' target='_blank' class='name-link'>Karen Salomé Caballero Mora</a>", inicio:2021, termino:2023},
-      {presidente:"<img src='assets/img/presidentsDPyC/CARRILLOSalvador.jpg' class='profile'><a href='https://investigacion.ibero.mx/investigador/salvador-carrillo-moreno' target='_blank' class='name-link'> Salvador Carrillo Moreno (QEPD)</a>", inicio:2020, termino:2021},
-      {presidente:"<img src='assets/img/presidentsDPyC/DELACRUZEduard.png' class='profile'><a href='https://eduard.web.cern.ch' target='_blank' class='name-link'>Eduard de la Cruz Burelo</a>", inicio:2018, termino:2020},
-      {presidente:"<img src='assets/img/presidentsDPyC/FERNANDEZArturo.png' class='profile'><a href='https://ippog.org/members/mexico' target='_blank' class='name-link'>Arturo Fermández Téllez</a>", inicio:2016, termino:2018},
-      {presidente:"<img src='assets/img/presidentsDPyC/NAPSUCIALEMauro.jpg' class='profile'><a href='http://www.dci.ugto.mx/depfisica/index.php/investigadores/dr-mauro-napsuciale-mendivil target='_blank' class='name-link'> Mauro Napsuciale Mendivil</a>", inicio:2014, termino:2016},
-      {presidente:"<img src='assets/img/presidentsDPyC/SALAZARHumberto.jpg' class='profile'><a href='https://altasenergias.buap.mx/?q=node/54' target='_blank' class='name-link'>Humberto Salazar Ibargüen</a>", inicio:2012, termino:2014},
-      {presidente:"<img src='assets/img/presidentsDPyC/CONTRERASGuillermo.png' class='profile'><a href='https://www.coniunctus.amc.edu.mx/cvpremios/Guillermo_Contreras_Nuno.pdf' target='_blank' class='name-link'> Guillermo Contreras</a>", inicio:2010, termino:2012},
-      {presidente:"<img src='assets/img/presidentsDPyC/AYALAAlejandro.png' class='profile'><a href='https://sigi.nucleares.unam.mx/sgiicn/people/user/view/id/5' target='_blank' class='name-link'>Alejandro Ayala Mercado </a>", inicio:2008, termino:2010},
-      {presidente:"<img src='assets/img/presidentsDPyC/CASTILLAHeriberto.png' class='profile'><a href='https://www.cinvestav.mx/investigacion/directorio-de-investigacion/heriberto-castilla-valdez' target='_blank' class='name-link'> Heriberto Castilla</a>", inicio:2006, termino:2008},
-      {presidente:"<img src='assets/img/presidentsDPyC/VILLASENORLuis.png' class='profile'><a href='http://www.fismat.umich.mx/mcif/CVs/resumenes-curriculares/resumen-curricular-villasenor.htm' target='_blank' class='name-link'> Luis Manuel Villaseñor Cendejas</a>", inicio:2004, termino:2006},
-      {presidente:"<img src='assets/img/presidentsDPyC/MONDRAGONMyriam.png' class='profile'><a href='https://es.wikipedia.org/wiki/Myriam_Mondragón_Ceballos' target='_blank' class='name-link'> Myriam Montragón Ceballos</a>", inicio:2002, termino:2004},
-      {presidente:"<img src='assets/img/presidentsDPyC/DIAZLorenzo.png' class='profile'><a href='https://www.buap.mx/content/lorenzo-díaz-cruz-el-científico-que-escudriña-la-poesía-del-universo' target='_blank' class='name-link'>Justiniano Lorenzo Diaz Cruz</a> ", inicio:2000, termino:2002},
-      {presidente:"<img src='assets/img/presidentsDPyC/HERRERAGerardo.png' class='profile'><a href='https://es.wikipedia.org/wiki/Gerardo_Herrera_Corral' target='_blank' class='name-link'> Gerardo Herrera Corral</a>", inicio:1998, termino:2000},
-      {presidente:"<img src='assets/img/presidentsDPyC/DOLIVOJuanCarlos.png' class='profile'><a href='https://sigi.nucleares.unam.mx/sgiicn/people/user/view/id/22' target='_blank' class='name-link'>Juan Carlos d'Olivo Saez</a>", inicio:1996, termino:1998},
-      {presidente:"<img src='assets/img/presidentsDPyC/URRUTIALuis.png' class='profile'><a href='https://sigi.nucleares.unam.mx/sgiicn/people/user/view/id/70' target='_blank' class='name-link'>Luis Fernando Urrutia Ríos </a>", inicio:1994, termino:1996},
-      {presidente:"<img src='assets/img/presidentsDPyC/ZEPEDAArnulfo.png' class='profile'><a href='https://home.cern/news/obituary/cern/arnulfo-zepeda-dominguez-1943-2020' target='_blank' class='name-link'> Arnulfo Zepeda Domínguez (QEPD) </a>", inicio:1992, termino:1994},
-      {presidente:"<img src='assets/img/presidentsDPyC/JUAREZRebeca.png' class='profile'><a href='https://inspirehep.net/authors/983052' target='_blank' class='name-link'> Sara Rebeca Juárez Wysozka</a>", inicio:1990, termino:1992},
-      {presidente:"<img src='assets/img/presidentsDPyC/PEREZMiguel.png' class='profile'><a href='https://cinvestav.mx/investigacion/directorio-de-investigacion/miguel-angel-perez-angon' target='_blank' class='name-link'> Miguel Ángel Pérez Angón</a>", inicio:1988, termino:1990},
-      {presidente:"<img src='assets/img/presidentsDPyC/TORRESManuel.jpg' class='profile'><a href='https://www.fisica.unam.mx/organizacion/personal.php?id=63&lang=es' target='_blank' class='name-link'> Manuel Torres</a>", inicio:1987, termino:1988},
-      {presidente:"<img src='assets/img/presidentsDPyC/HUERTARodrigo.png' class='profile'><a href='https://cinvestav.mx/investigacion/directorio-de-investigacion/rodrigo-huerta-quintanilla' target='_blank' class='name-link'> Rodrigo Huerta Quitanilla</a> ", inicio:1986, termino:1987}
+      { nombre: "Isabel Pedraza", img: "assets/img/presidentsDPyC/PEDRAZAIsabel.png", url: "http://cern.ch/isapedraza", inicio: 2025, termino: 2027 },
+      { nombre: "Juan Barranco Monarca", img: "assets/img/presidentsDPyC/BARRANCOJuan.png", url: "https://www.dci.ugto.mx/depfisica/index.php/investigadores/dr-juan-barranco-monarca", inicio: 2023, termino: 2025 },
+      { nombre: "Karen Salomé Caballero Mora", img: "assets/img/presidentsDPyC/CABALLEROKaren.png", url: "https://fae.cudi.edu.mx/karen-salome-caballero-mora", inicio: 2021, termino: 2023 },
+      { nombre: "Salvador Carrillo Moreno (QEPD)", img: "assets/img/presidentsDPyC/CARRILLOSalvador.jpg", url: "https://investigacion.ibero.mx/investigador/salvador-carrillo-moreno", inicio: 2020, termino: 2021, nota: "In memoriam" },
+      { nombre: "Eduard de la Cruz Burelo", img: "assets/img/presidentsDPyC/DELACRUZEduard.png", url: "https://eduard.web.cern.ch", inicio: 2018, termino: 2020 },
+      { nombre: "Arturo Fernández Téllez", img: "assets/img/presidentsDPyC/FERNANDEZArturo.png", url: "https://ippog.org/members/mexico", inicio: 2016, termino: 2018 },
+      { nombre: "Mauro Napsuciale Mendivil", img: "assets/img/presidentsDPyC/NAPSUCIALEMauro.jpg", url: "http://www.dci.ugto.mx/depfisica/index.php/investigadores/dr-mauro-napsuciale-mendivil", inicio: 2014, termino: 2016 },
+      { nombre: "Humberto Salazar Ibargüen", img: "assets/img/presidentsDPyC/SALAZARHumberto.jpg", url: "https://altasenergias.buap.mx/?q=node/54", inicio: 2012, termino: 2014 },
+      { nombre: "Guillermo Contreras", img: "assets/img/presidentsDPyC/CONTRERASGuillermo.png", url: "https://www.coniunctus.amc.edu.mx/cvpremios/Guillermo_Contreras_Nuno.pdf", inicio: 2010, termino: 2012 },
+      { nombre: "Alejandro Ayala Mercado", img: "assets/img/presidentsDPyC/AYALAAlejandro.png", url: "https://sigi.nucleares.unam.mx/sgiicn/people/user/view/id/5", inicio: 2008, termino: 2010 },
+      { nombre: "Heriberto Castilla", img: "assets/img/presidentsDPyC/CASTILLAHeriberto.png", url: "https://www.cinvestav.mx/investigacion/directorio-de-investigacion/heriberto-castilla-valdez", inicio: 2006, termino: 2008 },
+      { nombre: "Luis Manuel Villaseñor Cendejas", img: "assets/img/presidentsDPyC/VILLASENORLuis.png", url: "http://www.fismat.umich.mx/mcif/CVs/resumenes-curriculares/resumen-curricular-villasenor.htm", inicio: 2004, termino: 2006 },
+      { nombre: "Myriam Mondragón Ceballos", img: "assets/img/presidentsDPyC/MONDRAGONMyriam.png", url: "https://es.wikipedia.org/wiki/Myriam_Mondragón_Ceballos", inicio: 2002, termino: 2004 },
+      { nombre: "Justiniano Lorenzo Díaz Cruz", img: "assets/img/presidentsDPyC/DIAZLorenzo.png", url: "https://www.buap.mx/content/lorenzo-díaz-cruz-el-científico-que-escudriña-la-poesía-del-universo", inicio: 2000, termino: 2002 },
+      { nombre: "Gerardo Herrera Corral", img: "assets/img/presidentsDPyC/HERRERAGerardo.png", url: "https://es.wikipedia.org/wiki/Gerardo_Herrera_Corral", inicio: 1998, termino: 2000 },
+      { nombre: "Juan Carlos d'Olivo Saez", img: "assets/img/presidentsDPyC/DOLIVOJuanCarlos.png", url: "https://sigi.nucleares.unam.mx/sgiicn/people/user/view/id/22", inicio: 1996, termino: 1998 },
+      { nombre: "Luis Fernando Urrutia Ríos", img: "assets/img/presidentsDPyC/URRUTIALuis.png", url: "https://sigi.nucleares.unam.mx/sgiicn/people/user/view/id/70", inicio: 1994, termino: 1996 },
+      { nombre: "Arnulfo Zepeda Domínguez (QEPD)", img: "assets/img/presidentsDPyC/ZEPEDAArnulfo.png", url: "https://home.cern/news/obituary/cern/arnulfo-zepeda-dominguez-1943-2020", inicio: 1992, termino: 1994, nota: "In memoriam" },
+      { nombre: "Sara Rebeca Juárez Wysozka", img: "assets/img/presidentsDPyC/JUAREZRebeca.png", url: "https://inspirehep.net/authors/983052", inicio: 1990, termino: 1992 },
+      { nombre: "Miguel Ángel Pérez Angón", img: "assets/img/presidentsDPyC/PEREZMiguel.png", url: "https://cinvestav.mx/investigacion/directorio-de-investigacion/miguel-angel-perez-angon", inicio: 1988, termino: 1990 },
+      { nombre: "Manuel Torres", img: "assets/img/presidentsDPyC/TORRESManuel.jpg", url: "https://www.fisica.unam.mx/organizacion/personal.php?id=63&lang=es", inicio: 1987, termino: 1988 },
+      { nombre: "Rodrigo Huerta Quintanilla", img: "assets/img/presidentsDPyC/HUERTARodrigo.png", url: "https://cinvestav.mx/investigacion/directorio-de-investigacion/rodrigo-huerta-quintanilla", inicio: 1986, termino: 1987 }
     ];
 
     let sortKey = 'inicio';
     let sortAsc = false;
 
-    const tbody = document.querySelector('#tbl tbody');
+    const tbody = document.getElementById('tbody');
     const q = document.getElementById('q');
     const countTag = document.getElementById('countTag');
 
-    function render(rows){
-      tbody.innerHTML = '';
-      rows.forEach(r=>{
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td data-label="Presidente">${r.presidente}</td>
-          <td data-label="Inicio">${r.inicio}</td>
-          <td data-label="Término">${r.termino}</td>`;
-        tbody.appendChild(tr);
-      });
-      countTag.textContent = `${rows.length} registro(s)`;
+    function initials(name) {
+      return name.replace(/\s*\(.*\)/, '').split(' ').filter(Boolean).slice(0,2).map(w => w[0]).join('').toUpperCase();
     }
 
-    function sortRows(rows){
-      return [...rows].sort((a,b)=>{
-        const A = a[sortKey];
-        const B = b[sortKey];
-        if (A===B) return 0;
-        if (typeof A === 'number' && typeof B === 'number'){
-          return sortAsc ? A-B : B-A;
-        }
+    function render(rows) {
+      if (!rows.length) {
+        tbody.innerHTML = `<tr><td colspan="4"><div class="no-results">Sin resultados para esa búsqueda.</div></td></tr>`;
+        countTag.textContent = '0 registros';
+        return;
+      }
+      tbody.innerHTML = rows.map(r => `
+        <tr>
+          <td data-label="Presidente">
+            <div class="profile-cell">
+              <img class="avatar" src="${r.img}" alt="${r.nombre}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+              <div class="avatar-placeholder" style="display:none">${initials(r.nombre)}</div>
+              <div>
+                ${r.url
+                  ? `<a class="name-link" href="${r.url}" target="_blank">${r.nombre}</a>`
+                  : `<span class="name-link">${r.nombre}</span>`}
+                ${r.nota ? `<div class="name-note">${r.nota}</div>` : ''}
+              </div>
+            </div>
+          </td>
+          <td data-label="Inicio"><span class="year-badge">${r.inicio}</span></td>
+          <td data-label="Término"><span class="year-badge">${r.termino}</span></td>
+          <td><span class="period-pill">${r.inicio}–${r.termino}</span></td>
+        </tr>`).join('');
+      countTag.textContent = `${rows.length} registro${rows.length !== 1 ? 's' : ''}`;
+    }
+
+    function sortRows(rows) {
+      return [...rows].sort((a, b) => {
+        const A = a[sortKey] ?? a.nombre;
+        const B = b[sortKey] ?? b.nombre;
+        if (typeof A === 'number') return sortAsc ? A - B : B - A;
         return sortAsc ? String(A).localeCompare(String(B)) : String(B).localeCompare(String(A));
       });
     }
 
-    function filterRows(rows, term){
+    function filterRows(rows, term) {
       term = term.trim().toLowerCase();
-      if(!term) return rows;
-      return rows.filter(r=>
-        String(r.presidente).toLowerCase().includes(term) ||
+      if (!term) return rows;
+      return rows.filter(r =>
+        r.nombre.toLowerCase().includes(term) ||
         String(r.inicio).includes(term) ||
         String(r.termino).includes(term)
       );
     }
 
-    // Initial render
-    render(sortRows(data));
+    function refresh() { render(sortRows(filterRows(data, q.value))); }
 
-    // Search
-    q.addEventListener('input', ()=>{
-      render(sortRows(filterRows(data, q.value)));
-    });
+    refresh();
 
-    // Clear
-    document.getElementById('btnClear').addEventListener('click', ()=>{
-      q.value=''; render(sortRows(data)); q.focus();
-    });
+    q.addEventListener('input', refresh);
 
-    // Sorting
-    document.querySelectorAll('th.sortable').forEach(th=>{
-      th.addEventListener('click', ()=>{
+    document.getElementById('btnClear').addEventListener('click', () => { q.value = ''; refresh(); q.focus(); });
+
+    document.querySelectorAll('th.sortable').forEach(th => {
+      th.addEventListener('click', () => {
         const key = th.getAttribute('data-key');
-        if (sortKey === key){ sortAsc = !sortAsc; }
-        else { sortKey = key; sortAsc = key!== 'presidente'; }
-        render(sortRows(filterRows(data, q.value)));
+        sortAsc = sortKey === key ? !sortAsc : key !== 'nombre';
+        sortKey = key;
+        document.querySelectorAll('.sort-icon').forEach(s => s.textContent = '↕');
+        th.querySelector('.sort-icon').textContent = sortAsc ? '↑' : '↓';
+        refresh();
       });
     });
 
-    // Download CSV
-    document.getElementById('btnCSV').addEventListener('click', ()=>{
-      const rows = [['Presidente','Inicio','Término'], ...sortRows(filterRows(data, q.value)).map(r=>[r.presidente,r.inicio,r.termino])];
-      const csv = rows.map(r => r.map(v => `"${String(v).replaceAll('"','""')}"`).join(',')).join('\n');
-      const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url; a.download = 'presidentes-dpyc-smf.csv'; a.click();
-      URL.revokeObjectURL(url);
+    document.getElementById('btnCSV').addEventListener('click', () => {
+      const rows = sortRows(filterRows(data, q.value));
+      const csv = [['Presidente','Inicio','Término'], ...rows.map(r => [r.nombre, r.inicio, r.termino])]
+        .map(r => r.map(v => `"${String(v).replaceAll('"','""')}"`).join(',')).join('\n');
+      const a = Object.assign(document.createElement('a'), {
+        href: URL.createObjectURL(new Blob([csv], {type:'text/csv;charset=utf-8;'})),
+        download: 'presidentes-dpyc-smf.csv'
+      });
+      a.click(); URL.revokeObjectURL(a.href);
     });
   </script>
 </body>
