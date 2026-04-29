@@ -2,195 +2,663 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Galardonados - DPyC-SMF</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Galardonados — Medalla DPyC · SMF</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f5f5f5;
-      margin: 0;
-      padding: 2rem;
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream: #faf8f4;
+      --cream-dark: #f2ede4;
+      --gold: #b8860b;
+      --gold-light: #d4a82a;
+      --gold-pale: #f5edd0;
+      --ink: #1a1a1a;
+      --ink-mid: #3d3d3d;
+      --ink-soft: #6b6b6b;
+      --border: #e0d8cc;
+      --border-strong: #c8bfb0;
+      --radius: 12px;
     }
+
+    body {
+      background-color: var(--cream);
+      color: var(--ink);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 400;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* ── HEADER ── */
     .header {
+      background: #fff;
+      border-bottom: 1px solid var(--border);
+      padding: 2.5rem 2rem 2rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .header::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        -45deg,
+        transparent,
+        transparent 40px,
+        rgba(184,134,11,0.03) 40px,
+        rgba(184,134,11,0.03) 41px
+      );
+      pointer-events: none;
+    }
+
+    .header-logos {
       display: flex;
       justify-content: center;
       align-items: center;
-      gap: 1.5rem;
-      margin-bottom: 1rem;
+      gap: 2rem;
+      margin-bottom: 1.5rem;
       flex-wrap: wrap;
-      text-align: center;
     }
-    .header img {
-      max-height: 80px;
+    .header-logos img {
+      height: 72px;
+      object-fit: contain;
     }
-    .header h1 {
-      margin: 0;
-      font-size: 1.8rem;
-      color: #2c3e50;
+    .header-divider {
+      width: 1px;
+      height: 60px;
+      background: var(--border-strong);
     }
-    p.intro {
-      max-width: 800px;
-      margin: 1rem auto;
-      font-size: 1.1rem;
-      color: #444;
-      line-height: 1.6;
-      text-align: center;
-    }
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 1.5rem;
-      margin-top: 2rem;
-    }
-    .card {
-      background-color: white;
-      border-radius: 12px;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-      padding: 1rem;
-      transition: transform 0.2s ease-in-out;
-    }
-    .card:hover {
-      transform: scale(1.03);
-    }
-    .year {
-      font-weight: bold;
-      color: #2c3e50;
-      text-align: center;
-      font-size: 1.2rem;
+
+    .eyebrow {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
       margin-bottom: 0.5rem;
     }
-    .recipient {
-      border-top: 1px solid #eee;
-      padding-top: 0.5rem;
-      margin-top: 0.5rem;
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.4rem;
+      font-weight: 600;
+      color: var(--ink);
+      line-height: 1.15;
+      margin-bottom: 0.3rem;
     }
-    .name {
-      font-weight: bold;
-      color: #34495e;
+    .header-sub {
+      font-size: 1rem;
+      color: var(--ink-soft);
+      margin-bottom: 1.25rem;
     }
-    .reason {
-      font-size: 0.85rem;
-      color: #666;
-      margin-top: 0.3rem;
+    .intro-text {
+      max-width: 640px;
+      margin: 0 auto;
+      font-size: 0.93rem;
+      color: var(--ink-mid);
+      line-height: 1.75;
+    }
+
+    /* ── STATS BAR ── */
+    .stats-bar {
+      background: var(--gold-pale);
+      border-bottom: 1px solid #e8d9a8;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: center;
+      gap: 3rem;
+      flex-wrap: wrap;
+    }
+    .stat {
+      text-align: center;
+    }
+    .stat-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem;
+      font-weight: 600;
+      color: var(--gold);
+      display: block;
+    }
+    .stat-label {
+      font-size: 11px;
+      color: var(--ink-soft);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    /* ── MAIN ── */
+    main {
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem 4rem;
+    }
+
+    /* ── FILTERS ── */
+    .filters {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+    .filter-label {
+      font-size: 12px;
+      color: var(--ink-soft);
+      margin-right: 4px;
+    }
+    .filter-btn {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 12px;
+      font-weight: 400;
+      padding: 5px 16px;
+      border-radius: 99px;
+      border: 1px solid var(--border-strong);
+      background: #fff;
+      color: var(--ink-soft);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .filter-btn:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+    .filter-btn.active {
+      background: var(--ink);
+      color: #fff;
+      border-color: var(--ink);
+    }
+
+    /* ── TIMELINE ── */
+    .timeline {
+      position: relative;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 46px;
+      top: 8px;
+      bottom: 8px;
+      width: 1px;
+      background: var(--border);
+    }
+
+    .entry {
+      display: flex;
+      gap: 1.1rem;
+      margin-bottom: 1.1rem;
+      align-items: flex-start;
+      animation: fadeIn 0.3s ease both;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .entry-year {
+      min-width: 40px;
+      text-align: right;
+      font-family: 'Playfair Display', serif;
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--ink-soft);
+      padding-top: 15px;
+      flex-shrink: 0;
+    }
+
+    .entry-dot-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 14px;
+      flex-shrink: 0;
+    }
+    .entry-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--border-strong);
+      border: 2px solid var(--cream);
+      flex-shrink: 0;
+      position: relative;
+      z-index: 1;
+      transition: background 0.2s;
+    }
+    .entry:hover .entry-dot { background: var(--gold); }
+    .entry-dot.multi { background: var(--gold-light); }
+
+    .entry-card {
+      flex: 1;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 0.8rem 1rem;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .entry-card:hover {
+      border-color: var(--border-strong);
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    }
+
+    .multi-badge {
+      float: right;
+      font-size: 10px;
+      padding: 2px 8px;
+      border-radius: 99px;
+      background: var(--gold-pale);
+      color: var(--gold);
+      border: 1px solid #e8d9a8;
+      font-weight: 500;
+      margin-top: 1px;
+    }
+
+    .recipient-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 5px 0;
+    }
+    .recipient-row + .recipient-row {
+      border-top: 1px solid var(--cream-dark);
+    }
+
+    .avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--cream-dark);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 500;
+      color: var(--ink-soft);
+      flex-shrink: 0;
+      letter-spacing: 0.03em;
+    }
+
+    .recipient-name {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--ink);
+      line-height: 1.4;
+      padding-top: 2px;
+    }
+    .recipient-name a {
+      color: var(--gold);
+      text-decoration: none;
+    }
+    .recipient-name a:hover { text-decoration: underline; }
+
+    .recipient-reason {
+      font-size: 12px;
+      color: var(--ink-soft);
+      line-height: 1.65;
+      margin-top: 5px;
+      padding-left: 1px;
+      border-left: 2px solid var(--gold-pale);
+      padding-left: 8px;
+    }
+
+    .hidden { display: none !important; }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      padding: 2rem;
+      font-size: 12px;
+      color: var(--ink-soft);
+      border-top: 1px solid var(--border);
+      background: #fff;
     }
   </style>
 </head>
 <body>
 
-  <div class="header">
-    <img src="assets/img/DPyCLogoNoBG.png" alt="Logo DPyC">
-    <h1>Medalla<br>DPyC - Sociedad Mexicana de Física</h1>
-    <img src="assets/img/medallaDPyC.png" alt="Imagen de la Medalla">
+  <header class="header">
+    <div class="header-logos">
+      <img src="assets/img/DPyCLogoNoBG.png" alt="Logo DPyC">
+      <div class="header-divider"></div>
+      <img src="assets/img/medallaDPyC.png" alt="Medalla DPyC">
+    </div>
+    <p class="eyebrow">División de Partículas y Campos · SMF</p>
+    <h1>Medalla DPyC</h1>
+    <p class="header-sub">Sociedad Mexicana de Física</p>
+    <p class="intro-text">
+      La primera medalla fue entregada a Leon Lederman en 1999. Esta distinción representa el máximo reconocimiento que ofrece nuestra comunidad, y se otorga cada año a científicas y científicos, mexicanas(os) o extranjeras(os), que hayan contribuido notablemente al desarrollo de la física de partículas y campos en México, o a físicas(os) mexicanas(os) reconocidas(os) internacionalmente por sus aportaciones en esta área.
+    </p>
+  </header>
+
+  <div class="stats-bar">
+    <div class="stat"><span class="stat-num">25</span><span class="stat-label">años de historia</span></div>
+    <div class="stat"><span class="stat-num">31</span><span class="stat-label">galardonados</span></div>
+    <div class="stat"><span class="stat-num">1999</span><span class="stat-label">primera edición</span></div>
   </div>
 
-  <p class="intro">
-    La primera medalla fue entregada a Leon Lederman en 1999. Esta distinción representa el máximo reconocimiento que ofrece nuestra comunidad, y se otorga cada año a científicas y científicos, mexicanas(os) o extranjeras(os), que hayan contribuido notablemente al desarrollo de la física de partículas y campos en México, o a físicas(os) mexicanas(os) reconocidas(os) internacionalmente por sus aportaciones en esta área.
-  </p>
+  <main>
+    <div class="filters">
+      <span class="filter-label">Filtrar por década</span>
+      <button class="filter-btn active" onclick="filter('all', this)">Todos</button>
+      <button class="filter-btn" onclick="filter('1990', this)">1990s</button>
+      <button class="filter-btn" onclick="filter('2000', this)">2000s</button>
+      <button class="filter-btn" onclick="filter('2010', this)">2010s</button>
+      <button class="filter-btn" onclick="filter('2020', this)">2020s</button>
+    </div>
 
-  <div class="grid">
-    <div class="card">
-      <div class="year">1999</div>
-      <div class="recipient"><div class="name">Leon Lederman</div></div>
-    </div>
-    <div class="card">
-      <div class="year">2000</div>
-      <div class="recipient"><div class="name">James Cronin</div></div>
-    </div>
-    <div class="card">
-      <div class="year">2001</div>
-      <div class="recipient"><div class="name">Alfonso Mondragón</div></div>
-    </div>
-    <div class="card">
-      <div class="year">2003</div>
-      <div class="recipient"><div class="name">Augusto García</div></div>
-      <div class="recipient"><div class="name">Arnulfo Zepeda</div></div>
-    </div>
-    <div class="card">
-      <div class="year">2004</div>
-      <div class="recipient"><div class="name">Benjamin Grinstein</div></div>
-    </div>
-    <div class="card">
-      <div class="year">2005</div>
-      <div class="recipient"><div class="name">Jacobo Konigsberg</div></div>
-    </div>
-    <div class="card">
-      <div class="year">2006</div>
-      <div class="recipient"><div class="name">Luis Urrutia</div></div>
-    </div>
-    <div class="card">
-      <div class="year">2007</div>
-      <div class="recipient"><div class="name">Jeffrey A. Apple</div></div>
-    </div>
-    <div class="card">
-      <div class="year">2008</div>
-      <div class="recipient"><div class="name">Marleigh Sheaff</div></div>
-    </div>
-    <div class="card">
-      <div class="year">2009</div>
-      <div class="recipient"><div class="name">Miguel A. Pérez</div></div>
-      <div class="recipient"><div class="name">Matías Moreno</div></div>
-    </div>
-    <div class="card">
-      <div class="year">2011</div>
-      <div class="recipient"><div class="name">José L. Lucio</div></div>
-    </div>
-    <div class="card">
-      <div class="year">2012</div>
-      <div class="recipient"><div class="name">Paolo Giubellino</div></div>
-    </div>
-    <div class="card">
-      <div class="year">2013</div>
-      <div class="recipient"><div class="name">Joao dos Santos</div></div>
-    </div>
-    <div class="card">
-      <div class="year">2014</div>
-      <div class="recipient"><div class="name">Juan C. D´Olivo</div></div>
-    </div>
-    <div class="card">
-      <div class="year">2015</div>
-      <div class="recipient"><div class="name">Eugene Fisk</div></div>
-    </div>
-    <div class="card">
-      <div class="year">2016</div>
-      <div class="recipient"><div class="name">José Valle</div></div>
-      <div class="recipient"><div class="name">Heriberto Castilla</div></div>
-      <div class="recipient"><div class="name">Gerardo Herrera</div></div>
-    </div>
-    <div class="card">
-      <div class="year">2017</div>
-      <div class="recipient"><div class="name">Luciano Maiani</div></div>
-    </div>
-    <div class="card">
-      <div class="year">2018</div>
-      <div class="recipient"><div class="name">Brenda Dingus</div></div>
-      <div class="recipient"><div class="name">Guy Paic</div></div>
-      <div class="recipient"><div class="name">Gabriel López</div></div>
-    </div>
-    <div class="card">
-      <div class="year">2019</div>
-      <div class="recipient"><div class="name">Alejandro Ayala</div></div>
-    </div>
-    <div class="card">
-      <div class="year">2020</div>
-      <div class="recipient"><div class="name">Adnan Bashir</div></div>
-    </div>
-    <div class="card">
-      <div class="year">2021</div>
-      <div class="recipient"><div class="name">Myriam Mondragón</div></div>
-    </div>
-    <div class="card">
-      <div class="year">2022</div>
-      <div class="recipient"><div class="name"><a href="https://en.wikipedia.org/wiki/Christophe_Royon" target="_blank">Cristophe Rayón</a></div>
-      <div class="reason">For his leadership in the discovery of odd-gluon state odderon from elastic proton-proton and proton-antiproton collisions at TOTEM and D0 detectors, his contributions to QCD and physics beyond the Standard Model, and for his support to the Mexican High Energy Physics community</div>
-    </div>
-    </div>
-    <div class="card">
-      <div class="year">2023</div>
-      <div class="recipient">
-        <div class="name">Lorenzo Díaz</div>
-        <div class="reason">Por sus contribuciones en modelos extendidos de Higgs, física más allá del modelo estándar y haber contribuido decisivamente a la creación, desarrollo, crecimiento y consolidación de la investigación en física de partículas, al más alto nivel en México.</div>
+    <div class="timeline" id="timeline">
+
+      <div class="entry" data-decade="1990">
+        <div class="entry-year">1999</div>
+        <div class="entry-dot-wrap"><div class="entry-dot"></div></div>
+        <div class="entry-card">
+          <div class="recipient-row">
+            <div class="avatar">LL</div>
+            <div><div class="recipient-name">Leon Lederman</div></div>
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
+
+      <div class="entry" data-decade="2000">
+        <div class="entry-year">2000</div>
+        <div class="entry-dot-wrap"><div class="entry-dot"></div></div>
+        <div class="entry-card">
+          <div class="recipient-row">
+            <div class="avatar">JC</div>
+            <div><div class="recipient-name">James Cronin</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="entry" data-decade="2000">
+        <div class="entry-year">2001</div>
+        <div class="entry-dot-wrap"><div class="entry-dot"></div></div>
+        <div class="entry-card">
+          <div class="recipient-row">
+            <div class="avatar">AM</div>
+            <div><div class="recipient-name">Alfonso Mondragón</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="entry" data-decade="2000">
+        <div class="entry-year">2003</div>
+        <div class="entry-dot-wrap"><div class="entry-dot multi"></div></div>
+        <div class="entry-card">
+          <span class="multi-badge">2 galardonados</span>
+          <div class="recipient-row">
+            <div class="avatar">AG</div>
+            <div><div class="recipient-name">Augusto García</div></div>
+          </div>
+          <div class="recipient-row">
+            <div class="avatar">AZ</div>
+            <div><div class="recipient-name">Arnulfo Zepeda</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="entry" data-decade="2000">
+        <div class="entry-year">2004</div>
+        <div class="entry-dot-wrap"><div class="entry-dot"></div></div>
+        <div class="entry-card">
+          <div class="recipient-row">
+            <div class="avatar">BG</div>
+            <div><div class="recipient-name">Benjamin Grinstein</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="entry" data-decade="2000">
+        <div class="entry-year">2005</div>
+        <div class="entry-dot-wrap"><div class="entry-dot"></div></div>
+        <div class="entry-card">
+          <div class="recipient-row">
+            <div class="avatar">JK</div>
+            <div><div class="recipient-name">Jacobo Konigsberg</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="entry" data-decade="2000">
+        <div class="entry-year">2006</div>
+        <div class="entry-dot-wrap"><div class="entry-dot"></div></div>
+        <div class="entry-card">
+          <div class="recipient-row">
+            <div class="avatar">LU</div>
+            <div><div class="recipient-name">Luis Urrutia</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="entry" data-decade="2000">
+        <div class="entry-year">2007</div>
+        <div class="entry-dot-wrap"><div class="entry-dot"></div></div>
+        <div class="entry-card">
+          <div class="recipient-row">
+            <div class="avatar">JA</div>
+            <div><div class="recipient-name">Jeffrey A. Apple</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="entry" data-decade="2000">
+        <div class="entry-year">2008</div>
+        <div class="entry-dot-wrap"><div class="entry-dot"></div></div>
+        <div class="entry-card">
+          <div class="recipient-row">
+            <div class="avatar">MS</div>
+            <div><div class="recipient-name">Marleigh Sheaff</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="entry" data-decade="2000">
+        <div class="entry-year">2009</div>
+        <div class="entry-dot-wrap"><div class="entry-dot multi"></div></div>
+        <div class="entry-card">
+          <span class="multi-badge">2 galardonados</span>
+          <div class="recipient-row">
+            <div class="avatar">MP</div>
+            <div><div class="recipient-name">Miguel A. Pérez</div></div>
+          </div>
+          <div class="recipient-row">
+            <div class="avatar">MM</div>
+            <div><div class="recipient-name">Matías Moreno</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="entry" data-decade="2010">
+        <div class="entry-year">2011</div>
+        <div class="entry-dot-wrap"><div class="entry-dot"></div></div>
+        <div class="entry-card">
+          <div class="recipient-row">
+            <div class="avatar">JL</div>
+            <div><div class="recipient-name">José L. Lucio</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="entry" data-decade="2010">
+        <div class="entry-year">2012</div>
+        <div class="entry-dot-wrap"><div class="entry-dot"></div></div>
+        <div class="entry-card">
+          <div class="recipient-row">
+            <div class="avatar">PG</div>
+            <div><div class="recipient-name">Paolo Giubellino</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="entry" data-decade="2010">
+        <div class="entry-year">2013</div>
+        <div class="entry-dot-wrap"><div class="entry-dot"></div></div>
+        <div class="entry-card">
+          <div class="recipient-row">
+            <div class="avatar">JS</div>
+            <div><div class="recipient-name">Joao dos Santos</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="entry" data-decade="2010">
+        <div class="entry-year">2014</div>
+        <div class="entry-dot-wrap"><div class="entry-dot"></div></div>
+        <div class="entry-card">
+          <div class="recipient-row">
+            <div class="avatar">JD</div>
+            <div><div class="recipient-name">Juan C. D'Olivo</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="entry" data-decade="2010">
+        <div class="entry-year">2015</div>
+        <div class="entry-dot-wrap"><div class="entry-dot"></div></div>
+        <div class="entry-card">
+          <div class="recipient-row">
+            <div class="avatar">EF</div>
+            <div><div class="recipient-name">Eugene Fisk</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="entry" data-decade="2010">
+        <div class="entry-year">2016</div>
+        <div class="entry-dot-wrap"><div class="entry-dot multi"></div></div>
+        <div class="entry-card">
+          <span class="multi-badge">3 galardonados</span>
+          <div class="recipient-row">
+            <div class="avatar">JV</div>
+            <div><div class="recipient-name">José Valle</div></div>
+          </div>
+          <div class="recipient-row">
+            <div class="avatar">HC</div>
+            <div><div class="recipient-name">Heriberto Castilla</div></div>
+          </div>
+          <div class="recipient-row">
+            <div class="avatar">GH</div>
+            <div><div class="recipient-name">Gerardo Herrera</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="entry" data-decade="2010">
+        <div class="entry-year">2017</div>
+        <div class="entry-dot-wrap"><div class="entry-dot"></div></div>
+        <div class="entry-card">
+          <div class="recipient-row">
+            <div class="avatar">LM</div>
+            <div><div class="recipient-name">Luciano Maiani</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="entry" data-decade="2010">
+        <div class="entry-year">2018</div>
+        <div class="entry-dot-wrap"><div class="entry-dot multi"></div></div>
+        <div class="entry-card">
+          <span class="multi-badge">3 galardonados</span>
+          <div class="recipient-row">
+            <div class="avatar">BD</div>
+            <div><div class="recipient-name">Brenda Dingus</div></div>
+          </div>
+          <div class="recipient-row">
+            <div class="avatar">GP</div>
+            <div><div class="recipient-name">Guy Paic</div></div>
+          </div>
+          <div class="recipient-row">
+            <div class="avatar">GL</div>
+            <div><div class="recipient-name">Gabriel López</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="entry" data-decade="2010">
+        <div class="entry-year">2019</div>
+        <div class="entry-dot-wrap"><div class="entry-dot"></div></div>
+        <div class="entry-card">
+          <div class="recipient-row">
+            <div class="avatar">AA</div>
+            <div><div class="recipient-name">Alejandro Ayala</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="entry" data-decade="2020">
+        <div class="entry-year">2020</div>
+        <div class="entry-dot-wrap"><div class="entry-dot"></div></div>
+        <div class="entry-card">
+          <div class="recipient-row">
+            <div class="avatar">AB</div>
+            <div><div class="recipient-name">Adnan Bashir</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="entry" data-decade="2020">
+        <div class="entry-year">2021</div>
+        <div class="entry-dot-wrap"><div class="entry-dot"></div></div>
+        <div class="entry-card">
+          <div class="recipient-row">
+            <div class="avatar">MM</div>
+            <div><div class="recipient-name">Myriam Mondragón</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="entry" data-decade="2020">
+        <div class="entry-year">2022</div>
+        <div class="entry-dot-wrap"><div class="entry-dot"></div></div>
+        <div class="entry-card">
+          <div class="recipient-row">
+            <div class="avatar">CR</div>
+            <div>
+              <div class="recipient-name">
+                <a href="https://en.wikipedia.org/wiki/Christophe_Royon" target="_blank">Christophe Royon</a>
+              </div>
+              <div class="recipient-reason">For his leadership in the discovery of odd-gluon state odderon from elastic proton-proton and proton-antiproton collisions at TOTEM and D0 detectors, his contributions to QCD and physics beyond the Standard Model, and for his support to the Mexican High Energy Physics community.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="entry" data-decade="2020">
+        <div class="entry-year">2023</div>
+        <div class="entry-dot-wrap"><div class="entry-dot"></div></div>
+        <div class="entry-card">
+          <div class="recipient-row">
+            <div class="avatar">LD</div>
+            <div>
+              <div class="recipient-name">Lorenzo Díaz</div>
+              <div class="recipient-reason">Por sus contribuciones en modelos extendidos de Higgs, física más allá del modelo estándar y haber contribuido decisivamente a la creación, desarrollo, crecimiento y consolidación de la investigación en física de partículas, al más alto nivel en México.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /timeline -->
+  </main>
+
+  <footer>
+    División de Partículas y Campos · Sociedad Mexicana de Física
+  </footer>
+
+  <script>
+    function filter(decade, btn) {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelectorAll('.entry').forEach(e => {
+        if (decade === 'all' || e.dataset.decade === decade) {
+          e.classList.remove('hidden');
+        } else {
+          e.classList.add('hidden');
+        }
+      });
+    }
+  </script>
 
 </body>
 </html>
