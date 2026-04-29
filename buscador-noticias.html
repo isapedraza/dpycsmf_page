@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Buscador de Noticias · DPyC SMF</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --cream: #faf8f4; --cream-dark: #f2ede4;
+      --gold: #b8860b; --gold-light: #d4a82a; --gold-pale: #f5edd0;
+      --ink: #1a1a1a; --ink-mid: #3d3d3d; --ink-soft: #6b6b6b;
+      --border: #e0d8cc; --border-strong: #c8bfb0; --white: #ffffff;
+      --green: #3B6D11; --green-bg: #eaf3de; --green-border: #c0dd97;
+      --blue: #185FA5; --blue-bg: #e6f1fb; --blue-border: #b5d4f4;
+      --red: #A32D2D; --red-bg: #fcebeb; --red-border: #f7c1c1;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', system-ui, sans-serif; color: var(--ink); background: var(--cream); min-height: 100vh; }
+
+    /* ══ HEADER ══ */
+    header {
+      background: var(--white); border-bottom: 1px solid var(--border);
+      padding: 1.5rem 2rem; position: relative; overflow: hidden;
+    }
+    header::before {
+      content: ''; position: absolute; inset: 0;
+      background: repeating-linear-gradient(-45deg, transparent, transparent 40px, rgba(184,134,11,0.04) 40px, rgba(184,134,11,0.04) 41px);
+      pointer-events: none;
+    }
+    .header-inner { max-width: 1000px; margin: 0 auto; position: relative; z-index: 1; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+    .header-brand { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--ink); text-decoration: none; }
+    .header-brand span { color: var(--gold); }
+    .header-title { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 600; color: var(--ink); }
+    .header-sub { font-size: 0.82rem; color: var(--ink-soft); margin-top: 2px; }
+
+    /* ══ MAIN ══ */
+    main { max-width: 1000px; margin: 0 auto; padding: 2rem 2rem 5rem; }
+
+    /* ══ CONTROLS ══ */
+    .controls {
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: 14px; padding: 1.5rem; margin-bottom: 1.5rem;
+    }
+    .controls-title { font-size: 0.82rem; font-weight: 500; color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 1rem; }
+
+    .members-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 6px; margin-bottom: 1.25rem;
+    }
+    .member-check {
+      display: flex; align-items: center; gap: 8px;
+      padding: 6px 10px; border-radius: 8px; cursor: pointer;
+      border: 1px solid var(--border); background: var(--cream);
+      transition: background 0.12s, border-color 0.12s;
+      user-select: none;
+    }
+    .member-check:hover { background: var(--gold-pale); border-color: #e8d9a8; }
+    .member-check.selected { background: var(--gold-pale); border-color: var(--gold); }
+    .member-check input { display: none; }
+    .check-dot {
+      width: 14px; height: 14px; border-radius: 3px;
+      border: 1.5px solid var(--border-strong); background: var(--white);
+      flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+      font-size: 9px; color: var(--gold); font-weight: 700;
+      transition: background 0.12s, border-color 0.12s;
+    }
+    .member-check.selected .check-dot { background: var(--gold); border-color: var(--gold); color: #fff; }
+    .member-name-label { font-size: 0.8rem; color: var(--ink); line-height: 1.3; }
+
+    .controls-actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+    .btn {
+      font-family: 'DM Sans', sans-serif; font-size: 0.82rem; font-weight: 500;
+      padding: 9px 20px; border-radius: 999px; cursor: pointer;
+      border: 1px solid; transition: all 0.15s; text-decoration: none;
+      display: inline-flex; align-items: center; gap: 6px;
+    }
+    .btn-primary { background: var(--gold); color: #fff; border-color: var(--gold); }
+    .btn-primary:hover { background: var(--gold-light); border-color: var(--gold-light); }
+    .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+    .btn-outline { background: var(--white); color: var(--ink-soft); border-color: var(--border-strong); }
+    .btn-outline:hover { background: var(--cream-dark); color: var(--ink); }
+
+    .apikey-row { display: flex; align-items: center; gap: 8px; margin-bottom: 1rem; }
+    .apikey-row label { font-size: 0.78rem; color: var(--ink-soft); white-space: nowrap; }
+    .apikey-row input {
+      flex: 1; padding: 7px 12px; border: 1px solid var(--border-strong);
+      border-radius: 8px; font-size: 0.82rem; font-family: monospace;
+      background: var(--cream); color: var(--ink); outline: none;
+    }
+    .apikey-row input:focus { border-color: var(--gold); }
+
+    /* ══ PROGRESS ══ */
+    .progress-bar-wrap { background: var(--cream-dark); border-radius: 999px; height: 6px; margin: 1rem 0 0.5rem; overflow: hidden; display: none; }
+    .progress-bar { height: 100%; background: var(--gold); border-radius: 999px; transition: width 0.4s ease; width: 0%; }
+    .progress-label { font-size: 0.78rem; color: var(--ink-soft); margin-bottom: 1rem; }
+
+    /* ══ RESULTS ══ */
+    #results { display: flex; flex-direction: column; gap: 1.25rem; }
+
+    .result-card {
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: 14px; overflow: hidden;
+      animation: fadeIn 0.3s ease both;
+    }
+    @keyframes fadeIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
+
+    .result-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0.9rem 1.2rem; border-bottom: 1px solid var(--border);
+      background: var(--cream);
+    }
+    .result-name { font-size: 0.95rem; font-weight: 500; color: var(--ink); display: flex; align-items: center; gap: 8px; }
+    .result-avatar {
+      width: 32px; height: 32px; border-radius: 50%;
+      background: var(--gold-pale); border: 1px solid #e8d9a8;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.72rem; font-weight: 500; color: var(--gold); flex-shrink: 0;
+    }
+    .status-badge {
+      font-size: 0.72rem; padding: 3px 10px; border-radius: 999px;
+      font-weight: 500; border: 1px solid;
+    }
+    .status-ok      { background: var(--green-bg); color: var(--green); border-color: var(--green-border); }
+    .status-none    { background: var(--cream-dark); color: var(--ink-soft); border-color: var(--border); }
+    .status-loading { background: var(--blue-bg); color: var(--blue); border-color: var(--blue-border); }
+    .status-error   { background: var(--red-bg); color: var(--red); border-color: var(--red-border); }
+
+    .result-body { padding: 1rem 1.2rem; }
+
+    .news-item-result {
+      padding: 0.65rem 0; border-bottom: 1px solid var(--cream-dark);
+      display: flex; gap: 10px; align-items: flex-start;
+    }
+    .news-item-result:last-child { border-bottom: none; padding-bottom: 0; }
+    .news-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); flex-shrink: 0; margin-top: 6px; }
+    .news-item-text { flex: 1; }
+    .news-item-title { font-size: 0.85rem; font-weight: 500; color: var(--ink); margin-bottom: 2px; line-height: 1.4; }
+    .news-item-desc { font-size: 0.78rem; color: var(--ink-soft); line-height: 1.6; margin-bottom: 4px; }
+    .news-item-meta { font-size: 0.72rem; color: var(--border-strong); }
+    .news-item-link { font-size: 0.75rem; color: var(--gold); text-decoration: none; font-weight: 500; }
+    .news-item-link:hover { text-decoration: underline; }
+
+    .no-news { font-size: 0.82rem; color: var(--ink-soft); font-style: italic; padding: 0.25rem 0; }
+
+    .skeleton { background: var(--cream-dark); border-radius: 4px; height: 12px; margin: 6px 0; animation: pulse 1.2s ease infinite; }
+    .skeleton.wide { width: 80%; } .skeleton.mid { width: 60%; } .skeleton.short { width: 40%; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+    /* ══ EXPORT ══ */
+    .export-bar { display: none; justify-content: flex-end; gap: 8px; margin-top: 1rem; }
+
+    footer { max-width: 1000px; margin: 0 auto; padding: 1.5rem 2rem; font-size: 0.78rem; color: var(--ink-soft); border-top: 1px solid var(--border); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+    footer a { color: var(--ink-soft); text-decoration: none; }
+    footer a:hover { color: var(--gold); }
+
+    @media (max-width: 600px) { .members-grid { grid-template-columns: 1fr 1fr; } }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a class="header-brand" href="index.html">DPyC · <span>SMF</span></a>
+    <div>
+      <div class="header-title">Buscador de Noticias</div>
+      <div class="header-sub">Busca noticias recientes de miembros de la División usando IA con búsqueda web</div>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <div class="controls">
+    <div class="apikey-row">
+      <label>API Key de Anthropic</label>
+      <input type="password" id="apiKey" placeholder="sk-ant-…" autocomplete="off"/>
+    </div>
+
+    <div class="controls-title">Selecciona los miembros a buscar</div>
+    <div class="members-grid" id="membersGrid"></div>
+
+    <div class="controls-actions">
+      <button class="btn btn-primary" id="btnSearch" onclick="startSearch()">
+        🔍 Buscar noticias
+      </button>
+      <button class="btn btn-outline" onclick="toggleAll(true)">Seleccionar todos</button>
+      <button class="btn btn-outline" onclick="toggleAll(false)">Deseleccionar todos</button>
+      <span id="selectedCount" style="font-size:0.78rem;color:var(--ink-soft);"></span>
+    </div>
+
+    <div class="progress-bar-wrap" id="progressWrap">
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
+    <div class="progress-label" id="progressLabel"></div>
+  </div>
+
+  <div id="results"></div>
+
+  <div class="export-bar" id="exportBar">
+    <button class="btn btn-outline" onclick="exportHTML()">Exportar como HTML</button>
+    <button class="btn btn-outline" onclick="exportJSON()">Exportar JSON</button>
+  </div>
+
+</main>
+
+<footer>
+  <span>© 2025 División de Partículas y Campos · SMF</span>
+  <a href="index.html">← Volver al inicio</a>
+</footer>
+
+<script>
+const MEMBERS = [
+  { name: "Alfonso Rosado",       inst: "BUAP – IFUAP" },
+  { name: "Humberto Salazar",     inst: "BUAP – FCFM" },
+  { name: "Luis Manuel Montaño",  inst: "CINVESTAV" },
+  { name: "Guillermo Contreras",  inst: "CINVESTAV-Mérida" },
+  { name: "Miguel Neri Rosas",    inst: "ESFM – IPN" },
+  { name: "Jürgen Engelfried",    inst: "UASLP" },
+  { name: "Alfredo Aranda",       inst: "U. de Colima" },
+  { name: "Mauro Napsuciale",     inst: "U. de Guanajuato" },
+  { name: "Víctor Manuel Castillo", inst: "U. de Guadalajara" },
+  { name: "J. I. Aranda",         inst: "UMSNH" },
+  { name: "Alfredo Raya",         inst: "UMSNH" },
+  { name: "Ricardo Gaitán",       inst: "UNAM – FES Cuautitlán" },
+  { name: "Alexis Aguilar",       inst: "UNAM – ICN" },
+  { name: "Jens Erler",           inst: "UNAM – IF" },
+  { name: "Gabriela Murguía",     inst: "UNAM – FC" },
+  { name: "Salvador Carrillo",    inst: "Iberoamericana" },
+  { name: "Eli Santos",           inst: "UNACH" },
+  { name: "Roberto Noriega",      inst: "UAEH" },
+  { name: "Germán Calderón",      inst: "U. Autónoma de Coahuila" },
+  { name: "María Elena Tejeda",   inst: "UNISON" },
+  { name: "Pedro Podesta",        inst: "UAS" },
+  { name: "Isabel Pedraza",       inst: "BUAP – Presidenta DPyC" },
+  { name: "Arturo Fernández",     inst: "CINVESTAV" },
+];
+
+let results = {};
+
+function initials(name) {
+  return name.replace(/[^a-záéíóúüñA-Z\s]/g,'').split(' ').filter(Boolean).slice(0,2).map(w=>w[0]).join('').toUpperCase();
+}
+
+function buildGrid() {
+  const grid = document.getElementById('membersGrid');
+  MEMBERS.forEach((m, i) => {
+    const label = document.createElement('label');
+    label.className = 'member-check selected';
+    label.dataset.idx = i;
+    label.innerHTML = `
+      <input type="checkbox" checked data-idx="${i}">
+      <span class="check-dot">✓</span>
+      <span class="member-name-label"><strong>${m.name}</strong><br><span style="font-size:0.7rem;color:var(--ink-soft)">${m.inst}</span></span>`;
+    label.addEventListener('click', () => {
+      const cb = label.querySelector('input');
+      cb.checked = !cb.checked;
+      label.classList.toggle('selected', cb.checked);
+      label.querySelector('.check-dot').textContent = cb.checked ? '✓' : '';
+      updateCount();
+    });
+    grid.appendChild(label);
+  });
+  updateCount();
+}
+
+function updateCount() {
+  const n = document.querySelectorAll('.member-check.selected').length;
+  document.getElementById('selectedCount').textContent = `${n} seleccionado${n !== 1 ? 's' : ''}`;
+}
+
+function toggleAll(val) {
+  document.querySelectorAll('.member-check').forEach(label => {
+    const cb = label.querySelector('input');
+    cb.checked = val;
+    label.classList.toggle('selected', val);
+    label.querySelector('.check-dot').textContent = val ? '✓' : '';
+  });
+  updateCount();
+}
+
+function getSelected() {
+  return [...document.querySelectorAll('.member-check.selected')].map(l => MEMBERS[+l.dataset.idx]);
+}
+
+function setProgress(done, total, name) {
+  const pct = total ? (done / total * 100) : 0;
+  document.getElementById('progressBar').style.width = pct + '%';
+  document.getElementById('progressLabel').textContent = name
+    ? `Buscando ${done}/${total}: ${name}…`
+    : done === total ? `✓ Búsqueda completada (${total} miembros)` : '';
+}
+
+function showProgressBar(show) {
+  document.getElementById('progressWrap').style.display = show ? 'block' : 'none';
+}
+
+async function searchMember(member, apiKey) {
+  const prompt = `Busca noticias, publicaciones recientes, reconocimientos, logros académicos o menciones en medios del siguiente investigador de física de partículas en México:
+
+Nombre: ${member.name}
+Institución: ${member.inst}
+
+Por favor busca en la web y devuelve un JSON con este formato exacto (sin texto adicional, sin markdown, sin bloques de código):
+{
+  "noticias": [
+    {
+      "titulo": "Título de la noticia",
+      "descripcion": "Breve descripción de máximo 2 oraciones",
+      "fecha": "Fecha aproximada (mes y año si disponible)",
+      "fuente": "Nombre de la fuente",
+      "url": "URL si disponible, sino cadena vacía"
+    }
+  ]
+}
+
+Si no encuentras noticias relevantes recientes, devuelve: {"noticias": []}
+Incluye máximo 3 noticias, las más recientes y relevantes. Solo incluye resultados reales encontrados en la búsqueda web.`;
+
+  const response = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 1000,
+      tools: [{ type: 'web_search_20250305', name: 'web_search' }],
+      messages: [{ role: 'user', content: prompt }]
+    })
+  });
+
+  if (!response.ok) {
+    const err = await response.json().catch(() => ({}));
+    throw new Error(err.error?.message || `HTTP ${response.status}`);
+  }
+
+  const data = await response.json();
+  const text = data.content.filter(b => b.type === 'text').map(b => b.text).join('');
+
+  try {
+    const clean = text.replace(/```json|```/g, '').trim();
+    const match = clean.match(/\{[\s\S]*\}/);
+    if (match) return JSON.parse(match[0]);
+  } catch(e) {}
+  return { noticias: [] };
+}
+
+function renderCard(member, state, data) {
+  const el = document.getElementById(`card-${member.name.replace(/\s/g,'_')}`);
+  if (!el) return;
+
+  const header = el.querySelector('.result-header');
+  const badge = header.querySelector('.status-badge');
+  const body = el.querySelector('.result-body');
+
+  if (state === 'loading') {
+    badge.className = 'status-badge status-loading';
+    badge.textContent = 'Buscando…';
+    body.innerHTML = `
+      <div class="skeleton wide"></div>
+      <div class="skeleton mid"></div>
+      <div class="skeleton short"></div>`;
+    return;
+  }
+
+  if (state === 'error') {
+    badge.className = 'status-badge status-error';
+    badge.textContent = 'Error';
+    body.innerHTML = `<p class="no-news">No se pudo completar la búsqueda: ${data}</p>`;
+    return;
+  }
+
+  const noticias = data?.noticias || [];
+  if (!noticias.length) {
+    badge.className = 'status-badge status-none';
+    badge.textContent = 'Sin resultados';
+    body.innerHTML = `<p class="no-news">No se encontraron noticias recientes.</p>`;
+    return;
+  }
+
+  badge.className = 'status-badge status-ok';
+  badge.textContent = `${noticias.length} noticia${noticias.length > 1 ? 's' : ''}`;
+  body.innerHTML = noticias.map(n => `
+    <div class="news-item-result">
+      <div class="news-dot"></div>
+      <div class="news-item-text">
+        <div class="news-item-title">${n.titulo || 'Sin título'}</div>
+        ${n.descripcion ? `<div class="news-item-desc">${n.descripcion}</div>` : ''}
+        <div class="news-item-meta">${[n.fecha, n.fuente].filter(Boolean).join(' · ')}</div>
+        ${n.url ? `<a class="news-item-link" href="${n.url}" target="_blank">Ver fuente →</a>` : ''}
+      </div>
+    </div>`).join('');
+
+  results[member.name] = noticias;
+}
+
+function createCard(member) {
+  const id = `card-${member.name.replace(/\s/g,'_')}`;
+  const div = document.createElement('div');
+  div.className = 'result-card';
+  div.id = id;
+  div.innerHTML = `
+    <div class="result-header">
+      <div class="result-name">
+        <div class="result-avatar">${initials(member.name)}</div>
+        <div>
+          <div>${member.name}</div>
+          <div style="font-size:0.72rem;color:var(--ink-soft);font-weight:400;">${member.inst}</div>
+        </div>
+      </div>
+      <span class="status-badge status-loading">En cola</span>
+    </div>
+    <div class="result-body" style="padding:1rem 1.2rem;color:var(--ink-soft);font-size:0.82rem;">Esperando…</div>`;
+  return div;
+}
+
+async function startSearch() {
+  const apiKey = document.getElementById('apiKey').value.trim();
+  if (!apiKey) { alert('Por favor ingresa tu API Key de Anthropic.'); return; }
+
+  const selected = getSelected();
+  if (!selected.length) { alert('Selecciona al menos un miembro.'); return; }
+
+  const btn = document.getElementById('btnSearch');
+  btn.disabled = true;
+  btn.textContent = '⏳ Buscando…';
+
+  results = {};
+  const container = document.getElementById('results');
+  container.innerHTML = '';
+  showProgressBar(true);
+  setProgress(0, selected.length, selected[0]?.name);
+
+  selected.forEach(m => {
+    const card = createCard(m);
+    container.appendChild(card);
+  });
+
+  for (let i = 0; i < selected.length; i++) {
+    const member = selected[i];
+    setProgress(i, selected.length, member.name);
+    renderCard(member, 'loading', null);
+
+    try {
+      const data = await searchMember(member, apiKey);
+      renderCard(member, 'done', data);
+    } catch(e) {
+      renderCard(member, 'error', e.message);
+    }
+
+    await new Promise(r => setTimeout(r, 800));
+  }
+
+  setProgress(selected.length, selected.length, null);
+  btn.disabled = false;
+  btn.textContent = '🔍 Buscar noticias';
+  document.getElementById('exportBar').style.display = 'flex';
+}
+
+function exportJSON() {
+  const blob = new Blob([JSON.stringify(results, null, 2)], { type: 'application/json' });
+  const a = Object.assign(document.createElement('a'), { href: URL.createObjectURL(blob), download: 'noticias-dpyc.json' });
+  a.click(); URL.revokeObjectURL(a.href);
+}
+
+function exportHTML() {
+  let html = `<!DOCTYPE html><html lang="es"><head><meta charset="utf-8"><title>Noticias DPyC</title>
+<style>body{font-family:sans-serif;max-width:800px;margin:2rem auto;padding:0 1rem;color:#1a1a1a}
+h1{color:#b8860b;font-family:Georgia,serif}h2{margin:1.5rem 0 0.5rem;font-size:1rem;color:#3d3d3d}
+.noticia{border-left:3px solid #f5edd0;padding-left:1rem;margin:0.75rem 0}
+.titulo{font-weight:600;margin-bottom:3px}.meta{font-size:0.8rem;color:#6b6b6b}
+a{color:#b8860b}</style></head><body>
+<h1>Noticias de Miembros DPyC · SMF</h1>
+<p style="color:#6b6b6b;font-size:0.85rem">Generado el ${new Date().toLocaleDateString('es-MX', {year:'numeric',month:'long',day:'numeric'})}</p>`;
+
+  Object.entries(results).forEach(([name, noticias]) => {
+    const member = MEMBERS.find(m => m.name === name);
+    html += `<h2>${name}${member ? ` <span style="font-weight:400;color:#6b6b6b;font-size:0.85em">· ${member.inst}</span>` : ''}</h2>`;
+    if (!noticias.length) { html += `<p style="color:#6b6b6b;font-style:italic">Sin noticias encontradas.</p>`; return; }
+    noticias.forEach(n => {
+      html += `<div class="noticia">
+        <div class="titulo">${n.titulo}</div>
+        ${n.descripcion ? `<div>${n.descripcion}</div>` : ''}
+        <div class="meta">${[n.fecha, n.fuente].filter(Boolean).join(' · ')}${n.url ? ` · <a href="${n.url}" target="_blank">Ver fuente</a>` : ''}</div>
+      </div>`;
+    });
+  });
+
+  html += `</body></html>`;
+  const blob = new Blob([html], { type: 'text/html' });
+  const a = Object.assign(document.createElement('a'), { href: URL.createObjectURL(blob), download: 'noticias-dpyc.html' });
+  a.click(); URL.revokeObjectURL(a.href);
+}
+
+buildGrid();
+</script>
+</body>
+</html>

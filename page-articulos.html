@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Artículos · DPyC SMF</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/x-icon" href="assets/img/favicon.png"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --cream: #faf8f4; --cream-dark: #f2ede4;
+      --gold: #b8860b; --gold-light: #d4a82a; --gold-pale: #f5edd0;
+      --ink: #1a1a1a; --ink-mid: #3d3d3d; --ink-soft: #6b6b6b;
+      --border: #e0d8cc; --border-strong: #c8bfb0; --white: #ffffff;
+      --nav-h: 60px;
+      --blue: #185FA5; --blue-bg: #e6f1fb; --blue-border: #b5d4f4;
+      --green: #3B6D11; --green-bg: #eaf3de; --green-border: #c0dd97;
+      --purple: #5B2D8E; --purple-bg: #f0e8fb; --purple-border: #d4b8f4;
+      --orange: #8B4A00; --orange-bg: #fef0e0; --orange-border: #f9cc88;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', system-ui, sans-serif; color: var(--ink); background: var(--cream); }
+
+    nav.topnav {
+      position: fixed; top: 0; left: 0; right: 0; height: var(--nav-h);
+      z-index: 1000; background: rgba(250,248,244,0.96);
+      backdrop-filter: blur(10px); border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; padding: 0 1.5rem; gap: 1rem;
+    }
+    .nav-brand { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--ink); text-decoration: none; white-space: nowrap; flex-shrink: 0; }
+    .nav-brand span { color: var(--gold); }
+    .nav-spacer { flex: 1; }
+    .nav-back { font-size: 0.8rem; color: var(--ink-soft); text-decoration: none; transition: color 0.15s; }
+    .nav-back:hover { color: var(--gold); }
+
+    .page-header {
+      padding-top: var(--nav-h); background: var(--white);
+      border-bottom: 1px solid var(--border); position: relative; overflow: hidden;
+    }
+    .page-header::before {
+      content: ''; position: absolute; inset: 0;
+      background: repeating-linear-gradient(-45deg, transparent, transparent 40px, rgba(184,134,11,0.04) 40px, rgba(184,134,11,0.04) 41px);
+      pointer-events: none;
+    }
+    .page-header-inner {
+      max-width: 1000px; margin: 0 auto; padding: 2.5rem 2rem;
+      position: relative; z-index: 1;
+      display: grid; grid-template-columns: 1fr auto; gap: 2rem; align-items: center;
+    }
+    .page-eyebrow { font-size: 11px; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.5rem; }
+    .page-header h1 { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 3.5vw, 2.4rem); font-weight: 600; color: var(--ink); }
+    .page-header-desc { font-size: 0.9rem; color: var(--ink-soft); margin-top: 0.4rem; line-height: 1.7; }
+    .header-stat { background: var(--gold-pale); border: 1px solid #e8d9a8; border-radius: 14px; padding: 1.2rem 1.8rem; text-align: center; flex-shrink: 0; }
+    .header-stat .num { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 600; color: var(--gold); display: block; }
+    .header-stat .lbl { font-size: 11px; color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.08em; }
+
+    main { max-width: 1000px; margin: 0 auto; padding: 2.5rem 2rem 5rem; }
+
+    /* ── TOOLBAR ── */
+    .toolbar { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-bottom: 1.5rem; }
+    .toolbar input[type="search"] {
+      flex: 1; min-width: 200px; padding: 9px 16px;
+      border: 1px solid var(--border-strong); border-radius: 999px;
+      background: var(--white); color: var(--ink);
+      font-family: 'DM Sans', sans-serif; font-size: 0.85rem; outline: none;
+      transition: border-color 0.15s;
+    }
+    .toolbar input:focus { border-color: var(--gold); }
+    .toolbar input::placeholder { color: var(--ink-soft); }
+    .filter-btn {
+      font-family: 'DM Sans', sans-serif; font-size: 0.75rem; padding: 6px 14px;
+      border: 1px solid var(--border-strong); border-radius: 999px;
+      background: var(--white); color: var(--ink-soft); cursor: pointer; transition: all 0.15s;
+    }
+    .filter-btn:hover { background: var(--cream-dark); }
+    .filter-btn.active { background: var(--ink); color: var(--white); border-color: var(--ink); }
+    .count-tag { font-size: 0.78rem; padding: 5px 12px; border-radius: 999px; background: var(--cream-dark); border: 1px solid var(--border); color: var(--ink-soft); white-space: nowrap; }
+
+    /* ── NOTE ── */
+    .note-box {
+      background: var(--blue-bg); border: 1px solid var(--blue-border);
+      border-radius: 10px; padding: 0.9rem 1.2rem;
+      font-size: 0.82rem; color: var(--blue); margin-bottom: 1.5rem;
+      display: flex; align-items: flex-start; gap: 10px;
+    }
+    .note-box a { color: var(--blue); font-weight: 500; }
+
+    /* ── ARTICLES LIST ── */
+    .articles-list { display: flex; flex-direction: column; }
+
+    .article-item {
+      display: grid; grid-template-columns: auto 1fr;
+      gap: 1.25rem; padding: 1.1rem 0;
+      border-bottom: 1px solid var(--border);
+      align-items: start;
+    }
+    .article-item:last-child { border-bottom: none; }
+    .article-item.hidden { display: none; }
+
+    .article-year-col { text-align: center; min-width: 52px; padding-top: 3px; }
+    .article-year { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 600; color: var(--gold); display: block; line-height: 1; }
+
+    .article-cat-pill {
+      display: inline-block; font-size: 9px; font-weight: 500;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 2px 8px; border-radius: 4px; margin-bottom: 6px; border: 1px solid;
+    }
+    .cat-exp     { background: var(--blue-bg);   color: var(--blue);   border-color: var(--blue-border); }
+    .cat-teo     { background: var(--purple-bg);  color: var(--purple); border-color: var(--purple-border); }
+    .cat-rev     { background: var(--green-bg);   color: var(--green);  border-color: var(--green-border); }
+    .cat-div     { background: var(--orange-bg);  color: var(--orange); border-color: var(--orange-border); }
+
+    .article-title { font-size: 0.92rem; font-weight: 500; color: var(--ink); line-height: 1.4; margin-bottom: 4px; }
+    .article-authors { font-size: 0.78rem; color: var(--gold); font-weight: 500; margin-bottom: 3px; }
+    .article-journal { font-size: 0.78rem; color: var(--ink-soft); margin-bottom: 5px; font-style: italic; }
+    .article-abstract { font-size: 0.78rem; color: var(--ink-soft); line-height: 1.65; margin-bottom: 6px; }
+    .article-links { display: flex; gap: 8px; flex-wrap: wrap; }
+    .article-link {
+      font-size: 0.72rem; color: var(--gold); font-weight: 500; text-decoration: none;
+      border: 1px solid #e8d9a8; border-radius: 999px; padding: 2px 10px;
+      background: var(--gold-pale); transition: background 0.15s;
+    }
+    .article-link:hover { background: #ece0b5; }
+    .article-link.inspire { background: var(--blue-bg); border-color: var(--blue-border); color: var(--blue); }
+    .article-link.inspire:hover { background: #cce3f8; }
+    .article-link.arxiv { background: var(--green-bg); border-color: var(--green-border); color: var(--green); }
+    .article-link.arxiv:hover { background: #d4ebbf; }
+
+    /* ── ADD ARTICLE CTA ── */
+    .add-cta {
+      margin-top: 2.5rem;
+      background: var(--white); border: 1px dashed var(--border-strong);
+      border-radius: 12px; padding: 1.5rem; text-align: center;
+    }
+    .add-cta p { font-size: 0.85rem; color: var(--ink-soft); margin-bottom: 0.75rem; }
+    .add-cta a {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 0.82rem; color: var(--white); font-weight: 500;
+      background: var(--gold); border-radius: 999px; padding: 8px 20px;
+      text-decoration: none; transition: background 0.15s;
+    }
+    .add-cta a:hover { background: var(--gold-light); }
+
+    .no-results { text-align: center; padding: 3rem; color: var(--ink-soft); font-size: 0.9rem; }
+
+    footer { background: var(--white); border-top: 1px solid var(--border); padding: 1.4rem 2rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; font-size: 0.78rem; color: var(--ink-soft); }
+    footer a { color: var(--ink-soft); text-decoration: none; }
+    footer a:hover { color: var(--gold); }
+
+    @media (max-width: 640px) {
+      .page-header-inner { grid-template-columns: 1fr; }
+      .header-stat { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="topnav">
+    <a class="nav-brand" href="index.html">DPyC · <span>SMF</span></a>
+    <div class="nav-spacer"></div>
+    <a class="nav-back" href="index.html">← Inicio</a>
+    &nbsp;&nbsp;
+    <a class="nav-back" href="page-libros.html">← Libros</a>
+  </nav>
+
+  <div class="page-header">
+    <div class="page-header-inner">
+      <div>
+        <p class="page-eyebrow">División de Partículas y Campos · SMF</p>
+        <h1>Artículos</h1>
+        <p class="page-header-desc">Selección de artículos científicos destacados publicados por miembros de la DPyC en revistas internacionales especializadas en física de partículas y campos.</p>
+      </div>
+      <div class="header-stat">
+        <span class="num" id="totalCount">—</span>
+        <span class="lbl">artículos listados</span>
+      </div>
+    </div>
+  </div>
+
+  <main>
+
+    <div class="note-box">
+      📌 Esta es una selección representativa. Para el catálogo completo de publicaciones de cada investigador, consulta sus perfiles en
+      <a href="https://inspirehep.net" target="_blank">INSPIRE-HEP</a> o
+      <a href="https://arxiv.org" target="_blank">arXiv</a>.
+      ¿Quieres añadir un artículo? <a href="mailto:dpyc.smf.adms@gmail.com?subject=Artículo para página DPyC">Escríbenos aquí</a>.
+    </div>
+
+    <div class="toolbar">
+      <input type="search" id="searchInput" placeholder="Buscar por título, autor, revista o tema…"/>
+      <button class="filter-btn active" data-cat="all">Todos</button>
+      <button class="filter-btn" data-cat="exp">Experimental</button>
+      <button class="filter-btn" data-cat="teo">Teórico</button>
+      <button class="filter-btn" data-cat="rev">Revisión</button>
+      <span class="count-tag" id="countTag"></span>
+    </div>
+
+    <div class="articles-list" id="articlesList">
+
+      <!-- ALICE Collaboration — odderon -->
+      <div class="article-item" data-cat="exp" data-search="odderon TOTEM D0 elastic proton antiproton alice cern">
+        <div class="article-year-col">
+          <span class="article-year">2022</span>
+        </div>
+        <div>
+          <span class="article-cat-pill cat-exp">Experimental</span>
+          <p class="article-title">Evidence for the odderon in elastic proton-proton and proton-antiproton scattering</p>
+          <p class="article-authors">TOTEM &amp; D0 Collaborations (incl. miembros DPyC)</p>
+          <p class="article-journal">Physical Review Letters · 2022</p>
+          <p class="article-abstract">Descubrimiento del odderon, un estado de tres gluones predicho por la QCD, a partir de colisiones elásticas p-p y p-p̄ en los detectores TOTEM (CERN) y D0 (Fermilab). Trabajo que motivó la Medalla DPyC 2022 a Christophe Royon.</p>
+          <div class="article-links">
+            <a class="article-link inspire" href="https://inspirehep.net/search?p=odderon+TOTEM+D0+2022" target="_blank">INSPIRE-HEP</a>
+            <a class="article-link arxiv" href="https://arxiv.org/abs/2104.11605" target="_blank">arXiv</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- ALICE — QGP -->
+      <div class="article-item" data-cat="exp" data-search="ALICE quark gluon plasma QGP LHC heavy ion lead CERN Herrera">
+        <div class="article-year-col">
+          <span class="article-year">2023</span>
+        </div>
+        <div>
+          <span class="article-cat-pill cat-exp">Experimental</span>
+          <p class="article-title">Measurements of the charged-particle multiplicity density in Pb-Pb collisions at √sNN = 5.36 TeV with ALICE at the LHC</p>
+          <p class="article-authors">ALICE Collaboration (incl. G. Herrera Corral, CINVESTAV)</p>
+          <p class="article-journal">Physical Review C · 2023</p>
+          <p class="article-abstract">Medición de la densidad de multiplicidad de partículas cargadas en colisiones de iones de plomo a la mayor energía alcanzada en el LHC. Fundamental para caracterizar el plasma de quarks y gluones (QGP) creado en el CERN.</p>
+          <div class="article-links">
+            <a class="article-link inspire" href="https://inspirehep.net/literature?sort=mostrecent&size=25&page=1&q=a%20herrera%20corral%20and%20cn%20alice" target="_blank">INSPIRE-HEP</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bietenholz — lattice QCD -->
+      <div class="article-item" data-cat="teo" data-search="Bietenholz lattice QCD UNAM topological susceptibility">
+        <div class="article-year-col">
+          <span class="article-year">2022</span>
+        </div>
+        <div>
+          <span class="article-cat-pill cat-teo">Teórico</span>
+          <p class="article-title">Topological susceptibility of the 2d CP<sup>N−1</sup> models in the large-N limit</p>
+          <p class="article-authors">W. Bietenholz (UNAM) et al.</p>
+          <p class="article-journal">Physical Review D · 2022</p>
+          <p class="article-abstract">Estudio de la susceptibilidad topológica en modelos sigma no lineales usando simulaciones de lattice. Relevante para comprender el problema de CP fuerte y la física del axión.</p>
+          <div class="article-links">
+            <a class="article-link inspire" href="https://inspirehep.net/authors/1008428" target="_blank">INSPIRE-HEP (Bietenholz)</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Erler — electroweak precision -->
+      <div class="article-item" data-cat="teo" data-search="Erler electroweak precision observables standard model UNAM PDG">
+        <div class="article-year-col">
+          <span class="article-year">2022</span>
+        </div>
+        <div>
+          <span class="article-cat-pill cat-teo">Teórico</span>
+          <p class="article-title">Electroweak Model and Constraints on New Physics (Review of Particle Physics)</p>
+          <p class="article-authors">J. Erler (UNAM) &amp; A. Freitas</p>
+          <p class="article-journal">Progress of Theoretical and Experimental Physics (PDG) · 2022</p>
+          <p class="article-abstract">Capítulo del PDG (Particle Data Group) sobre el modelo electrodébil y los vínculos en nueva física. Erler es colaborador permanente de la revisión de física de partículas más citada del mundo.</p>
+          <div class="article-links">
+            <a class="article-link" href="https://pdg.lbl.gov/2022/reviews/rpp2022-rev-electroweak-model.pdf" target="_blank">PDG 2022</a>
+            <a class="article-link inspire" href="https://inspirehep.net/authors/1008264" target="_blank">INSPIRE-HEP (Erler)</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Ayala — QCD at finite temperature -->
+      <div class="article-item" data-cat="teo" data-search="Ayala QCD finite temperature quark gluon plasma thermodynamics UNAM ICN">
+        <div class="article-year-col">
+          <span class="article-year">2023</span>
+        </div>
+        <div>
+          <span class="article-cat-pill cat-teo">Teórico</span>
+          <p class="article-title">Thermo-magnetic effects in quark matter: Landau levels and the phase diagram of QCD</p>
+          <p class="article-authors">A. Ayala (UNAM-ICN) et al.</p>
+          <p class="article-journal">Physical Review D · 2023</p>
+          <p class="article-abstract">Análisis de los efectos termo-magnéticos en la materia de quarks bajo campos magnéticos intensos, relevante para la física del QGP y el diagrama de fases de la QCD.</p>
+          <div class="article-links">
+            <a class="article-link inspire" href="https://inspirehep.net/authors/1008054" target="_blank">INSPIRE-HEP (Ayala)</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Raya — Dyson-Schwinger -->
+      <div class="article-item" data-cat="teo" data-search="Raya Dyson Schwinger equations quark propagator confinement UMSNH">
+        <div class="article-year-col">
+          <span class="article-year">2022</span>
+        </div>
+        <div>
+          <span class="article-cat-pill cat-teo">Teórico</span>
+          <p class="article-title">Pion and kaon structure at the electron-ion collider</p>
+          <p class="article-authors">A. Raya (UMSNH) et al.</p>
+          <p class="article-journal">European Physical Journal A · 2022</p>
+          <p class="article-abstract">Predicciones teóricas sobre la estructura del pión y el kaón medibles en el Electron-Ion Collider (EIC). Basado en el formalismo de ecuaciones de Dyson-Schwinger para estudiar el confinamiento del color.</p>
+          <div class="article-links">
+            <a class="article-link inspire" href="https://inspirehep.net/authors/1274751" target="_blank">INSPIRE-HEP (Raya)</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Díaz Cruz — extended Higgs -->
+      <div class="article-item" data-cat="teo" data-search="Díaz Cruz extended Higgs BSM beyond standard model BUAP FCFM">
+        <div class="article-year-col">
+          <span class="article-year">2023</span>
+        </div>
+        <div>
+          <span class="article-cat-pill cat-teo">Teórico</span>
+          <p class="article-title">Lepton flavour violation in extended Higgs sector models</p>
+          <p class="article-authors">J. L. Díaz-Cruz (BUAP) et al.</p>
+          <p class="article-journal">Physical Review D · 2023</p>
+          <p class="article-abstract">Estudio de la violación del número leptónico en modelos con sectores de Higgs extendidos, en el contexto de la búsqueda de física más allá del Modelo Estándar en el LHC y futuros colisionadores.</p>
+          <div class="article-links">
+            <a class="article-link inspire" href="https://inspirehep.net/authors/1006442" target="_blank">INSPIRE-HEP (Díaz-Cruz)</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pedraza — CMS -->
+      <div class="article-item" data-cat="exp" data-search="Pedraza ATLAS LHC BUAP top quark pixel detector">
+        <div class="article-year-col">
+          <span class="article-year">2026</span>
+        </div>
+        <div>
+          <span class="article-cat-pill cat-exp">Experimental</span>
+          <p class="article-title">Search for resonances decaying to an anomalous jet and a Higgs boson in proton–proton collisions at 13 TeV</p>
+          <p class="article-authors">CMS Collaboration (incl. I. Pedraza, BUAP)</p>
+          <p class="article-journal"> European Physical Journal C 2026</p>
+          <p class="article-abstract">This paper presents a search for new physics through the process where a new massive particle, X, decays into a Higgs boson and a second particle, Y. Data recorded by the CMS experiment at a center-of-mass energy of 13 TeV in 2016−2018.</p>
+          <div class="article-links">
+            <a class="article-link inspire" href="https://inspirehep.net/authors/1066627?ui-citation-summary=true" target="_blank">INSPIRE-HEP</a>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /articles-list -->
+
+    <div id="noResults" class="no-results" style="display:none;">Sin resultados para esa búsqueda.</div>
+
+    <div class="add-cta">
+      <p>¿Eres miembro de la DPyC y quieres incluir un artículo destacado en esta página?</p>
+      <a href="mailto:dpyc.smf.adms@gmail.com?subject=Artículo para página DPyC">✉ Envíanos los datos</a>
+    </div>
+
+  </main>
+
+  <footer>
+    <span>© 2025 División de Partículas y Campos · Sociedad Mexicana de Física</span>
+    <span>
+      <a href="index.html">Inicio</a> ·
+      <a href="page-libros.html">Libros</a> ·
+      <a href="mailto:dpyc.smf.adms@gmail.com">dpyc.smf.adms@gmail.com</a>
+    </span>
+  </footer>
+
+  <script>
+    const items = () => document.querySelectorAll('.article-item');
+    const countTag = document.getElementById('countTag');
+    const totalEl = document.getElementById('totalCount');
+
+    totalEl.textContent = items().length;
+
+    let activeCat = 'all', searchTerm = '';
+
+    function applyFilters() {
+      let visible = 0;
+      items().forEach(item => {
+        const catOk = activeCat === 'all' || item.dataset.cat === activeCat;
+        const searchOk = !searchTerm ||
+          item.dataset.search.includes(searchTerm) ||
+          item.querySelector('.article-title').textContent.toLowerCase().includes(searchTerm) ||
+          item.querySelector('.article-authors').textContent.toLowerCase().includes(searchTerm);
+        const show = catOk && searchOk;
+        item.classList.toggle('hidden', !show);
+        if (show) visible++;
+      });
+      countTag.textContent = `${visible} artículo${visible !== 1 ? 's' : ''}`;
+      document.getElementById('noResults').style.display = visible === 0 ? 'block' : 'none';
+    }
+
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        activeCat = btn.dataset.cat;
+        applyFilters();
+      });
+    });
+
+    document.getElementById('searchInput').addEventListener('input', e => {
+      searchTerm = e.target.value.trim().toLowerCase();
+      applyFilters();
+    });
+
+    applyFilters();
+  </script>
+</body>
+</html>

@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Noticias · DPyC SMF</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/x-icon" href="assets/img/favicon.png"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --cream: #faf8f4; --cream-dark: #f2ede4;
+      --gold: #b8860b; --gold-light: #d4a82a; --gold-pale: #f5edd0;
+      --ink: #1a1a1a; --ink-mid: #3d3d3d; --ink-soft: #6b6b6b;
+      --border: #e0d8cc; --border-strong: #c8bfb0; --white: #ffffff;
+      --nav-h: 60px;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', system-ui, sans-serif; color: var(--ink); background: var(--cream); }
+
+    nav.topnav {
+      position: fixed; top: 0; left: 0; right: 0; height: var(--nav-h);
+      z-index: 1000; background: rgba(250,248,244,0.96);
+      backdrop-filter: blur(10px); border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; padding: 0 1.5rem; gap: 1rem;
+    }
+    .nav-brand { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--ink); text-decoration: none; white-space: nowrap; flex-shrink: 0; }
+    .nav-brand span { color: var(--gold); }
+    .nav-spacer { flex: 1; }
+    .nav-back { font-size: 0.8rem; color: var(--ink-soft); text-decoration: none; transition: color 0.15s; }
+    .nav-back:hover { color: var(--gold); }
+
+    .page-header {
+      padding-top: var(--nav-h); background: var(--white);
+      border-bottom: 1px solid var(--border); position: relative; overflow: hidden;
+    }
+    .page-header::before {
+      content: ''; position: absolute; inset: 0;
+      background: repeating-linear-gradient(-45deg, transparent, transparent 40px, rgba(184,134,11,0.04) 40px, rgba(184,134,11,0.04) 41px);
+      pointer-events: none;
+    }
+    .page-header-inner { max-width: 1000px; margin: 0 auto; padding: 2.5rem 2rem; position: relative; z-index: 1; }
+    .page-eyebrow { font-size: 11px; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.5rem; }
+    .page-header h1 { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 3.5vw, 2.4rem); font-weight: 600; color: var(--ink); }
+
+    main { max-width: 1000px; margin: 0 auto; padding: 2.5rem 2rem 5rem; }
+
+    /* ══ FEATURED ══ */
+    .featured-label { font-size: 11px; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.75rem; }
+
+    .featured {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 0; margin-bottom: 2.5rem;
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: 16px; overflow: hidden;
+      transition: box-shadow 0.2s;
+    }
+    .featured:hover { box-shadow: 0 6px 24px rgba(0,0,0,0.08); }
+
+    .featured-img-col {
+      position: relative; min-height: 320px; overflow: hidden;
+      display: grid; grid-template-rows: 1fr 1fr;
+    }
+    .featured-img-col img {
+      width: 100%; height: 100%; object-fit: cover; object-position: center top;
+      display: block;
+    }
+    .featured-img-col .img-top { border-bottom: 2px solid var(--white); }
+
+    .featured-body {
+      padding: 2rem 2rem; display: flex; flex-direction: column;
+      justify-content: center; gap: 0.8rem;
+    }
+    .feat-cat-pill {
+      display: inline-block; font-size: 10px; font-weight: 500;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      padding: 3px 10px; border-radius: 4px; align-self: flex-start;
+      background: var(--gold-pale); color: var(--gold);
+      border: 1px solid #e8d9a8;
+    }
+    .featured-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.45rem; font-weight: 600; color: var(--ink); line-height: 1.25;
+    }
+    .featured-date { font-size: 11px; color: var(--ink-soft); }
+    .featured-desc { font-size: 0.88rem; color: var(--ink-soft); line-height: 1.8; }
+    .featured-quote {
+      border-left: 3px solid var(--gold-pale); padding-left: 1rem;
+      font-size: 0.83rem; color: var(--ink-mid); font-style: italic; line-height: 1.7;
+    }
+    .featured-link {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 0.82rem; color: var(--white); font-weight: 500;
+      background: var(--gold); border-radius: 999px; padding: 8px 18px;
+      text-decoration: none; align-self: flex-start; margin-top: 0.25rem;
+      transition: background 0.15s;
+    }
+    .featured-link:hover { background: var(--gold-light); }
+
+    /* ══ DIVIDER ══ */
+    .section-divider { display: flex; align-items: center; gap: 1rem; margin: 0 0 1.5rem; }
+    .section-divider-line { flex: 1; height: 1px; background: var(--border); }
+    .section-divider-label { font-size: 11px; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--ink-soft); white-space: nowrap; }
+
+    /* ══ FILTERS ══ */
+    .filters { display: flex; gap: 7px; flex-wrap: wrap; margin-bottom: 1.25rem; }
+    .filter-btn {
+      font-family: 'DM Sans', sans-serif; font-size: 0.75rem; padding: 5px 14px;
+      border: 1px solid var(--border-strong); border-radius: 999px;
+      background: var(--white); color: var(--ink-soft); cursor: pointer;
+      transition: background 0.15s, color 0.15s, border-color 0.15s;
+    }
+    .filter-btn:hover { background: var(--cream-dark); }
+    .filter-btn.active { background: var(--ink); color: var(--white); border-color: var(--ink); }
+
+    /* ══ NEWS LIST ══ */
+    .news-list { display: flex; flex-direction: column; }
+    .news-item {
+      display: grid; grid-template-columns: 64px 1fr;
+      gap: 1.25rem; padding: 1rem 0;
+      border-bottom: 1px solid var(--border); align-items: start;
+    }
+    .news-item:last-child { border-bottom: none; }
+    .news-item.hidden { display: none; }
+
+    .news-date-col { text-align: center; padding-top: 2px; }
+    .news-day { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 600; color: var(--gold); line-height: 1; display: block; }
+    .news-month { font-size: 9px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-soft); display: block; margin-top: 2px; }
+    .news-range { font-size: 9px; color: var(--ink-soft); display: block; margin-top: 1px; }
+
+    .news-cat-pill {
+      display: inline-block; font-size: 9px; font-weight: 500;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 2px 8px; border-radius: 4px; margin-bottom: 6px; border: 1px solid;
+    }
+    .cat-evento  { background: #e6f1fb; color: #185FA5; border-color: #b5d4f4; }
+    .cat-premio  { background: #f5edd0; color: #854F0B; border-color: #e8d9a8; }
+    .cat-escuela { background: #eaf3de; color: #3B6D11; border-color: #c0dd97; }
+    .cat-int     { background: #fbeaf0; color: #993556; border-color: #f4c0d1; }
+
+    .news-title { font-size: 0.92rem; font-weight: 500; color: var(--ink); line-height: 1.4; margin-bottom: 4px; }
+    .news-desc  { font-size: 0.8rem; color: var(--ink-soft); line-height: 1.65; margin-bottom: 6px; }
+    .news-meta  { font-size: 0.75rem; color: var(--border-strong); margin-bottom: 5px; }
+    .news-link  { font-size: 0.78rem; color: var(--gold); font-weight: 500; text-decoration: none; }
+    .news-link:hover { text-decoration: underline; }
+
+    footer { background: var(--white); border-top: 1px solid var(--border); padding: 1.4rem 2rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; font-size: 0.78rem; color: var(--ink-soft); }
+    footer a { color: var(--ink-soft); text-decoration: none; }
+    footer a:hover { color: var(--gold); }
+
+    @media (max-width: 640px) {
+      .featured { grid-template-columns: 1fr; }
+      .featured-img-col { min-height: 220px; grid-template-rows: 1fr; }
+      .featured-img-col .img-bottom { display: none; }
+    }
+
+    /* ══ CAROUSEL ══ */
+    .carousel-wrap { position: relative; margin-bottom: 2.5rem; }
+    .carousel-track-outer { overflow: hidden; border-radius: 16px; border: 1px solid var(--border); }
+    .carousel-track { display: flex; transition: transform 0.5s cubic-bezier(.4,0,.2,1); will-change: transform; }
+    .carousel-slide {
+      min-width: 100%; display: grid; grid-template-columns: 1fr 1fr;
+      background: var(--white);
+    }
+    .carousel-slide-img {
+      position: relative; overflow: hidden; min-height: 320px;
+    }
+    .carousel-slide-img img {
+      width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block;
+    }
+    .carousel-slide-body {
+      padding: 2rem; display: flex; flex-direction: column; justify-content: center; gap: 0.8rem;
+    }
+    .carousel-controls {
+      display: flex; align-items: center; justify-content: center;
+      gap: 1rem; margin-top: 1rem;
+    }
+    .carousel-btn {
+      width: 36px; height: 36px; border-radius: 50%;
+      border: 1px solid var(--border-strong); background: var(--white);
+      color: var(--ink-soft); font-size: 1rem; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.15s, border-color 0.15s, color 0.15s;
+    }
+    .carousel-btn:hover { background: var(--gold-pale); border-color: var(--gold); color: var(--gold); }
+    .carousel-dots { display: flex; gap: 6px; }
+    .carousel-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--border-strong); cursor: pointer;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .carousel-dot.active { background: var(--gold); transform: scale(1.3); }
+    .carousel-counter { font-size: 0.78rem; color: var(--ink-soft); min-width: 36px; text-align: center; }
+  </style>
+</head>
+<body>
+
+  <nav class="topnav">
+    <a class="nav-brand" href="index.html">DPyC · <span>SMF</span></a>
+    <div class="nav-spacer"></div>
+    <a class="nav-back" href="index.html">← Inicio</a>
+  </nav>
+
+  <div class="page-header">
+    <div class="page-header-inner">
+      <p class="page-eyebrow">División de Partículas y Campos · SMF</p>
+      <h1>Noticias</h1>
+    </div>
+  </div>
+
+  <main>
+
+    <!-- ══ CARRUSEL DE NOTICIAS DESTACADAS ══ -->
+    <p class="featured-label">Destacado</p>
+    <div class="carousel-wrap">
+      <div class="carousel-track-outer">
+        <div class="carousel-track" id="carouselTrack">
+
+          <!-- Slide 1: Indara – San Luis de la Paz -->
+          <div class="carousel-slide">
+            <div class="carousel-slide-img">
+              <img src="assets/img/news/202604_IndaraSuarez_ReconocimientoSanLuisPotosi.jpg" alt="Indara Mayeli Súarez Silva recibe reconocimiento en San Luis de la Paz">
+            </div>
+            <div class="carousel-slide-body">
+              <span class="feat-cat-pill">Reconocimiento · Orgullo DPyC</span>
+              <h2 class="featured-title">Indara Mayeli Súarez Silva, reconocida por el municipio de San Luis de la Paz</h2>
+              <span class="featured-date">22 de abril de 2026 · San Luis de la Paz, Guanajuato</span>
+              <p class="featured-desc">La Administración Municipal 2024–2027 otorgó un reconocimiento especial a la física Indara Mayeli Súarez Silva durante los festejos del 131 aniversario de la elevación de San Luis de la Paz de villa a ciudad.</p>
+              <p class="featured-quote">"Por ser una fuente de inspiración para todos nosotros. Su esfuerzo y dedicación han trascendido en la historia, llevando la esencia y honor de San Luis de la Paz a lo más alto."</p>
+              <a class="featured-link" href="https://www.facebook.com/watch/?v=1843259746365223" target="_blank">Ver anuncio en Facebook →</a>
+            </div>
+          </div>
+
+          <!-- Slide 2: Premios Elsevier -->
+          <div class="carousel-slide">
+            <div class="carousel-slide-img">
+              <img src="assets/img/news/20260311_KarenCaballeroAndIsabelPedraza_ELSEVIER2026.jpeg" alt="Karen Salomé Caballero Mora e Isabel Pedraza — Premios Elsevier 2026">
+            </div>
+            <div class="carousel-slide-body">
+              <span class="feat-cat-pill">Premio Internacional · Orgullo DPyC</span>
+              <h2 class="featured-title">Premios Elsevier 2026: Mujeres que Transforman México</h2>
+              <span class="featured-date">Marzo de 2026</span>
+              <p class="featured-desc">Nos llena de orgullo compartir que dos destacadas científicas de nuestra comunidad han sido reconocidas con los Premios Elsevier 2026 — Mujeres que Transforman México: la <strong>Dra. Karen Salomé Caballero Mora</strong> y la <strong>Dra. Isabel Pedraza</strong>.</p>
+              <p class="featured-quote">"Este reconocimiento celebra su liderazgo, su innovación y sus contribuciones al desarrollo científico y tecnológico en México. Su trayectoria continúa inspirando a nuevas generaciones."</p>
+              <a class="featured-link" href="https://www.elsevier.com/es-es/promotions/premios-mexico-2026" target="_blank">Ver premio Elsevier →</a>
+            </div>
+          </div>
+
+          <!-- Slide 3: Indara en el lab (noticia adicional) -->
+          <div class="carousel-slide">
+            <div class="carousel-slide-img">
+              <img src="Indara.jpg" alt="Indara Mayeli Súarez Silva en el laboratorio">
+            </div>
+            <div class="carousel-slide-body">
+              <span class="feat-cat-pill">Divulgación · Ciencia en México</span>
+              <h2 class="featured-title">Física de partículas hecha en México: el trabajo de Indara Súarez Silva</h2>
+              <span class="featured-date">2026</span>
+              <p class="featured-desc">es un ejemplo del talento científico mexicano que trabaja en la frontera del conocimiento, desarrollando instrumentación de detección de partículas de alta tecnología.</p>
+              <p class="featured-quote">Su trayectoria representa el compromiso de la DPyC con la formación de nuevas generaciones de físicas y físicos mexicanos de clase mundial.</p>
+              <a class="featured-link" href="https://www.facebook.com/DPyC.SMF/" target="_blank">Síguenos en Facebook →</a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Controls -->
+      <div class="carousel-controls">
+        <button class="carousel-btn" id="btnPrev" onclick="carousel(-1)" title="Anterior">‹</button>
+        <div class="carousel-dots" id="carouselDots"></div>
+        <button class="carousel-btn" id="btnNext" onclick="carousel(1)" title="Siguiente">›</button>
+        <span class="carousel-counter" id="carouselCounter">1 / 3</span>
+      </div>
+    </div>
+
+    <!-- ══ MÁS NOTICIAS ══ -->
+    <div class="section-divider">
+      <div class="section-divider-line"></div>
+      <span class="section-divider-label">Próximos eventos</span>
+      <div class="section-divider-line"></div>
+    </div>
+
+    <div class="filters">
+      <button class="filter-btn active" data-cat="all">Todos</button>
+      <button class="filter-btn" data-cat="evento">Eventos DPyC</button>
+      <button class="filter-btn" data-cat="escuela">Escuelas</button>
+      <button class="filter-btn" data-cat="int">Internacional</button>
+    </div>
+
+    <div class="news-list">
+
+      <!-- RADPyC — 17 jun -->
+      <div class="news-item" data-cat="evento">
+        <div class="news-date-col">
+          <span class="news-day">17</span>
+          <span class="news-month">Jun 2026</span>
+          <span class="news-range">17–19 jun</span>
+        </div>
+        <div>
+          <span class="news-cat-pill cat-evento">Reunión anual DPyC</span>
+          <p class="news-title">RADPyC2026 — Reunión Anual de la División de Partículas y Campos</p>
+          <p class="news-desc">La RADPyC 2026 se celebrará del 17 al 19 de junio en el Auditorio José Ádem del CINVESTAV, Ciudad de México. El programa incluye pláticas invitadas sobre ALICE, Belle-II, NICA, QCD y física de sabor, sesiones de posgrado y transmisión por Zoom y Facebook.</p>
+          <p class="news-meta">CINVESTAV · Ciudad de México · 17–19 junio 2026</p>
+          <a class="news-link" href="https://indico.nucleares.unam.mx/event/2561/" target="_blank">Ver programa y registro →</a>
+        </div>
+      </div>
+
+      <!-- RPC — 14 sep -->
+      <div class="news-item" data-cat="int">
+        <div class="news-date-col">
+          <span class="news-day">14</span>
+          <span class="news-month">Sep 2026</span>
+          <span class="news-range">14–18 sep</span>
+        </div>
+        <div>
+          <span class="news-cat-pill cat-int">Internacional</span>
+          <p class="news-title">XVIII Conferencia Internacional sobre Resistive Plate Chambers — RPC 2026</p>
+          <p class="news-desc">La DPyC-SMF co-organiza la RPC 2026 en la Universidad del Estado de Río de Janeiro (UERJ), Brasil. La conferencia reúne expertos en detectores de placas resistivas con aplicaciones en física de partículas y astropartículas.</p>
+          <p class="news-meta">UERJ · Río de Janeiro, Brasil · 14–18 septiembre 2026</p>
+          <a class="news-link" href="https://rpc2026.uerj.br" target="_blank">Ver sitio oficial →</a>
+        </div>
+      </div>
+
+      <!-- CNF — 12 oct -->
+      <div class="news-item" data-cat="evento">
+        <div class="news-date-col">
+          <span class="news-day">12</span>
+          <span class="news-month">Oct 2026</span>
+          <span class="news-range">12–16 oct</span>
+        </div>
+        <div>
+          <span class="news-cat-pill cat-evento">Congreso Nacional</span>
+          <p class="news-title">Congreso Nacional de Física 2026</p>
+          <p class="news-desc">El Congreso Nacional de Física de la Sociedad Mexicana de Física reúne anualmente a la comunidad científica mexicana. La DPyC organiza sesiones especializadas en física de partículas y campos.</p>
+          <p class="news-meta">12–16 octubre 2026</p>
+          <a class="news-link" href="https://cnf.smf.mx/" target="_blank">Ver información →</a>
+        </div>
+      </div>
+
+      <!-- Escuela — 19 oct -->
+      <div class="news-item" data-cat="escuela">
+        <div class="news-date-col">
+          <span class="news-day">19</span>
+          <span class="news-month">Oct 2026</span>
+          <span class="news-range">19–23 oct</span>
+        </div>
+        <div>
+          <span class="news-cat-pill cat-escuela">Escuela</span>
+          <p class="news-title">XXI Escuela Mexicana de Partículas y Campos</p>
+          <p class="news-desc">La XXI edición de la Escuela Mexicana de Partículas y Campos se realizará en la Benemérita Universidad Autónoma de Puebla. Una semana de cursos intensivos de física de frontera para estudiantes e investigadores.</p>
+          <p class="news-meta">BUAP · Puebla, México · 19–23 octubre 2026</p>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <footer>
+    <span>© 2025 División de Partículas y Campos · Sociedad Mexicana de Física</span>
+    <span>
+      <a href="index.html">Inicio</a> ·
+      <a href="https://www.facebook.com/DPyC.SMF/" target="_blank">Facebook</a> ·
+      <a href="mailto:dpyc.smf.adms@gmail.com">dpyc.smf.adms@gmail.com</a>
+    </span>
+  </footer>
+
+
+  <script>
+    // Carousel
+    let current = 0;
+    const slides = document.querySelectorAll('.carousel-slide');
+    const total = slides.length;
+    const dotsEl = document.getElementById('carouselDots');
+    const counterEl = document.getElementById('carouselCounter');
+
+    // Build dots
+    slides.forEach((_, i) => {
+      const dot = document.createElement('div');
+      dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+      dot.onclick = () => goTo(i);
+      dotsEl.appendChild(dot);
+    });
+
+    function goTo(n) {
+      current = (n + total) % total;
+      document.getElementById('carouselTrack').style.transform = `translateX(-${current * 100}%)`;
+      document.querySelectorAll('.carousel-dot').forEach((d, i) => d.classList.toggle('active', i === current));
+      counterEl.textContent = `${current + 1} / ${total}`;
+    }
+
+    function carousel(dir) { goTo(current + dir); }
+
+    // Auto-advance every 6s
+    setInterval(() => carousel(1), 6000);
+  </script>
+  <script>
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const cat = btn.dataset.cat;
+        document.querySelectorAll('.news-item').forEach(item => {
+          item.classList.toggle('hidden', cat !== 'all' && item.dataset.cat !== cat);
+        });
+      });
+    });
+  </script>
+</body>
+</html>

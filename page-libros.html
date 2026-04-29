@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Libros · DPyC SMF</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/x-icon" href="assets/img/favicon.png"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --cream: #faf8f4; --cream-dark: #f2ede4;
+      --gold: #b8860b; --gold-light: #d4a82a; --gold-pale: #f5edd0;
+      --ink: #1a1a1a; --ink-mid: #3d3d3d; --ink-soft: #6b6b6b;
+      --border: #e0d8cc; --border-strong: #c8bfb0; --white: #ffffff;
+      --nav-h: 60px;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', system-ui, sans-serif; color: var(--ink); background: var(--cream); }
+
+    nav.topnav {
+      position: fixed; top: 0; left: 0; right: 0; height: var(--nav-h);
+      z-index: 1000; background: rgba(250,248,244,0.96);
+      backdrop-filter: blur(10px); border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; padding: 0 1.5rem; gap: 1rem;
+    }
+    .nav-brand { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--ink); text-decoration: none; white-space: nowrap; flex-shrink: 0; }
+    .nav-brand span { color: var(--gold); }
+    .nav-spacer { flex: 1; }
+    .nav-back { font-size: 0.8rem; color: var(--ink-soft); text-decoration: none; transition: color 0.15s; }
+    .nav-back:hover { color: var(--gold); }
+
+    .page-header {
+      padding-top: var(--nav-h); background: var(--white);
+      border-bottom: 1px solid var(--border); position: relative; overflow: hidden;
+    }
+    .page-header::before {
+      content: ''; position: absolute; inset: 0;
+      background: repeating-linear-gradient(-45deg, transparent, transparent 40px, rgba(184,134,11,0.04) 40px, rgba(184,134,11,0.04) 41px);
+      pointer-events: none;
+    }
+    .page-header-inner { max-width: 1100px; margin: 0 auto; padding: 2.5rem 2rem; position: relative; z-index: 1; display: flex; align-items: center; justify-content: space-between; gap: 2rem; flex-wrap: wrap; }
+    .page-eyebrow { font-size: 11px; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.5rem; }
+    .page-header h1 { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 3.5vw, 2.4rem); font-weight: 600; color: var(--ink); }
+    .page-header-desc { font-size: 0.9rem; color: var(--ink-soft); margin-top: 0.4rem; max-width: 500px; line-height: 1.7; }
+
+    main { max-width: 1100px; margin: 0 auto; padding: 2.5rem 2rem 5rem; }
+
+    /* ── TOOLBAR ── */
+    .toolbar { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-bottom: 2rem; }
+    .toolbar input[type="search"] {
+      flex: 1; min-width: 200px; padding: 9px 16px;
+      border: 1px solid var(--border-strong); border-radius: 999px;
+      background: var(--white); color: var(--ink);
+      font-family: 'DM Sans', sans-serif; font-size: 0.85rem; outline: none;
+      transition: border-color 0.15s;
+    }
+    .toolbar input:focus { border-color: var(--gold); }
+    .toolbar input::placeholder { color: var(--ink-soft); }
+    .filter-btn {
+      font-family: 'DM Sans', sans-serif; font-size: 0.75rem; padding: 6px 15px;
+      border: 1px solid var(--border-strong); border-radius: 999px;
+      background: var(--white); color: var(--ink-soft); cursor: pointer;
+      transition: all 0.15s;
+    }
+    .filter-btn:hover { background: var(--cream-dark); }
+    .filter-btn.active { background: var(--ink); color: var(--white); border-color: var(--ink); }
+    .count-tag { font-size: 0.78rem; padding: 5px 12px; border-radius: 999px; background: var(--cream-dark); border: 1px solid var(--border); color: var(--ink-soft); white-space: nowrap; }
+
+    /* ── SECTION LABEL ── */
+    .sec-header { display: flex; align-items: center; gap: 1rem; margin: 2rem 0 1.25rem; }
+    .sec-line { flex: 1; height: 1px; background: var(--border); }
+    .sec-label { font-size: 11px; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); white-space: nowrap; }
+
+    /* ── BOOK GRID ── */
+    .books-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1.25rem; }
+
+    .book-card {
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: 12px; overflow: hidden;
+      display: flex; flex-direction: column;
+      transition: box-shadow 0.2s, border-color 0.2s, transform 0.2s;
+    }
+    .book-card:hover { box-shadow: 0 6px 22px rgba(0,0,0,0.09); border-color: var(--border-strong); transform: translateY(-3px); }
+    .book-card.hidden { display: none; }
+
+    .book-cover {
+      height: 200px; background: var(--cream-dark);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 3rem; position: relative; overflow: hidden;
+      border-bottom: 1px solid var(--border);
+    }
+    .book-cover-bg {
+      position: absolute; inset: 0; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; padding: 1rem; text-align: center;
+      gap: 0.5rem;
+    }
+    .book-cover-icon { font-size: 2rem; }
+    .book-cover-title-preview { font-family: 'Playfair Display', serif; font-size: 0.75rem; font-weight: 600; color: var(--ink); line-height: 1.3; }
+    .book-cover-author-preview { font-size: 0.65rem; color: var(--ink-soft); }
+
+    .book-type-badge {
+      position: absolute; top: 8px; left: 8px;
+      font-size: 9px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 2px 8px; border-radius: 4px; border: 1px solid;
+    }
+    .badge-divulgacion { background: #eaf3de; color: #3B6D11; border-color: #c0dd97; }
+    .badge-textbook    { background: #e6f1fb; color: #185FA5; border-color: #b5d4f4; }
+    .badge-juvenil     { background: #faeeda; color: #633806; border-color: #fac775; }
+
+    .book-body { padding: 1rem; flex: 1; display: flex; flex-direction: column; gap: 0.3rem; }
+    .book-title { font-size: 0.88rem; font-weight: 500; color: var(--ink); line-height: 1.35; }
+    .book-author { font-size: 0.75rem; color: var(--gold); font-weight: 500; }
+    .book-meta { font-size: 0.72rem; color: var(--ink-soft); margin-top: 2px; }
+    .book-desc { font-size: 0.75rem; color: var(--ink-soft); line-height: 1.6; margin-top: 0.4rem; flex: 1; }
+    .book-link {
+      display: inline-flex; align-items: center; gap: 5px;
+      margin-top: 0.75rem; font-size: 0.72rem; color: var(--gold);
+      font-weight: 500; text-decoration: none; align-self: flex-start;
+      border: 1px solid #e8d9a8; border-radius: 999px; padding: 3px 10px;
+      background: var(--gold-pale); transition: background 0.15s;
+    }
+    .book-link:hover { background: #ece0b5; }
+
+    /* ── NO RESULTS ── */
+    .no-results { text-align: center; padding: 3rem; color: var(--ink-soft); font-size: 0.9rem; }
+
+    footer { background: var(--white); border-top: 1px solid var(--border); padding: 1.4rem 2rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; font-size: 0.78rem; color: var(--ink-soft); }
+    footer a { color: var(--ink-soft); text-decoration: none; }
+    footer a:hover { color: var(--gold); }
+
+    @media (max-width: 600px) { .books-grid { grid-template-columns: 1fr 1fr; } }
+  </style>
+</head>
+<body>
+
+  <nav class="topnav">
+    <a class="nav-brand" href="index.html">DPyC · <span>SMF</span></a>
+    <div class="nav-spacer"></div>
+    <a class="nav-back" href="index.html">← Inicio</a>
+    &nbsp;&nbsp;
+    <a class="nav-back" href="page-articulos.html">Artículos →</a>
+  </nav>
+
+  <div class="page-header">
+    <div class="page-header-inner">
+      <div>
+        <p class="page-eyebrow">División de Partículas y Campos · SMF</p>
+        <h1>Libros</h1>
+        <p class="page-header-desc">Textos académicos, libros de divulgación científica y obras de interés general sobre física de partículas escritos por miembros de la DPyC.</p>
+      </div>
+    </div>
+  </div>
+
+  <main>
+
+    <div class="toolbar">
+      <input type="search" id="searchInput" placeholder="Buscar por título, autor o tema…"/>
+      <button class="filter-btn active" data-cat="all">Todos</button>
+      <button class="filter-btn" data-cat="textbook">Textos académicos</button>
+      <button class="filter-btn" data-cat="divulgacion">Divulgación</button>
+      <button class="filter-btn" data-cat="juvenil">Juvenil / General</button>
+      <span class="count-tag" id="countTag"></span>
+    </div>
+
+    <!-- ══ TEXTOS ACADÉMICOS ══ -->
+    <div class="sec-header">
+      <div class="sec-line"></div>
+      <span class="sec-label">Textos académicos</span>
+      <div class="sec-line"></div>
+    </div>
+
+    <div class="books-grid" id="booksGrid">
+
+      <div class="book-card" data-cat="textbook" data-search="uncovering quantum field theory standard model bietenholz wiese unam cambridge">
+        <div class="book-cover" style="padding:0;background:#222;">
+          <img src="assets/img/libros/cover-quantum-field-theory.jpg" alt="Uncovering Quantum Field Theory" style="width:100%;height:100%;object-fit:cover;display:block;">
+          <span class="book-type-badge badge-textbook">Textbook</span>
+        </div>
+        <div class="book-body">
+          <p class="book-title">Uncovering Quantum Field Theory and the Standard Model</p>
+          <p class="book-author">Wolfgang Bietenholz (UNAM) · Uwe-Jens Wiese</p>
+          <p class="book-meta">Cambridge University Press · 2025 · 732 pp. · ISBN 978-1108472333</p>
+          <p class="book-desc">Introducción accesible a la teoría cuántica de campos y el Modelo Estándar de la física de partículas. Ideal para cursos de posgrado e investigadores. Incluye temas avanzados como axiones, technicolor y Teorías de Gran Unificación.</p>
+          <a class="book-link" href="https://www.amazon.com/Uncovering-Quantum-Field-Theory-Standard/dp/1108472338/" target="_blank">Ver en Amazon →</a>
+        </div>
+      </div>
+
+    </div><!-- /textbook grid -->
+
+    <!-- ══ DIVULGACIÓN ══ -->
+    <div class="sec-header">
+      <div class="sec-line"></div>
+      <span class="sec-label">Divulgación científica</span>
+      <div class="sec-line"></div>
+    </div>
+
+    <div class="books-grid" id="booksGrid2">
+
+      <div class="book-card" data-cat="divulgacion" data-search="higgs universo liquido gran colisionador hadrones gerardo herrera corral cinvestav fce">
+        <div class="book-cover" style="padding:0;background:#222;">
+          <img src="assets/img/libros/cover-universo-liquido.jpg" alt="El Higgs, el universo líquido" style="width:100%;height:100%;object-fit:cover;display:block;">
+          <span class="book-type-badge badge-divulgacion">Divulgación</span>
+        </div>
+        <div class="book-body">
+          <p class="book-title">El Higgs, el universo líquido y el Gran Colisionador de Hadrones</p>
+          <p class="book-author">Gerardo Herrera Corral (CINVESTAV)</p>
+          <p class="book-meta">Fondo de Cultura Económica · 2014 · 231 pp.</p>
+          <p class="book-desc">Explora el bosón de Higgs, el LHC y la naturaleza líquida del universo temprano. Finalista del Premio Internacional de Divulgación de la Ciencia Ruy Pérez Tamayo 2012.</p>
+          <a class="book-link" href="https://www.amazon.com.mx/universo-líquido-Colisionador-Hadrones-Ciencia-ebook/dp/B09J23R6XP/" target="_blank">Ver en Amazon →</a>
+        </div>
+      </div>
+
+      <div class="book-card" data-cat="divulgacion" data-search="universo historia grande jamas contada gerardo herrera corral taurus">
+        <div class="book-cover" style="padding:0;background:#222;">
+          <img src="assets/img/libros/cover-universo-historia.jpg" alt="Universo: la historia más grande jamás contada" style="width:100%;height:100%;object-fit:cover;display:block;">
+          <span class="book-type-badge badge-divulgacion">Divulgación</span>
+        </div>
+        <div class="book-body">
+          <p class="book-title">Universo: la historia más grande jamás contada</p>
+          <p class="book-author">Gerardo Herrera Corral (CINVESTAV)</p>
+          <p class="book-meta">Taurus · 2016</p>
+          <p class="book-desc">Un viaje en reversa por la historia del cosmos, desde la conciencia humana hasta el Big Bang hace 13,800 millones de años. Cronista: el físico mexicano colaborador del experimento ALICE en el CERN.</p>
+          <a class="book-link" href="https://www.amazon.com.mx/Universo-historia-grande-jamás-contada-ebook/dp/B01992QOQ8/" target="_blank">Ver en Amazon →</a>
+        </div>
+      </div>
+
+      <div class="book-card" data-cat="divulgacion" data-search="agujeros negros ondas gravitacionales mirada profunda universo gerardo herrera corral sexto piso">
+        <div class="book-cover" style="padding:0;background:#222;">
+          <img src="assets/img/libros/cover-agujeros-negros.jpg" alt="Agujeros negros y ondas gravitacionales" style="width:100%;height:100%;object-fit:cover;display:block;">
+          <span class="book-type-badge badge-divulgacion">Divulgación</span>
+        </div>
+        <div class="book-body">
+          <p class="book-title">Agujeros negros y ondas gravitacionales. Una mirada profunda al universo</p>
+          <p class="book-author">Gerardo Herrera Corral (CINVESTAV)</p>
+          <p class="book-meta">Sexto Piso · 2019</p>
+          <p class="book-desc">Explora dos de los fenómenos más extremos del cosmos: los agujeros negros y las ondas gravitacionales. Una obra que combina rigor científico con narrativa accesible para el público general.</p>
+          <a class="book-link" href="https://www.amazon.com.mx/Agujeros-negros-ondas-gravitacionales-profunda-ebook/dp/B081ZHGYZF/" target="_blank">Ver en Amazon →</a>
+        </div>
+      </div>
+
+      <div class="book-card" data-cat="divulgacion" data-search="azaroso arte engaño estadística gerardo herrera corral">
+        <div class="book-cover" style="padding:0;background:#222;">
+          <img src="assets/img/libros/cover-azaroso-arte.jpg" alt="El azaroso arte del engaño" style="width:100%;height:100%;object-fit:cover;display:block;">
+          <span class="book-type-badge badge-divulgacion">Divulgación</span>
+        </div>
+        <div class="book-body">
+          <p class="book-title">El azaroso arte del engaño. Historias del mundo de la casualidad y la estadística</p>
+          <p class="book-author">Gerardo Herrera Corral (CINVESTAV)</p>
+          <p class="book-meta">2018</p>
+          <p class="book-desc">Un recorrido fascinante por el mundo de la probabilidad, el azar y la estadística, contado a través de historias y anécdotas que revelan cómo los números pueden sorprender e incluso engañar.</p>
+          <a class="book-link" href="https://www.amazon.com.mx/azaroso-arte-del-engaño-estadística-ebook/dp/B079SP7CB6/" target="_blank">Ver en Amazon →</a>
+        </div>
+      </div>
+
+    </div><!-- /divulgacion grid -->
+
+    <!-- ══ JUVENIL / GENERAL ══ -->
+    <div class="sec-header">
+      <div class="sec-line"></div>
+      <span class="sec-label">Juvenil / Público general</span>
+      <div class="sec-line"></div>
+    </div>
+
+    <div class="books-grid" id="booksGrid3">
+
+      <div class="book-card" data-cat="juvenil" data-search="muchacho soñaba boson higgs lorenzo diaz cruz buap">
+        <div class="book-cover" style="padding:0;background:#222;">
+          <img src="assets/img/libros/cover-muchacho-higgs.jpg" alt="El muchacho que soñaba con el bosón de Higgs" style="width:100%;height:100%;object-fit:cover;display:block;">
+          <span class="book-type-badge badge-juvenil">Juvenil</span>
+        </div>
+        <div class="book-body">
+          <p class="book-title">El muchacho que soñaba con el bosón de Higgs</p>
+          <p class="book-author">J. Lorenzo Díaz-Cruz (BUAP)</p>
+          <p class="book-meta">ISBN 607-988-533-6</p>
+          <p class="book-desc">Una obra que responde de forma accesible qué es el bosón de Higgs y por qué ocupa un lugar clave en nuestra comprensión del universo. Pensada para lectores jóvenes y público general.</p>
+          <a class="book-link" href="https://www.amazon.com/-/es/muchacho-que-soñaba-bosón-Higgs/dp/6079885336" target="_blank">Ver en Amazon →</a>
+        </div>
+      </div>
+
+    </div><!-- /juvenil grid -->
+
+    <div id="noResults" class="no-results" style="display:none;">Sin resultados para esa búsqueda.</div>
+
+  </main>
+
+  <footer>
+    <span>© 2025 División de Partículas y Campos · Sociedad Mexicana de Física</span>
+    <span>
+      <a href="index.html">Inicio</a> ·
+      <a href="mailto:dpyc.smf.adms@gmail.com">dpyc.smf.adms@gmail.com</a>
+    </span>
+  </footer>
+
+  <script>
+    const allCards = () => document.querySelectorAll('.book-card');
+    const countTag = document.getElementById('countTag');
+
+    function updateCount() {
+      const visible = [...allCards()].filter(c => !c.classList.contains('hidden')).length;
+      countTag.textContent = `${visible} publicación${visible !== 1 ? 'es' : ''}`;
+      document.getElementById('noResults').style.display = visible === 0 ? 'block' : 'none';
+    }
+
+    let activeCat = 'all';
+    let searchTerm = '';
+
+    function applyFilters() {
+      allCards().forEach(card => {
+        const catOk = activeCat === 'all' || card.dataset.cat === activeCat;
+        const searchOk = !searchTerm || card.dataset.search.includes(searchTerm) || card.querySelector('.book-title').textContent.toLowerCase().includes(searchTerm) || card.querySelector('.book-author').textContent.toLowerCase().includes(searchTerm);
+        card.classList.toggle('hidden', !(catOk && searchOk));
+      });
+      updateCount();
+    }
+
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        activeCat = btn.dataset.cat;
+        applyFilters();
+      });
+    });
+
+    document.getElementById('searchInput').addEventListener('input', e => {
+      searchTerm = e.target.value.trim().toLowerCase();
+      applyFilters();
+    });
+
+    updateCount();
+  </script>
+</body>
+</html>

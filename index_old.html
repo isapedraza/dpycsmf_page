@@ -35,47 +35,96 @@
 
     /* ══ NAVBAR ══ */
     nav.topnav {
-      position: fixed; top: 0; left: 0; right: 0;
-      z-index: 1030;
-      background: rgba(250,248,244,0.97) !important;
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: var(--nav-h);
+      z-index: 1000;
+      background: rgba(250,248,244,0.96);
       backdrop-filter: blur(10px);
-      border-bottom: 1px solid var(--border) !important;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
       padding: 0 1.5rem;
     }
     .nav-brand {
-      font-family: 'Playfair Display', serif !important;
-      font-size: 1rem !important; color: var(--ink) !important;
-      text-decoration: none !important;
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      color: var(--ink);
+      text-decoration: none;
+      white-space: nowrap;
+      margin-right: 1.5rem;
+      flex-shrink: 0;
     }
     .nav-brand span { color: var(--gold); }
-    .dpyc-nav-link {
-      font-size: 0.8rem !important;
-      color: var(--ink-soft) !important;
-      font-family: 'DM Sans', sans-serif !important;
+
+    .nav-menu {
+      display: flex;
+      align-items: center;
+      list-style: none;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .nav-menu::-webkit-scrollbar { display: none; }
+    .nav-menu > li { position: relative; }
+
+    .nav-menu > li > a,
+    .nav-menu > li > button {
+      display: block;
+      padding: 0 0.75rem;
+      height: var(--nav-h);
+      line-height: var(--nav-h);
+      font-size: 0.8rem;
+      color: var(--ink-soft);
+      text-decoration: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
       white-space: nowrap;
-      padding-left: 0.6rem !important;
-      padding-right: 0.6rem !important;
+      transition: color 0.15s;
     }
-    .dpyc-nav-link:hover, .dpyc-nav-link:focus {
-      color: var(--ink) !important; text-decoration: none !important;
+    .nav-menu > li > a:hover,
+    .nav-menu > li > button:hover,
+    .nav-menu > li.open > button { color: var(--ink); }
+    .nav-menu > li > a.highlight { color: var(--gold); font-weight: 500; }
+
+    .dropdown-panel {
+      display: none;
+      position: absolute;
+      top: calc(var(--nav-h) - 1px);
+      left: 0;
+      min-width: 210px;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-top: 2px solid var(--gold);
+      border-radius: 0 0 10px 10px;
+      padding: 0.4rem 0;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.09);
     }
-    .dpyc-nav-link.highlight { color: var(--gold) !important; font-weight: 500; }
-    .dpyc-dropdown-menu {
-      border-top: 2px solid var(--gold) !important;
-      border-radius: 0 0 10px 10px !important;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.12) !important;
-      border-color: var(--border) !important;
-      min-width: 220px;
-      padding: 0.4rem 0 !important;
+    .nav-menu > li.open .dropdown-panel { display: block; }
+    .dropdown-panel a {
+      display: block;
+      padding: 0.55rem 1.1rem;
+      font-size: 0.8rem;
+      color: var(--ink-soft);
+      text-decoration: none;
+      transition: background 0.1s, color 0.1s;
     }
-    .dpyc-dropdown-menu .dropdown-item {
-      font-size: 0.8rem !important;
-      color: var(--ink-soft) !important;
-      padding: 0.55rem 1.1rem !important;
-    }
-    .dpyc-dropdown-menu .dropdown-item:hover {
-      background: var(--gold-pale) !important;
-      color: var(--ink) !important;
+    .dropdown-panel a:hover { background: var(--gold-pale); color: var(--ink); }
+    .dropdown-panel .sep { height: 1px; background: var(--border); margin: 0.3rem 0; }
+    .caret { font-size: 0.6rem; margin-left: 3px; opacity: 0.5; }
+
+    .nav-toggle {
+      display: none;
+      margin-left: auto;
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--ink);
+      padding: 5px 10px;
+      cursor: pointer;
+      font-size: 1rem;
     }
 
     /* ══ HERO ══ */
@@ -322,99 +371,91 @@
       .hero-inner { grid-template-columns: 1fr; }
       .hero-right { display: none; }
       .about-grid, .hl-grid { grid-template-columns: 1fr; }
-      .dpyc-nav-collapse { display: none; }
-      .dpyc-nav-collapse.open {
+      .nav-menu { display: none; }
+      .nav-toggle { display: block; }
+      nav.topnav.open .nav-menu {
         display: flex; flex-direction: column;
         position: absolute; top: var(--nav-h); left: 0; right: 0;
-        background: var(--white); border-bottom: 1px solid var(--border);
-        padding: 0.5rem 0 1rem; z-index: 1999;
+        background: var(--white);
+        border-bottom: 1px solid var(--border);
+        padding: 0.5rem 0 1rem; align-items: stretch;
       }
-      .dpyc-nav-collapse.open .dpyc-dropdown-menu {
-        position: static; border: none; box-shadow: none;
-        border-top: 1px solid var(--border);
-        background: var(--cream); border-radius: 0;
-        padding-left: 1rem;
+      nav.topnav.open .nav-menu > li > a,
+      nav.topnav.open .nav-menu > li > button {
+        height: auto; line-height: 1; padding: 0.7rem 1.5rem;
       }
-      .dpyc-nav-collapse.open .dpyc-dropdown.show .dpyc-dropdown-menu { display: block; }
+      .dropdown-panel {
+        position: static; border-radius: 0; box-shadow: none;
+        border: none; border-top: 1px solid var(--border);
+        background: var(--cream); padding-left: 1rem;
+      }
     }
   </style>
-  <!-- Bootstrap + Site CSS -->
-  <link rel="stylesheet" href="css/styles.css"/>
 </head>
 <body>
 
   <!-- ══ NAVBAR ══ -->
-  <nav class="navbar navbar-expand-lg topnav" id="topnav">
-    <div class="container-fluid px-0">
-      <a class="nav-brand navbar-brand" href="index.html">DPyC · <span>SMF</span></a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navCollapse" aria-controls="navCollapse" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navCollapse">
-        <ul class="navbar-nav ms-auto align-items-lg-center">
+  <nav class="topnav" id="topnav">
+    <a class="nav-brand" href="index.html">DPyC · <span>SMF</span></a>
+    <button class="nav-toggle" onclick="document.getElementById('topnav').classList.toggle('open')">☰</button>
+    <ul class="nav-menu">
 
-          <li class="nav-item dropdown">
-            <a class="dpyc-nav-link nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Quiénes Somos</a>
-            <ul class="dropdown-menu dpyc-dropdown-menu">
-              <li><a class="dropdown-item" href="page-about.html">Acerca de la DPyC</a></li>
-              <li><hr class="dropdown-divider"></li>
-              <li><a class="dropdown-item" href="page-teamv2.html">Mandatos y Coordinaciones</a></li>
-              <li><a class="dropdown-item" href="page-members.html">Instituciones y representantes</a></li>
-              <li><a class="dropdown-item" href="page-presidentes-DPyC.html">Lista de presidentes anteriores</a></li>
-            </ul>
-          </li>
 
- <!--         <li class="nav-item dropdown">
-            <a class="dpyc-nav-link nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Miembros</a>
-            <ul class="dropdown-menu dpyc-dropdown-menu">
-              <li><a class="dropdown-item" href="page-members.html">Instituciones y representantes</a></li>
-            </ul>
-          </li>
+      <li><a class="highlight" href="page-about.html">Quiénes Somos </a></li>
+
+ <!--     <li>
+        <button onclick="toggleDD(this)">Quiénes Somos <span class="caret">▾</span></button>
+        <div class="dropdown-panel">
+          <a href="page-about.html">Acerca de la DPyC</a>
+          <div class="sep"></div>
+          <a href="page-teamv2.html">Mandatos y Coordinaciones</a>
+          <a href="page-presidentes-DPyC.html">Lista de presidentes anteriores</a>
+        </div>
+      </li>
 -->
-          <li class="nav-item">
-            <a class="dpyc-nav-link nav-link highlight" href="medal_history_page.html">Medalla DPyC</a>
-          </li>
-<!--         
-          <li class="nav-item dropdown">
-            <a class="dpyc-nav-link nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Mandatos/Organización</a>
-            <ul class="dropdown-menu dpyc-dropdown-menu">
-              <li><a class="dropdown-item" href="page-teamv2.html">Organización 2025–2027</a></li>
-              <li><a class="dropdown-item" href="page-presidentes-DPyC.html">Lista de presidentes anteriores</a></li>
-            </ul>
-          </li>
+      <li><a class="highlight" href="page-members.html">Miembros </a></li>
+ <!--     
+      <li>
+        <button onclick="toggleDD(this)">Miembros <span class="caret">▾</span></button>
+        <div class="dropdown-panel">
+          <a href="page-members.html">Instituciones y representantes</a>
+        </div>
+      </li>
 -->
-          <li class="nav-item">
-            <a class="dpyc-nav-link nav-link" href="page-news.html">Noticias</a>
-          </li>
+      <li><a class="highlight" href="medal_history_page.html">Medallas</a></li>
 
-          <li class="nav-item dropdown">
-            <a class="dpyc-nav-link nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Libros/Artículos</a>
-            <ul class="dropdown-menu dpyc-dropdown-menu">
-              <li><a class="dropdown-item" href="page-libros.html">Libros</a></li>
-              <li><a class="dropdown-item" href="page-articulos.html">Artículos</a></li>
-            </ul>
-          </li>
+      <li><a class="highlight" href="page-teamv2.html">Mandatos/Organización</a></li>
+<!--       <li>
+        <button onclick="toggleDD(this)">Mandatos/Organización <span class="caret">▾</span></button>
+        <div class="dropdown-panel">
+          <a href="page-teamv2.html">Organización 2025–2027</a>
+          <a href="page-presidentes-DPyC.html">Lista de presidentes anteriores</a>
+        </div>
+      </li>
+-->
 
-          <li class="nav-item">
-            <a class="dpyc-nav-link nav-link" href="page-research.html">Líneas de Investigación</a>
-          </li>
+      <li><a href="page-news.html">Noticias</a></li>
 
-          <li class="nav-item">
-            <a class="dpyc-nav-link nav-link" href="page-events.html">Eventos</a>
-          </li>
+      <li>
+        <button onclick="toggleDD(this)">Libros <span class="caret">▾</span></button>
+        <div class="dropdown-panel">
+          <a href="page-libros.html">Libros</a>
+        </div>
+      </li>
 
-          <li class="nav-item dropdown">
-            <a class="dpyc-nav-link nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Contáctanos</a>
-            <ul class="dropdown-menu dpyc-dropdown-menu">
-              <li><a class="dropdown-item" href="page-contact.html">Contacto general</a></li>
-              <li><a class="dropdown-item" href="page-acoso.html">Acoso</a></li>
-              <li><a class="dropdown-item" href="page-directory.html">Directorio por institución</a></li>
-            </ul>
-          </li>
+      <li><a href="page-research.html">Líneas de Investigación</a></li>
+      <li><a href="page-events.html">Eventos</a></li>
 
-        </ul>
-      </div>
-    </div>
+      <li>
+        <button onclick="toggleDD(this)">Contáctanos <span class="caret">▾</span></button>
+        <div class="dropdown-panel">
+          <a href="page-contact.html">Contacto general</a>
+          <a href="page-acoso.html">Acoso</a>
+          <a href="page-directory.html">Directorio por institución</a>
+        </div>
+      </li>
+
+    </ul>
   </nav>
 
   <!-- ══ HERO ══ -->
@@ -609,9 +650,17 @@
   </footer>
 
   <script>
+    function toggleDD(btn) {
+      const li = btn.parentElement;
+      const isOpen = li.classList.contains('open');
+      document.querySelectorAll('.nav-menu > li').forEach(l => l.classList.remove('open'));
+      if (!isOpen) li.classList.add('open');
+    }
+    document.addEventListener('click', e => {
+      if (!e.target.closest('.nav-menu')) {
+        document.querySelectorAll('.nav-menu > li').forEach(l => l.classList.remove('open'));
+      }
+    });
   </script>
-  <!-- Bootstrap JS Bundle (includes Popper) + Site JS -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="js/scripts.js"></script>
 </body>
 </html>
