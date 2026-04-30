@@ -190,34 +190,6 @@
     footer a { color: var(--ink-soft); text-decoration: none; }
     footer a:hover { color: var(--gold); }
 
-    /* FB Preview Card */
-    .fb-preview-card {
-      display: block; text-decoration: none; color: var(--ink);
-      border-radius: 14px; overflow: hidden; border: 1px solid var(--border);
-      background: var(--white); transition: box-shadow 0.2s, border-color 0.2s;
-    }
-    .fb-preview-card:hover { box-shadow: 0 6px 20px rgba(0,0,0,0.1); border-color: var(--border-strong); }
-    .fb-preview-img { position: relative; height: 200px; overflow: hidden; background: #111; }
-    .fb-preview-img img { width: 100%; height: 100%; object-fit: cover; object-position: center top; opacity: 0.85; }
-    .fb-play-btn {
-      position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
-      width: 52px; height: 52px; border-radius: 50%;
-      background: rgba(0,0,0,0.65); color: #fff;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.2rem; padding-left: 4px;
-      border: 2px solid rgba(255,255,255,0.8);
-      transition: background 0.15s;
-    }
-    .fb-preview-card:hover .fb-play-btn { background: rgba(0,0,0,0.85); }
-    .fb-preview-body { padding: 0.9rem 1rem; }
-    .fb-preview-source { display: flex; align-items: center; gap: 8px; margin-bottom: 0.6rem; }
-    .fb-source-logo { width: 32px; height: 32px; object-fit: contain; border-radius: 50%; border: 1px solid var(--border); background: var(--cream-dark); padding: 2px; flex-shrink: 0; }
-    .fb-source-name { font-size: 0.78rem; font-weight: 500; color: var(--ink); line-height: 1.2; }
-    .fb-source-sub { font-size: 0.68rem; color: var(--ink-soft); }
-    .fb-preview-title { font-size: 0.9rem; font-weight: 600; color: var(--ink); margin-bottom: 4px; line-height: 1.3; }
-    .fb-preview-desc { font-size: 0.75rem; color: var(--ink-soft); line-height: 1.55; margin-bottom: 8px; }
-    .fb-preview-cta { font-size: 0.75rem; color: var(--gold); font-weight: 500; }
-
     @media (max-width: 640px) {
       .page-header-inner { grid-template-columns: 1fr; }
       .header-icon { display: none; }
@@ -253,35 +225,6 @@
 
   <main>
 
-    <!-- ══ VIDEO 2024 ══ -->
-    <div class="sec-divider">
-      <div class="sec-line"></div>
-      <div style="display:flex;align-items:center;gap:8px;white-space:nowrap;">
-        <span class="sec-label">Edition 2024</span>
-        <span style="font-size:10px;padding:2px 8px;border-radius:999px;background:var(--blue-bg);color:var(--blue);border:1px solid var(--blue-border);font-weight:500;">Past edition</span>
-      </div>
-      <div class="sec-line"></div>
-    </div>
-
-    <a href="https://www.facebook.com/reel/1224715485271620" target="_blank" class="fb-preview-card" style="max-width:560px;margin:0 auto 2.5rem;">
-      <div class="fb-preview-img" style="height:240px;">
-        <img src="assets/img/veranos/veranos2024_preview.png" alt="Video preview — 2024 Summer Experiences" style="object-position:center top;">
-        <div class="fb-play-btn">▶</div>
-      </div>
-      <div class="fb-preview-body">
-        <div class="fb-preview-source">
-          <img src="assets/img/DPyCLogoNoBG.png" alt="DPyC" class="fb-source-logo">
-          <div>
-            <div class="fb-source-name">División de Partículas y Campos · SMF</div>
-            <div class="fb-source-sub">Facebook · Reel · Verano 2024</div>
-          </div>
-        </div>
-        <div class="fb-preview-title">Experiencia de los ganadores 2024</div>
-        <div class="fb-preview-desc">Tú como ellos puedes participar para hacer una estancia de verano experimental. Veranos en el Extranjero 2024 · DPyC-SMF</div>
-        <div class="fb-preview-cta">▶ Ver video en Facebook</div>
-      </div>
-    </a>
-
     <!-- ══ 2026 EDITION ══ -->
     <div class="sec-divider">
       <div class="sec-line"></div>
@@ -291,82 +234,63 @@
       </div>
       <div class="sec-line"></div>
     </div>
-    
-    <div style="background:var(--white);border:1px solid var(--border);border-radius:14px;padding:1.2rem;display:flex;flex-direction:column;gap:0.75rem;">
-        <p style="font-size:0.82rem;color:var(--ink-soft);line-height:1.7;">The second stage took place in person at the <strong style="color:var(--ink)">Universidad Autónoma del Estado de Hidalgo (UAEH)</strong>, in Pachuca, Hidalgo, Mexico, from January 19–21, 2026.</p>
-        <p style="font-size:0.82rem;color:var(--ink-soft);line-height:1.7;">Students participated in intensive courses, problem-solving sessions, and interviews. Six students were selected for stays at international laboratories.</p>
-        <a href="https://indico.nucleares.unam.mx/event/2507/" target="_blank" style="font-size:0.8rem;color:var(--gold);font-weight:500;text-decoration:none;">📅 View on Indico →</a>
-      </div>
 
-    
-      <div class="edition-hero">
-      
+    <div class="edition-hero">
+      <!-- Photo -->
       <div class="edition-photo">
-        <img src="assets/img/veranos/veranos2026_SecondStage.jpeg" alt="Second stage participants — UAEH Pachuca, January 2026">
+        <img src="veranos2026_ganadores.jpeg" alt="Second stage participants — UAEH Pachuca, January 2026">
         <div class="edition-photo-caption">Second stage participants · Universidad Autónoma del Estado de Hidalgo, Pachuca · January 19–21, 2026</div>
       </div>
-
-      
-      <div class="edition-photo">
-        <img src="assets/img/veranos/veranos2026_ganadores.jpeg" alt="Second stage participants — UAEH Pachuca, January 2026">
-        <div class="edition-photo-caption">Selected students to be nominated to the corresponding laboratories</div>
+      <!-- Facebook video embed -->
+      <div class="edition-video">
+        <div class="fb-fallback">
+          <span style="font-size:2rem;">📹</span>
+          <span>Watch the video of the 2026 edition</span>
+          <a href="https://www.facebook.com/reel/1224715485271620" target="_blank">▶ Watch on Facebook →</a>
+        </div>
+        <div class="edition-video-caption">DPyC · Veranos en el Extranjero 2026 · Facebook</div>
       </div>
-
     </div>
- 
-
-    
 
     <!-- WINNERS -->
     <h3 style="font-family:'Playfair Display',serif;font-size:1rem;font-weight:600;color:var(--ink);margin-bottom:1rem;">Selected students — 2026</h3>
     <div class="winners-grid">
       <div class="winner-card">
-        <img class="lab-logo-img" src="assets/img/veranos/logo-desy.png" alt="DESY" style="background:var(--cream-dark);padding:4px;border-radius:4px;">
+        <img class="lab-logo-img" src="https://www.desy.de/sites/designsystem/files/2024-09/DESY_logo_web_darkblue.svg" alt="DESY" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+        <span class="winner-lab-icon" style="display:none">🇩🇪</span>
         <div class="winner-name">Indra Itzel de León Cortés</div>
         <div class="winner-lab">DESY</div>
       </div>
       <div class="winner-card">
-        <img class="lab-logo-img" src="assets/img/veranos/logo-jlab.png" alt="JLab" style="background:var(--cream-dark);padding:4px;border-radius:4px;">
+        <img class="lab-logo-img" src="https://www.jlab.org/themes/custom/jlab/images/jlab-logo.svg" alt="JLab" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+        <span class="winner-lab-icon" style="display:none">🇺🇸</span>
         <div class="winner-name">Joanne Michelle Rodríguez Romo</div>
         <div class="winner-lab">JLab</div>
       </div>
       <div class="winner-card">
-        <img class="lab-logo-img" src="assets/img/veranos/logo-bnl.png" alt="BNL" style="background:var(--cream-dark);padding:4px;border-radius:4px;">
+        <img class="lab-logo-img" src="https://www.bnl.gov/assets/images/bnl-logo.svg" alt="BNL" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+        <span class="winner-lab-icon" style="display:none">🇺🇸</span>
         <div class="winner-name">Samantha Cervantez Neri</div>
         <div class="winner-lab">BNL</div>
       </div>
       <div class="winner-card">
-        <img class="lab-logo-img" src="assets/img/veranos/logo-snolab.png" alt="SNOLAB" style="background:var(--cream-dark);padding:4px;border-radius:4px;">
+        <img class="lab-logo-img" src="https://www.snolab.ca/wp-content/uploads/2021/02/SNOLAB-logo.png" alt="SNOLAB" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+        <span class="winner-lab-icon" style="display:none">🇨🇦</span>
         <div class="winner-name">Martin Sandoval Blanco</div>
         <div class="winner-lab">SNOLAB</div>
       </div>
-      </div>
+    </div>
 
-    <!-- CERN Shortlist — remaining candidates -->
+    <!-- CERN Shortlist -->
     <div class="shortlist-box">
-      <h4>🔵 CERN shortlist <span style="font-size:0.75rem;font-weight:400;color:var(--ink-soft);">— candidates not selected</span></h4>
+      <h4>🔵 CERN shortlist <span style="font-size:0.75rem;font-weight:400;color:var(--ink-soft);">— 2 places to be awarded</span></h4>
       <div class="shortlist-list">
-        <div class="shortlist-item"><div class="shortlist-dot"></div>Cesar Nabor Pacheco</div>
-        <div class="shortlist-item"><div class="shortlist-dot"></div>Carlos Elishah Candanosa Salazar</div>
-        <div class="shortlist-item"><div class="shortlist-dot"></div>Mateo Lugo Riesenberger</div>
         <div class="shortlist-item"><div class="shortlist-dot"></div>Mirian Ahuatzi Corona</div>
+        <div class="shortlist-item"><div class="shortlist-dot"></div>Carlos Elishah Candanosa Salazar</div>
+        <div class="shortlist-item"><div class="shortlist-dot"></div>Cesar Nabor Pacheco</div>
+        <div class="shortlist-item"><div class="shortlist-dot"></div>Mateo Lugo Riesenberger</div>
         <div class="shortlist-item"><div class="shortlist-dot"></div>Rodrigo Alejandro Lopez Flores</div>
       </div>
-    </div>
-
-    <h3 style="font-family:'Playfair Display',serif;font-size:1rem;font-weight:600;color:var(--ink);margin-bottom:1rem;">CERN selected students — 2026</h3>
-    <div class="winners-grid">
-    <div class="winner-card">
-        <img class="lab-logo-img" src="assets/img/veranos/logo-cern.png" alt="CERN" style="background:var(--cream-dark);padding:4px;border-radius:4px;">
-        <div class="winner-name">Mirian Ahuatzi Corona</div>
-        <div class="winner-lab">CERN</div>
-      </div>
-      <div class="winner-card">
-        <img class="lab-logo-img" src="assets/img/veranos/logo-cern.png" alt="CERN" style="background:var(--cream-dark);padding:4px;border-radius:4px;">
-        <div class="winner-name">Cesar Nabor Pacheco</div>
-        <div class="winner-lab">CERN</div>
-      </div>
-    </div>
     </div>
 
     <!-- TIMELINE 2026 -->
@@ -406,8 +330,7 @@
             <th>Laboratory</th>
             <th>Country</th>
             <th>Deadline</th>
-            <th>Additional Registration</th>
-            <th>Final Lab Decision</th>
+            <th>Registration</th>
           </tr>
         </thead>
         <tbody>
@@ -416,35 +339,30 @@
             <td>Switzerland / France</td>
             <td>January 26, 2026</td>
             <td><a href="https://home.cern/summer-student-programme" target="_blank">CERN Summer Student 2026 →</a></td>
-            <td>End of April, 2026</td>
           </tr>
           <tr>
             <td><span class="flag">🇩🇪</span><strong>DESY</strong></td>
             <td>Germany</td>
             <td>January 31, 2026</td>
             <td><a href="https://www.desy.de/research/student_programme/summer_students/index_eng.html" target="_blank">DESY Summer Student 2026 →</a></td>
-            <td>Mid-April, 2026</td>
           </tr>
           <tr>
             <td><span class="flag">🇺🇸</span><strong>JLab</strong></td>
             <td>United States</td>
             <td>Early February</td>
             <td><span class="dpyc-badge">Handled by the DPyC</span></td>
-            <td>Mid-February</td>
           </tr>
           <tr>
             <td><span class="flag">🇺🇸</span><strong>BNL</strong></td>
             <td>United States</td>
             <td>Early February</td>
             <td><span class="dpyc-badge">Handled by the DPyC</span></td>
-             <td>Mid-February</td>
           </tr>
           <tr>
             <td><span class="flag">🇨🇦</span><strong>SNOLAB</strong></td>
             <td>Canada</td>
             <td>Early March</td>
             <td><span class="dpyc-badge">Handled by the DPyC</span></td>
-            <td>Mid-February</td>
           </tr>
         </tbody>
       </table>
@@ -461,35 +379,40 @@
     <div class="sec-divider"><div class="sec-line"></div><span class="sec-label">Participating laboratories</span><div class="sec-line"></div></div>
     <div class="labs-grid">
       <div class="lab-card">
-        <img class="lab-logo-img" src="assets/img/veranos/logo-jlab.png" alt="JLab" style="background:var(--cream-dark);padding:4px;border-radius:4px;">
+        <img class="lab-logo-img" src="https://www.jlab.org/themes/custom/jlab/images/jlab-logo.svg" alt="JLab" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+        <span class="lab-flag" style="display:none">🇺🇸</span>
         <div class="lab-name">JLab</div>
         <div class="lab-country">🇺🇸 United States</div>
         <div class="lab-topic">Accelerator Physics</div>
         <a class="lab-prog-link" href="https://www.jlab.org/div_dept/train/ug_prog/suli.html" target="_blank">SULI Program →</a>
       </div>
       <div class="lab-card">
-        <img class="lab-logo-img" src="assets/img/veranos/logo-bnl.png" alt="BNL" style="background:var(--cream-dark);padding:4px;border-radius:4px;">
+        <img class="lab-logo-img" src="https://www.bnl.gov/assets/images/bnl-logo.svg" alt="BNL" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+        <span class="lab-flag" style="display:none">🇺🇸</span>
         <div class="lab-name">BNL</div>
         <div class="lab-country">🇺🇸 United States</div>
         <div class="lab-topic">BELLE Experiment</div>
         <a class="lab-prog-link" href="https://www.bnl.gov/education/programs/program.php?q=116" target="_blank">SULI – BNL →</a>
       </div>
       <div class="lab-card">
-        <img class="lab-logo-img" src="assets/img/veranos/logo-snolab.png" alt="SNOLAB" style="background:var(--cream-dark);padding:4px;border-radius:4px;">
+        <img class="lab-logo-img" src="https://www.snolab.ca/wp-content/uploads/2021/02/SNOLAB-logo.png" alt="SNOLAB" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+        <span class="lab-flag" style="display:none">🇨🇦</span>
         <div class="lab-name">SNOLAB</div>
         <div class="lab-country">🇨🇦 Canada</div>
         <div class="lab-topic">Neutrino & Dark Matter</div>
         <a class="lab-prog-link" href="https://www.snolab.ca/education/susi" target="_blank">SuSi Program →</a>
       </div>
       <div class="lab-card">
-        <img class="lab-logo-img" src="assets/img/veranos/logo-cern.png" alt="CERN" style="background:var(--cream-dark);padding:4px;border-radius:4px;">
+        <img class="lab-logo-img" src="https://home.cern/sites/default/files/2018-10/cern-logo_0.png" alt="CERN" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+        <span class="lab-flag" style="display:none">🇨🇭</span>
         <div class="lab-name">CERN</div>
         <div class="lab-country">🇨🇭 Switzerland</div>
         <div class="lab-topic">Particle Physics</div>
         <a class="lab-prog-link" href="https://home.cern/summer-student-programme" target="_blank">Summer Student 2026 →</a>
       </div>
       <div class="lab-card">
-        <img class="lab-logo-img" src="assets/img/veranos/logo-desy.png" alt="DESY" style="background:var(--cream-dark);padding:4px;border-radius:4px;">
+        <img class="lab-logo-img" src="https://www.desy.de/sites/designsystem/files/2024-09/DESY_logo_web_darkblue.svg" alt="DESY" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+        <span class="lab-flag" style="display:none">🇩🇪</span>
         <div class="lab-name">DESY</div>
         <div class="lab-country">🇩🇪 Germany</div>
         <div class="lab-topic">Particle Physics</div>
