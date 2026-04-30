@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Comité Técnico Consultivo · DPyC SMF</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/x-icon" href="assets/img/favicon.png"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --cream: #faf8f4; --cream-dark: #f2ede4;
+      --gold: #b8860b; --gold-light: #d4a82a; --gold-pale: #f5edd0;
+      --ink: #1a1a1a; --ink-mid: #3d3d3d; --ink-soft: #6b6b6b;
+      --border: #e0d8cc; --border-strong: #c8bfb0; --white: #ffffff;
+      --nav-h: 60px;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', system-ui, sans-serif; color: var(--ink); background: var(--cream); }
+
+    nav.topnav {
+      position: fixed; top: 0; left: 0; right: 0; height: var(--nav-h);
+      z-index: 1000; background: rgba(250,248,244,0.96);
+      backdrop-filter: blur(10px); border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; padding: 0 1.5rem; gap: 1rem;
+    }
+    .nav-brand { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--ink); text-decoration: none; white-space: nowrap; flex-shrink: 0; }
+    .nav-brand span { color: var(--gold); }
+    .nav-spacer { flex: 1; }
+    .nav-back { font-size: 0.8rem; color: var(--ink-soft); text-decoration: none; transition: color 0.15s; }
+    .nav-back:hover { color: var(--gold); }
+
+    /* PAGE HEADER */
+    .page-header { padding-top: var(--nav-h); background: var(--white); border-bottom: 1px solid var(--border); position: relative; overflow: hidden; }
+    .page-header::before {
+      content: ''; position: absolute; inset: 0;
+      background: repeating-linear-gradient(-45deg, transparent, transparent 40px, rgba(184,134,11,0.04) 40px, rgba(184,134,11,0.04) 41px);
+      pointer-events: none;
+    }
+    .page-header-inner { max-width: 1000px; margin: 0 auto; padding: 2.5rem 2rem; position: relative; z-index: 1; }
+    .page-eyebrow { font-size: 11px; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.5rem; }
+    .page-header h1 { font-family: 'Playfair Display', serif; font-size: clamp(1.6rem, 3vw, 2.4rem); font-weight: 600; color: var(--ink); margin-bottom: 0.5rem; }
+    .page-header-desc { font-size: 0.9rem; color: var(--ink-soft); line-height: 1.75; max-width: 600px; }
+
+    /* STATS BAR */
+    .stats-bar {
+      background: var(--gold-pale); border-bottom: 1px solid #e8d9a8;
+      padding: 0.9rem 2rem; display: flex; justify-content: center; gap: 3rem; flex-wrap: wrap;
+    }
+    .stat { text-align: center; }
+    .stat-num { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 600; color: var(--gold); display: block; }
+    .stat-label { font-size: 10px; color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.08em; }
+
+    /* MAIN */
+    main { max-width: 1000px; margin: 0 auto; padding: 2.5rem 2rem 5rem; }
+
+    /* SECTION DIVIDER */
+    .sec-divider { display: flex; align-items: center; gap: 1rem; margin: 2.5rem 0 1.25rem; }
+    .sec-divider:first-child { margin-top: 0; }
+    .sec-line { flex: 1; height: 1px; background: var(--border); }
+    .sec-label-wrap { display: flex; align-items: center; gap: 8px; white-space: nowrap; }
+    .sec-icon { font-size: 1rem; }
+    .sec-label { font-size: 11px; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); }
+    .sec-badge { font-size: 10px; padding: 2px 8px; border-radius: 999px; background: var(--gold-pale); color: var(--gold); border: 1px solid #e8d9a8; font-weight: 500; }
+
+    /* EXPROFESO CARDS */
+    .exprofeso-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+    .exprofeso-card {
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: 14px; overflow: hidden;
+      transition: box-shadow 0.2s, border-color 0.2s;
+    }
+    .exprofeso-card:hover { box-shadow: 0 4px 18px rgba(0,0,0,0.07); border-color: var(--border-strong); }
+    .exprofeso-img { height: 160px; background: var(--cream-dark); position: relative; overflow: hidden; }
+    .exprofeso-img img { width: 100%; height: 100%; object-fit: cover; object-position: top center; }
+    .exprofeso-role-badge {
+      position: absolute; top: 10px; left: 10px;
+      background: rgba(255,255,255,0.92); border: 1px solid var(--border);
+      border-radius: 999px; font-size: 0.7rem; padding: 3px 10px;
+      color: var(--gold); font-weight: 500;
+    }
+    .exprofeso-body { padding: 1rem 1.2rem; }
+    .exprofeso-name { font-size: 1rem; font-weight: 500; color: var(--ink); margin-bottom: 2px; }
+    .exprofeso-role { font-size: 0.78rem; color: var(--gold); font-weight: 500; margin-bottom: 4px; }
+    .exprofeso-note { font-size: 0.75rem; color: var(--ink-soft); line-height: 1.6; }
+
+    /* REPS TABLE */
+    .table-wrap { background: var(--white); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; }
+    table { width: 100%; border-collapse: collapse; }
+    thead th {
+      font-size: 0.73rem; font-weight: 500; color: var(--ink-soft);
+      text-align: left; padding: 0.8rem 1rem;
+      background: var(--cream-dark); border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+    }
+    tbody tr { border-bottom: 1px solid var(--border); transition: background 0.1s; }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: var(--cream); }
+    tbody td { padding: 0.75rem 1rem; font-size: 0.84rem; color: var(--ink-mid); vertical-align: middle; }
+
+    .rep-cell { display: flex; align-items: center; gap: 8px; }
+    .rep-avatar {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: var(--gold-pale); border: 1px solid #e8d9a8;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.65rem; font-weight: 500; color: var(--gold); flex-shrink: 0;
+    }
+    .rep-name { font-weight: 500; color: var(--ink); }
+    .rep-none { color: var(--border-strong); font-style: italic; font-size: 0.78rem; }
+    .inst-name { font-weight: 500; color: var(--ink); }
+    .unit-name { font-size: 0.75rem; color: var(--ink-soft); margin-top: 1px; }
+
+    /* EX-PRESIDENTS LIST */
+    .expres-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 0.75rem; }
+    .expres-card {
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: 10px; padding: 0.75rem 1rem;
+      display: flex; align-items: center; gap: 10px;
+      transition: box-shadow 0.15s, border-color 0.15s;
+    }
+    .expres-card:hover { box-shadow: 0 3px 12px rgba(0,0,0,0.06); border-color: var(--border-strong); }
+    .expres-photo {
+      width: 44px; height: 44px; border-radius: 50%;
+      object-fit: cover; object-position: top center;
+      border: 1px solid var(--border); flex-shrink: 0;
+      background: var(--cream-dark);
+    }
+    .expres-avatar {
+      width: 44px; height: 44px; border-radius: 50%;
+      background: var(--cream-dark); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.75rem; font-weight: 500; color: var(--ink-soft); flex-shrink: 0;
+    }
+    .expres-info { flex: 1; min-width: 0; }
+    .expres-name { font-size: 0.88rem; font-weight: 500; color: var(--ink); line-height: 1.3; }
+    .expres-name.qepd { color: var(--ink-soft); font-style: italic; }
+    .expres-period { font-size: 0.72rem; color: var(--gold); font-weight: 500; margin-top: 1px; }
+    .expres-badge {
+      font-size: 9px; padding: 1px 6px; border-radius: 3px;
+      background: var(--cream-dark); color: var(--ink-soft); border: 1px solid var(--border);
+      white-space: nowrap; flex-shrink: 0; align-self: flex-start; margin-top: 2px;
+    }
+
+    /* INFO BOX */
+    .info-box {
+      background: var(--cream-dark); border: 1px solid var(--border);
+      border-left: 3px solid var(--gold); border-radius: 0 10px 10px 0;
+      padding: 0.9rem 1.1rem; font-size: 0.82rem; color: var(--ink-soft);
+      line-height: 1.7; margin-bottom: 1.5rem;
+    }
+    .info-box a { color: var(--gold); text-decoration: none; }
+    .info-box a:hover { text-decoration: underline; }
+
+    footer { background: var(--white); border-top: 1px solid var(--border); padding: 1.4rem 2rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; font-size: 0.78rem; color: var(--ink-soft); }
+    footer a { color: var(--ink-soft); text-decoration: none; }
+    footer a:hover { color: var(--gold); }
+
+    @media (max-width: 640px) {
+      .exprofeso-grid { grid-template-columns: 1fr; }
+      .expres-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="topnav">
+    <a class="nav-brand" href="index.html">DPyC · <span>SMF</span></a>
+    <div class="nav-spacer"></div>
+    <a class="nav-back" href="page-teamv2.html">← Organización</a>
+    &nbsp;·&nbsp;
+    <a class="nav-back" href="index.html">Inicio</a>
+  </nav>
+
+  <div class="page-header">
+    <div class="page-header-inner">
+      <p class="page-eyebrow">División de Partículas y Campos · SMF</p>
+      <h1>Comité Técnico Consultivo</h1>
+      <p class="page-header-desc">El CTC es el órgano colegiado de asesoría de la DPyC. Está integrado por miembros exprofeso (Presidencia y Vicepresidencia), los representantes institucionales de las instituciones miembro, y los ex-presidentes de la División en calidad de miembros ex-oficio.</p>
+    </div>
+  </div>
+
+  <div class="stats-bar">
+    <div class="stat"><span class="stat-num">2</span><span class="stat-label">miembros exprofeso</span></div>
+    <div class="stat"><span class="stat-num">19</span><span class="stat-label">representantes institucionales</span></div>
+    <div class="stat"><span class="stat-num">21</span><span class="stat-label">ex-presidentes (ex-oficio)</span></div>
+  </div>
+
+  <main>
+
+    <!-- ══ EXPROFESO ══ -->
+    <div class="sec-divider">
+      <div class="sec-line"></div>
+      <div class="sec-label-wrap">
+        <span class="sec-icon">⭐</span>
+        <span class="sec-label">Miembros exprofeso</span>
+        <span class="sec-badge">Por cargo</span>
+      </div>
+      <div class="sec-line"></div>
+    </div>
+
+    <div class="info-box">
+      La Presidencia y la Vicepresidencia de la DPyC son miembros exprofeso del CTC durante su mandato (2025–2027).
+    </div>
+
+    <div class="exprofeso-grid">
+      <div class="exprofeso-card">
+        <div class="exprofeso-img">
+          <img src="assets/img/presidentsDPyC/PEDRAZAIsabel.png" alt="Isabel Pedraza">
+          <span class="exprofeso-role-badge">Presidencia</span>
+        </div>
+        <div class="exprofeso-body">
+          <p class="exprofeso-name">Isabel Pedraza</p>
+          <p class="exprofeso-role">Presidenta de la DPyC · Miembro exprofeso del CTC</p>
+          <p class="exprofeso-note">Benemérita Universidad Autónoma de Puebla · Mandato 2025–2027</p>
+        </div>
+      </div>
+      <div class="exprofeso-card">
+        <div class="exprofeso-img">
+          <img src="assets/img/presidentsDPyC/MAURYHumberto.png" alt="Humberto Maury">
+          <span class="exprofeso-role-badge">Vicepresidencia</span>
+        </div>
+        <div class="exprofeso-body">
+          <p class="exprofeso-name">Humberto Maury</p>
+          <p class="exprofeso-role">Vicepresidente de la DPyC · Miembro exprofeso del CTC</p>
+          <p class="exprofeso-note">Mandato 2025–2027</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ REPRESENTANTES INSTITUCIONALES ══ -->
+    <div class="sec-divider">
+      <div class="sec-line"></div>
+      <div class="sec-label-wrap">
+        <span class="sec-icon">🏛</span>
+        <span class="sec-label">Representantes institucionales</span>
+        <span class="sec-badge">19 instituciones</span>
+      </div>
+      <div class="sec-line"></div>
+    </div>
+
+    <div class="info-box">
+      Los representantes de cada institución miembro forman parte del CTC. Para actualizar un representante <a href="mailto:dpyc.smf.adms@gmail.com?subject=Actualización representante CTC">escríbenos aquí</a>.
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th style="width:35%">Institución</th>
+            <th style="width:25%" class="hide-sm">Unidad académica</th>
+            <th style="width:35%">Representante ante el CTC</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><div class="inst-name">Benemérita Universidad Autónoma de Puebla</div><div class="unit-name hide-sm">Instituto de Física (IFUAP)</div></td>
+            <td class="hide-sm">Instituto de Física (IFUAP)</td>
+            <td><div class="rep-cell"><div class="rep-avatar">AR</div><span class="rep-name">Alfonso Rosado</span></div></td>
+          </tr>
+          <tr>
+            <td><div class="inst-name">Benemérita Universidad Autónoma de Puebla</div><div class="unit-name hide-sm">Facultad de Ciencias Físico-Matemáticas</div></td>
+            <td class="hide-sm">Facultad de Ciencias Físico-Matemáticas</td>
+            <td><div class="rep-cell"><div class="rep-avatar">LD</div><span class="rep-name">Lorenzo Díaz Cruz</span></div></td>
+          </tr>
+          <tr>
+            <td><div class="inst-name">CINVESTAV</div><div class="unit-name hide-sm">Departamento de Física</div></td>
+            <td class="hide-sm">Departamento de Física</td>
+            <td><div class="rep-cell"><div class="rep-avatar">ED</div><span class="rep-name">Eduard De La Cruz Burelo</span></div></td>
+          </tr>
+          <tr>
+            <td><div class="inst-name">CINVESTAV-Mérida</div><div class="unit-name hide-sm">Departamento de Física</div></td>
+            <td class="hide-sm">Departamento de Física</td>
+            <td><div class="rep-cell"><div class="rep-avatar">GC</div><span class="rep-name">Guillermo Contreras</span></div></td>
+          </tr>
+          <tr>
+            <td><div class="inst-name">ESFM – Instituto Politécnico Nacional</div><div class="unit-name hide-sm">Departamento de Física</div></td>
+            <td class="hide-sm">Departamento de Física</td>
+            <td><span class="rep-none">Por confirmar</span></td>
+          </tr>
+          <tr>
+            <td><div class="inst-name">Universidad Autónoma de San Luis Potosí</div><div class="unit-name hide-sm">Instituto de Física</div></td>
+            <td class="hide-sm">Instituto de Física</td>
+            <td><div class="rep-cell"><div class="rep-avatar">MK</div><span class="rep-name">Mariana Kirbash</span></div></td>
+          </tr>
+          <tr>
+            <td><div class="inst-name">Universidad de Colima</div><div class="unit-name hide-sm">Instituto de Física</div></td>
+            <td class="hide-sm">Instituto de Física</td>
+            <td><div class="rep-cell"><div class="rep-avatar">AA</div><span class="rep-name">Alfredo Aranda</span></div></td>
+          </tr>
+          <tr>
+            <td><div class="inst-name">Universidad de Guanajuato</div><div class="unit-name hide-sm">Departamento de Física</div></td>
+            <td class="hide-sm">Departamento de Física</td>
+            <td><div class="rep-cell"><div class="rep-avatar">DD</div><span class="rep-name">David Delepine</span></div></td>
+          </tr>
+          <tr>
+            <td><div class="inst-name">Universidad de Guadalajara</div><div class="unit-name hide-sm">Centro Universitario de los Valles</div></td>
+            <td class="hide-sm">Centro Universitario de los Valles</td>
+            <td><div class="rep-cell"><div class="rep-avatar">VC</div><span class="rep-name">Víctor Manuel Castillo</span></div></td>
+          </tr>
+          <tr>
+            <td><div class="inst-name">Universidad Michoacana de San Nicolás de Hidalgo</div><div class="unit-name hide-sm">EFM / Instituto de Física y Matemáticas</div></td>
+            <td class="hide-sm">EFM / Instituto de Física y Matemáticas</td>
+            <td><div class="rep-cell"><div class="rep-avatar">AR</div><span class="rep-name">Alfredo Raya</span></div></td>
+          </tr>
+          <tr>
+            <td><div class="inst-name">UNAM – FES Cuautitlán</div></td>
+            <td class="hide-sm">FES Cuautitlán</td>
+            <td><div class="rep-cell"><div class="rep-avatar">RG</div><span class="rep-name">Ricardo Gaitán</span></div></td>
+          </tr>
+          <tr>
+            <td><div class="inst-name">UNAM – Instituto de Ciencias Nucleares</div></td>
+            <td class="hide-sm">Instituto de Ciencias Nucleares</td>
+            <td><div class="rep-cell"><div class="rep-avatar">AA</div><span class="rep-name">Alexis Aguilar-Arevalo</span></div></td>
+          </tr>
+          <tr>
+            <td><div class="inst-name">UNAM – Instituto de Física</div></td>
+            <td class="hide-sm">Instituto de Física</td>
+            <td><div class="rep-cell"><div class="rep-avatar">JE</div><span class="rep-name">Jens Erler</span></div></td>
+          </tr>
+          <tr>
+            <td><div class="inst-name">UNAM – Facultad de Ciencias</div></td>
+            <td class="hide-sm">Facultad de Ciencias</td>
+            <td><div class="rep-cell"><div class="rep-avatar">GM</div><span class="rep-name">Gabriela Murguía</span></div></td>
+          </tr>
+          <tr>
+            <td><div class="inst-name">Universidad Iberoamericana</div></td>
+            <td class="hide-sm">—</td>
+            <td><div class="rep-cell"><div class="rep-avatar">SC</div><span class="rep-name" style="font-style:italic;color:var(--ink-soft);">Salvador Carrillo Moreno <span style="font-size:0.7rem;background:var(--cream-dark);padding:1px 6px;border-radius:3px;border:1px solid var(--border);margin-left:4px;">In memoriam</span></span></div></td>
+          </tr>
+          <tr>
+            <td><div class="inst-name">Universidad Autónoma de Chiapas</div><div class="unit-name hide-sm">Escuela de Física</div></td>
+            <td class="hide-sm">Escuela de Física</td>
+            <td><div class="rep-cell"><div class="rep-avatar">KC</div><span class="rep-name">Karen S. Caballero Mora</span></div></td>
+          </tr>
+          <tr>
+            <td><div class="inst-name">Universidad Autónoma del Estado de Hidalgo</div><div class="unit-name hide-sm">Escuela de Física</div></td>
+            <td class="hide-sm">Escuela de Física</td>
+            <td><div class="rep-cell"><div class="rep-avatar">RN</div><span class="rep-name">Roberto Noriega Papaqui</span></div></td>
+          </tr>
+          <tr>
+            <td><div class="inst-name">Universidad de Sonora</div><div class="unit-name hide-sm">Instituto de Investigación en Física</div></td>
+            <td class="hide-sm">Instituto de Investigación en Física</td>
+            <td><div class="rep-cell"><div class="rep-avatar">JB</div><span class="rep-name">José F. Benítez</span></div></td>
+          </tr>
+          <tr>
+            <td><div class="inst-name">Universidad Autónoma de Sinaloa</div><div class="unit-name hide-sm">FCFM</div></td>
+            <td class="hide-sm">FCFM</td>
+            <td><div class="rep-cell"><div class="rep-avatar">IL</div><span class="rep-name">Ildefonso León Monzón</span></div></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ══ EX-PRESIDENTES ══ -->
+    <div class="sec-divider">
+      <div class="sec-line"></div>
+      <div class="sec-label-wrap">
+        <span class="sec-icon">🏅</span>
+        <span class="sec-label">Ex-presidentes · Miembros ex-oficio</span>
+        <span class="sec-badge">21 miembros</span>
+      </div>
+      <div class="sec-line"></div>
+    </div>
+
+    <div class="info-box">
+      Todos los ex-presidentes de la DPyC son miembros ex-oficio del CTC. Consulta el <a href="page-presidentes-DPyC.html">listado completo con sus periodos</a>.
+    </div>
+
+    <div class="expres-grid">
+
+      <div class="expres-card">
+        <img class="expres-photo" src="assets/img/presidentsDPyC/BARRANCOJuan.png" alt="Juan Barranco" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="expres-avatar" style="display:none">JB</div>
+        <div class="expres-info">
+          <div class="expres-name">Juan Barranco Monarca</div>
+          <div class="expres-period">2023–2025</div>
+        </div>
+        <span class="expres-badge">Ex-oficio</span>
+      </div>
+
+      <div class="expres-card">
+        <img class="expres-photo" src="assets/img/presidentsDPyC/CABALLEROKaren.png" alt="Karen Caballero" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="expres-avatar" style="display:none">KC</div>
+        <div class="expres-info">
+          <div class="expres-name">Karen Salomé Caballero Mora</div>
+          <div class="expres-period">2021–2023</div>
+        </div>
+        <span class="expres-badge">Ex-oficio</span>
+      </div>
+
+      <div class="expres-card">
+        <img class="expres-photo" src="assets/img/presidentsDPyC/CARRILLOSalvador.jpg" alt="Salvador Carrillo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="expres-avatar" style="display:none">SC</div>
+        <div class="expres-info">
+          <div class="expres-name qepd">Salvador Carrillo Moreno (QEPD)</div>
+          <div class="expres-period">2020–2021</div>
+        </div>
+        <span class="expres-badge">Ex-oficio</span>
+      </div>
+
+      <div class="expres-card">
+        <img class="expres-photo" src="assets/img/presidentsDPyC/DELACRUZEduard.png" alt="Eduard de la Cruz" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="expres-avatar" style="display:none">ED</div>
+        <div class="expres-info">
+          <div class="expres-name">Eduard de la Cruz Burelo</div>
+          <div class="expres-period">2018–2020</div>
+        </div>
+        <span class="expres-badge">Ex-oficio</span>
+      </div>
+
+      <div class="expres-card">
+        <img class="expres-photo" src="assets/img/presidentsDPyC/FERNANDEZArturo.png" alt="Arturo Fernández" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="expres-avatar" style="display:none">AF</div>
+        <div class="expres-info">
+          <div class="expres-name">Arturo Fernández Téllez</div>
+          <div class="expres-period">2016–2018</div>
+        </div>
+        <span class="expres-badge">Ex-oficio</span>
+      </div>
+
+      <div class="expres-card">
+        <img class="expres-photo" src="assets/img/presidentsDPyC/NAPSUCIALEMauro.jpg" alt="Mauro Napsuciale" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="expres-avatar" style="display:none">MN</div>
+        <div class="expres-info">
+          <div class="expres-name">Mauro Napsuciale Mendivil</div>
+          <div class="expres-period">2014–2016</div>
+        </div>
+        <span class="expres-badge">Ex-oficio</span>
+      </div>
+
+      <div class="expres-card">
+        <img class="expres-photo" src="assets/img/presidentsDPyC/SALAZARHumberto.jpg" alt="Humberto Salazar" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="expres-avatar" style="display:none">HS</div>
+        <div class="expres-info">
+          <div class="expres-name">Humberto Salazar Ibargüen</div>
+          <div class="expres-period">2012–2014</div>
+        </div>
+        <span class="expres-badge">Ex-oficio</span>
+      </div>
+
+      <div class="expres-card">
+        <img class="expres-photo" src="assets/img/presidentsDPyC/CONTRERASGuillermo.png" alt="Guillermo Contreras" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="expres-avatar" style="display:none">GC</div>
+        <div class="expres-info">
+          <div class="expres-name">Guillermo Contreras</div>
+          <div class="expres-period">2010–2012</div>
+        </div>
+        <span class="expres-badge">Ex-oficio</span>
+      </div>
+
+      <div class="expres-card">
+        <img class="expres-photo" src="assets/img/presidentsDPyC/AYALAAlejandro.png" alt="Alejandro Ayala" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="expres-avatar" style="display:none">AA</div>
+        <div class="expres-info">
+          <div class="expres-name">Alejandro Ayala Mercado</div>
+          <div class="expres-period">2008–2010</div>
+        </div>
+        <span class="expres-badge">Ex-oficio</span>
+      </div>
+
+      <div class="expres-card">
+        <img class="expres-photo" src="assets/img/presidentsDPyC/CASTILLAHeriberto.png" alt="Heriberto Castilla" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="expres-avatar" style="display:none">HC</div>
+        <div class="expres-info">
+          <div class="expres-name">Heriberto Castilla</div>
+          <div class="expres-period">2006–2008</div>
+        </div>
+        <span class="expres-badge">Ex-oficio</span>
+      </div>
+
+      <div class="expres-card">
+        <img class="expres-photo" src="assets/img/presidentsDPyC/VILLASENORLuis.png" alt="Luis Villaseñor" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="expres-avatar" style="display:none">LV</div>
+        <div class="expres-info">
+          <div class="expres-name">Luis Manuel Villaseñor Cendejas</div>
+          <div class="expres-period">2004–2006</div>
+        </div>
+        <span class="expres-badge">Ex-oficio</span>
+      </div>
+
+      <div class="expres-card">
+        <img class="expres-photo" src="assets/img/presidentsDPyC/MONDRAGONMyriam.png" alt="Myriam Mondragón" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="expres-avatar" style="display:none">MM</div>
+        <div class="expres-info">
+          <div class="expres-name">Myriam Mondragón Ceballos</div>
+          <div class="expres-period">2002–2004</div>
+        </div>
+        <span class="expres-badge">Ex-oficio</span>
+      </div>
+
+      <div class="expres-card">
+        <img class="expres-photo" src="assets/img/presidentsDPyC/DIAZLorenzo.png" alt="Lorenzo Díaz Cruz" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="expres-avatar" style="display:none">LD</div>
+        <div class="expres-info">
+          <div class="expres-name">Justiniano Lorenzo Díaz Cruz</div>
+          <div class="expres-period">2000–2002</div>
+        </div>
+        <span class="expres-badge">Ex-oficio</span>
+      </div>
+
+      <div class="expres-card">
+        <img class="expres-photo" src="assets/img/presidentsDPyC/HERRERAGerardo.png" alt="Gerardo Herrera" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="expres-avatar" style="display:none">GH</div>
+        <div class="expres-info">
+          <div class="expres-name">Gerardo Herrera Corral</div>
+          <div class="expres-period">1998–2000</div>
+        </div>
+        <span class="expres-badge">Ex-oficio</span>
+      </div>
+
+      <div class="expres-card">
+        <img class="expres-photo" src="assets/img/presidentsDPyC/DOLIVOJuanCarlos.png" alt="Juan Carlos d'Olivo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="expres-avatar" style="display:none">JD</div>
+        <div class="expres-info">
+          <div class="expres-name">Juan Carlos d'Olivo Saez</div>
+          <div class="expres-period">1996–1998</div>
+        </div>
+        <span class="expres-badge">Ex-oficio</span>
+      </div>
+
+      <div class="expres-card">
+        <img class="expres-photo" src="assets/img/presidentsDPyC/URRUTIALuis.png" alt="Luis Urrutia" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="expres-avatar" style="display:none">LU</div>
+        <div class="expres-info">
+          <div class="expres-name">Luis Fernando Urrutia Ríos</div>
+          <div class="expres-period">1994–1996</div>
+        </div>
+        <span class="expres-badge">Ex-oficio</span>
+      </div>
+
+      <div class="expres-card">
+        <img class="expres-photo" src="assets/img/presidentsDPyC/ZEPEDAArnulfo.png" alt="Arnulfo Zepeda" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="expres-avatar" style="display:none">AZ</div>
+        <div class="expres-info">
+          <div class="expres-name qepd">Arnulfo Zepeda Domínguez (QEPD)</div>
+          <div class="expres-period">1992–1994</div>
+        </div>
+        <span class="expres-badge">Ex-oficio</span>
+      </div>
+
+      <div class="expres-card">
+        <img class="expres-photo" src="assets/img/presidentsDPyC/JUAREZRebeca.png" alt="Rebeca Juárez" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="expres-avatar" style="display:none">RJ</div>
+        <div class="expres-info">
+          <div class="expres-name">Sara Rebeca Juárez Wysozka</div>
+          <div class="expres-period">1990–1992</div>
+        </div>
+        <span class="expres-badge">Ex-oficio</span>
+      </div>
+
+      <div class="expres-card">
+        <img class="expres-photo" src="assets/img/presidentsDPyC/PEREZMiguel.png" alt="Miguel Pérez" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="expres-avatar" style="display:none">MP</div>
+        <div class="expres-info">
+          <div class="expres-name">Miguel Ángel Pérez Angón</div>
+          <div class="expres-period">1988–1990</div>
+        </div>
+        <span class="expres-badge">Ex-oficio</span>
+      </div>
+
+      <div class="expres-card">
+        <img class="expres-photo" src="assets/img/presidentsDPyC/TORRESManuel.jpg" alt="Manuel Torres" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="expres-avatar" style="display:none">MT</div>
+        <div class="expres-info">
+          <div class="expres-name">Manuel Torres</div>
+          <div class="expres-period">1987–1988</div>
+        </div>
+        <span class="expres-badge">Ex-oficio</span>
+      </div>
+
+      <div class="expres-card">
+        <img class="expres-photo" src="assets/img/presidentsDPyC/HUERTARodrigo.png" alt="Rodrigo Huerta" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="expres-avatar" style="display:none">RH</div>
+        <div class="expres-info">
+          <div class="expres-name">Rodrigo Huerta Quintanilla</div>
+          <div class="expres-period">1986–1987 · Primer presidente</div>
+        </div>
+        <span class="expres-badge">Ex-oficio</span>
+      </div>
+
+    </div>
+  </main>
+
+  <footer>
+    <span>© 2025 División de Partículas y Campos · Sociedad Mexicana de Física</span>
+    <span>
+      <a href="page-teamv2.html">Organización</a> ·
+      <a href="page-presidentes-DPyC.html">Presidentes</a> ·
+      <a href="index.html">Inicio</a>
+    </span>
+  </footer>
+
+  <style>
+    @media (max-width: 640px) { .hide-sm { display: none; } }
+  </style>
+</body>
+</html>

@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Código de Conducta · DPyC SMF</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/x-icon" href="assets/img/favicon.png"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --cream: #faf8f4; --cream-dark: #f2ede4;
+      --gold: #b8860b; --gold-light: #d4a82a; --gold-pale: #f5edd0;
+      --ink: #1a1a1a; --ink-mid: #3d3d3d; --ink-soft: #6b6b6b;
+      --border: #e0d8cc; --border-strong: #c8bfb0; --white: #ffffff;
+      --nav-h: 60px;
+      --dpyc-blue: #1a3a6e;
+      --dpyc-blue-dark: #0f2347;
+      --dpyc-red: #c0392b;
+      --dpyc-gold: #b8860b;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--ink); }
+
+    /* ── NAV ── */
+    nav.topnav {
+      position: fixed; top: 0; left: 0; right: 0; height: var(--nav-h);
+      z-index: 1000; background: rgba(250,248,244,0.96);
+      backdrop-filter: blur(10px); border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; padding: 0 1.5rem; gap: 1rem;
+    }
+    .nav-brand { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--ink); text-decoration: none; flex-shrink: 0; }
+    .nav-brand span { color: var(--gold); }
+    .nav-spacer { flex: 1; }
+    .nav-back { font-size: 0.8rem; color: var(--ink-soft); text-decoration: none; transition: color 0.15s; }
+    .nav-back:hover { color: var(--gold); }
+    .btn-print {
+      font-family: 'DM Sans', sans-serif; font-size: 0.78rem; font-weight: 500;
+      padding: 6px 16px; border-radius: 999px;
+      background: var(--gold); color: #fff; border: none; cursor: pointer;
+      text-decoration: none; transition: background 0.15s;
+    }
+    .btn-print:hover { background: var(--gold-light); }
+
+    /* ── PAGE HEADER ── */
+    .page-header { padding-top: var(--nav-h); background: var(--white); border-bottom: 1px solid var(--border); position: relative; overflow: hidden; }
+    .page-header::before {
+      content: ''; position: absolute; inset: 0;
+      background: repeating-linear-gradient(-45deg, transparent, transparent 40px, rgba(184,134,11,0.04) 40px, rgba(184,134,11,0.04) 41px);
+      pointer-events: none;
+    }
+    .page-header-inner { max-width: 900px; margin: 0 auto; padding: 2.5rem 2rem; position: relative; z-index: 1; }
+    .page-eyebrow { font-size: 11px; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.5rem; }
+    .page-header h1 { font-family: 'Playfair Display', serif; font-size: clamp(1.6rem, 3vw, 2.4rem); font-weight: 600; color: var(--ink); margin-bottom: 0.4rem; }
+    .page-header-desc { font-size: 0.9rem; color: var(--ink-soft); line-height: 1.7; max-width: 580px; }
+
+    /* ── MAIN ── */
+    main { max-width: 900px; margin: 0 auto; padding: 2.5rem 2rem 5rem; }
+
+    /* ── FLYER BUTTON ── */
+    .flyer-cta {
+      display: flex; align-items: center; justify-content: space-between;
+      background: var(--dpyc-blue); color: #fff;
+      border-radius: 14px; padding: 1.2rem 1.5rem; margin-bottom: 2.5rem;
+      gap: 1rem; flex-wrap: wrap;
+    }
+    .flyer-cta-text h3 { font-size: 0.95rem; font-weight: 500; margin-bottom: 2px; }
+    .flyer-cta-text p { font-size: 0.78rem; opacity: 0.75; }
+    .btn-flyer {
+      font-family: 'DM Sans', sans-serif; font-size: 0.82rem; font-weight: 500;
+      padding: 9px 20px; border-radius: 999px; border: none; cursor: pointer;
+      background: #fff; color: var(--dpyc-blue); white-space: nowrap;
+      transition: opacity 0.15s;
+    }
+    .btn-flyer:hover { opacity: 0.9; }
+
+    /* ── SECTIONS ── */
+    .sec-divider { display: flex; align-items: center; gap: 1rem; margin: 2rem 0 1.1rem; }
+    .sec-line { flex: 1; height: 1px; background: var(--border); }
+    .sec-label { font-size: 11px; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); white-space: nowrap; }
+
+    .prose { font-size: 0.92rem; color: var(--ink-mid); line-height: 1.85; }
+    .prose p { margin-bottom: 0.9rem; }
+
+    /* VALUES */
+    .values-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 0.75rem; margin-bottom: 1.5rem; }
+    .value-pill {
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: 10px; padding: 0.8rem 0.9rem; text-align: center;
+      font-size: 0.85rem; font-weight: 500; color: var(--ink);
+      transition: box-shadow 0.15s, border-color 0.15s;
+    }
+    .value-pill:hover { box-shadow: 0 3px 12px rgba(0,0,0,0.07); border-color: var(--border-strong); }
+    .value-icon { font-size: 1.2rem; display: block; margin-bottom: 4px; }
+
+    /* CONDUCT ITEMS */
+    .conduct-list { display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 1rem; }
+    .conduct-item {
+      display: flex; gap: 1rem; align-items: flex-start;
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: 10px; padding: 0.9rem 1rem;
+    }
+    .conduct-icon {
+      width: 36px; height: 36px; border-radius: 8px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center; font-size: 1rem;
+    }
+    .conduct-icon.green { background: #eaf3de; }
+    .conduct-icon.red { background: #fde8d8; }
+    .conduct-text h4 { font-size: 0.88rem; font-weight: 500; color: var(--ink); margin-bottom: 2px; }
+    .conduct-text p { font-size: 0.8rem; color: var(--ink-soft); line-height: 1.6; }
+
+    /* UNACCEPTABLE */
+    .unacceptable-list { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1rem; }
+    .unacceptable-item {
+      display: flex; gap: 10px; align-items: flex-start;
+      font-size: 0.84rem; color: var(--ink-mid); line-height: 1.6;
+      padding: 0.6rem 0; border-bottom: 1px solid var(--cream-dark);
+    }
+    .unacceptable-item:last-child { border-bottom: none; }
+    .unacceptable-item::before { content: '✗'; color: var(--dpyc-red); font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+
+    /* REPORTING */
+    .reporting-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; margin-bottom: 1rem; }
+    .reporting-card {
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: 12px; padding: 1.1rem 1.2rem;
+    }
+    .reporting-card-icon { font-size: 1.4rem; margin-bottom: 0.5rem; }
+    .reporting-card h4 { font-size: 0.88rem; font-weight: 500; color: var(--ink); margin-bottom: 4px; }
+    .reporting-card p { font-size: 0.78rem; color: var(--ink-soft); line-height: 1.6; }
+    .reporting-card a { color: var(--gold); text-decoration: none; }
+    .reporting-card a:hover { text-decoration: underline; }
+
+    /* SANCTIONS */
+    .sanctions-list { display: flex; flex-direction: column; gap: 0.4rem; }
+    .sanction-item {
+      display: flex; gap: 10px; align-items: center;
+      font-size: 0.84rem; color: var(--ink-mid);
+      padding: 0.5rem 0; border-bottom: 1px solid var(--cream-dark);
+    }
+    .sanction-item:last-child { border-bottom: none; }
+    .sanction-num {
+      width: 22px; height: 22px; border-radius: 50%; flex-shrink: 0;
+      background: var(--gold-pale); border: 1px solid #e8d9a8;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.68rem; font-weight: 700; color: var(--gold);
+    }
+
+    /* ── FLYER MODAL ── */
+    .flyer-overlay {
+      display: none; position: fixed; inset: 0; z-index: 2000;
+      background: rgba(0,0,0,0.6); align-items: center; justify-content: center;
+      padding: 1rem;
+    }
+    .flyer-overlay.open { display: flex; }
+    .flyer-modal {
+      background: var(--white); border-radius: 16px;
+      overflow: auto; max-height: 95vh; width: 100%; max-width: 480px;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.25);
+    }
+    .flyer-modal-actions {
+      display: flex; gap: 8px; justify-content: flex-end;
+      padding: 0.75rem 1rem; border-bottom: 1px solid var(--border);
+    }
+    .btn-sm {
+      font-family: 'DM Sans', sans-serif; font-size: 0.75rem; font-weight: 500;
+      padding: 6px 14px; border-radius: 999px; cursor: pointer; border: 1px solid;
+      transition: background 0.15s;
+    }
+    .btn-sm.primary { background: var(--gold); color: #fff; border-color: var(--gold); }
+    .btn-sm.primary:hover { background: var(--gold-light); }
+    .btn-sm.secondary { background: var(--white); color: var(--ink-soft); border-color: var(--border-strong); }
+    .btn-sm.secondary:hover { background: var(--cream-dark); }
+
+    /* ── FLYER CONTENT ── */
+    #flyer {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--white);
+      color: var(--ink);
+      width: 100%;
+    }
+
+    .flyer-top {
+      background: var(--cream);
+      padding: 1.5rem 1.5rem 1rem;
+      text-align: center;
+      border-bottom: 4px solid var(--dpyc-gold);
+    }
+    .flyer-top-logos {
+      display: flex; align-items: center; justify-content: center;
+      gap: 1rem; margin-bottom: 0.75rem;
+    }
+    .flyer-top-logos img { height: 48px; object-fit: contain; filter: none; }
+    .flyer-know { font-size: 0.7rem; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: var(--dpyc-blue-dark); margin-bottom: 0.25rem; }
+    .flyer-headline { font-size: 1rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; line-height: 1.2; color: var(--dpyc-blue-dark); margin-bottom: 0.5rem; }
+    .flyer-subline { font-size: 0.75rem; color: var(--ink-soft); }
+
+    .flyer-responsibility {
+      background: var(--dpyc-gold);
+      padding: 0.5rem 1.5rem;
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--dpyc-blue-dark); text-align: center;
+    }
+
+    .flyer-items { padding: 0; }
+    .flyer-item {
+      display: flex; align-items: stretch; gap: 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .flyer-item:last-child { border-bottom: none; }
+    .flyer-item-icon {
+      width: 56px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem; padding: 0.9rem 0;
+    }
+    .flyer-item-icon.blue-icon { background: #1e4a8a; }
+    .flyer-item-icon.red-icon { background: var(--dpyc-red); }
+    .flyer-item-icon.teal-icon { background: #0e7c7b; }
+    .flyer-item-icon.purple-icon { background: #5b2d8e; }
+    .flyer-item-icon.dark-icon { background: #2c3e50; }
+    .flyer-item-icon.dark-cream { background: var(--cream); }
+    .flyer-item-icon.dark-white { background: var(--white); }
+    .flyer-item-text { flex: 1; padding: 0.8rem 1rem; font-size: 0.78rem; line-height: 1.55; color: var(--ink-mid); background: var(--white); }
+    .flyer-item-text strong { color: var(--ink); display: block; margin-bottom: 2px; font-size: 0.8rem; }
+
+    .flyer-bottom {
+      background: var(--white);
+      padding: 0.9rem 1.5rem; text-align: center;
+      border-top: 2px solid var(--dpyc-gold);
+    }
+    .flyer-bottom p { font-size: 0.7rem; color: var(--ink-soft); margin-bottom: 0.3rem; }
+    .flyer-bottom a { color: var(--gold); font-size: 0.75rem; font-weight: 500; text-decoration: none; }
+    .flyer-bottom strong { color: var(--ink); }
+
+    /* PRINT */
+    @media print {
+      body > *:not(#flyer-print-wrap) { display: none !important; }
+      #flyer-print-wrap { display: block !important; }
+      #flyer { width: 100%; max-width: 100%; }
+      .flyer-modal-actions { display: none; }
+    }
+
+    footer { background: var(--white); border-top: 1px solid var(--border); padding: 1.4rem 2rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; font-size: 0.78rem; color: var(--ink-soft); }
+    footer a { color: var(--ink-soft); text-decoration: none; }
+    footer a:hover { color: var(--gold); }
+    @media (max-width: 640px) { .reporting-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+
+  <nav class="topnav">
+    <a class="nav-brand" href="index.html">DPyC · <span>SMF</span></a>
+    <div class="nav-spacer"></div>
+    <a class="nav-back" href="index.html">← Inicio</a>
+    &nbsp;&nbsp;
+    <button class="btn-print" onclick="openFlyer()">🖨 Ver panfleto</button>
+  </nav>
+
+  <div class="page-header">
+    <div class="page-header-inner">
+      <p class="page-eyebrow">División de Partículas y Campos · SMF</p>
+      <h1>Código de Conducta</h1>
+      <p class="page-header-desc">La comunidad de la DPyC está comprometida con un ambiente seguro, amigable, respetuoso e inclusivo en todas sus actividades: Reunión Anual, Escuela y Taller de Partículas y Campos.</p>
+    </div>
+  </div>
+
+  <main>
+
+    <div class="flyer-cta">
+      <div class="flyer-cta-text">
+        <h3>¿Necesitas el panfleto para imprimir?</h3>
+        <p>Versión compacta lista para mostrar en reuniones o imprimir en una página.</p>
+      </div>
+      <button class="btn-flyer" onclick="openFlyer()">📄 Ver panfleto</button>
+    </div>
+
+    <!-- PROPÓSITO -->
+    <div class="sec-divider"><div class="sec-line"></div><span class="sec-label">Propósito</span><div class="sec-line"></div></div>
+    <div class="prose">
+      <p>El propósito de este Código de Conducta es asegurar que todas las actividades de la DPyC se desarrollen en un ambiente seguro, amigable, respetuoso e inclusivo. Este código refleja las intenciones, expectativas y las consecuencias de comportamientos inaceptables para todos los participantes.</p>
+    </div>
+
+    <!-- VALORES -->
+    <div class="sec-divider"><div class="sec-line"></div><span class="sec-label">Nuestros valores</span><div class="sec-line"></div></div>
+    <div class="values-grid">
+      <div class="value-pill"><span class="value-icon">🤝</span>Respeto</div>
+      <div class="value-pill"><span class="value-icon">🌟</span>Dignidad</div>
+      <div class="value-pill"><span class="value-icon">✅</span>Honestidad</div>
+      <div class="value-pill"><span class="value-icon">🫂</span>Solidaridad</div>
+      <div class="value-pill"><span class="value-icon">⚖️</span>Integridad</div>
+      <div class="value-pill"><span class="value-icon">🎯</span>Responsabilidad</div>
+      <div class="value-pill"><span class="value-icon">🌈</span>Inclusión</div>
+      <div class="value-pill"><span class="value-icon">🔗</span>Cooperación</div>
+    </div>
+
+    <!-- CONDUCTA ESPERADA -->
+    <div class="sec-divider"><div class="sec-line"></div><span class="sec-label">Conducta esperada</span><div class="sec-line"></div></div>
+    <div class="conduct-list">
+      <div class="conduct-item">
+        <div class="conduct-icon green">🤝</div>
+        <div class="conduct-text">
+          <h4>Tolerancia y Respeto Mutuo</h4>
+          <p>Abstenerse de todas las formas de acoso, abuso, intimidación, bullying y maltrato de cualquier tipo.</p>
+        </div>
+      </div>
+      <div class="conduct-item">
+        <div class="conduct-icon green">🌍</div>
+        <div class="conduct-text">
+          <h4>Conciencia Cultural</h4>
+          <p>Entender que el comportamiento o lenguaje aceptable en una cultura puede no serlo en otra. Es responsabilidad individual asegurar que las palabras y acciones comuniquen respeto hacia los demás.</p>
+        </div>
+      </div>
+      <div class="conduct-item">
+        <div class="conduct-icon green">⚖️</div>
+        <div class="conduct-text">
+          <h4>Integridad y Ética</h4>
+          <p>Conducirse de forma ética y profesional respecto del trabajo realizado en la comunidad.</p>
+        </div>
+      </div>
+      <div class="conduct-item">
+        <div class="conduct-icon green">📢</div>
+        <div class="conduct-text">
+          <h4>Responsabilidad Comunitaria</h4>
+          <p>Comprometerse a ayudar a la comunidad a adherirse a este código y denunciar posibles violaciones.</p>
+        </div>
+      </div>
+      <div class="conduct-item">
+        <div class="conduct-icon green">©️</div>
+        <div class="conduct-text">
+          <h4>Derechos de Autor</h4>
+          <p>No publicar, reproducir, compartir o grabar cualquier contenido sin el consentimiento de las(los) autoras(es).</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- COMPORTAMIENTO INACEPTABLE -->
+    <div class="sec-divider"><div class="sec-line"></div><span class="sec-label">Comportamiento inaceptable</span><div class="sec-line"></div></div>
+    <div class="unacceptable-list">
+      <div class="unacceptable-item">Uso de lenguaje inadecuado, incluyendo palabras altisonantes, insultos o comentarios denigrantes.</div>
+      <div class="unacceptable-item">Amenazas o comentarios agresivos basados en género, sexo, preferencia sexual, religión, creencias, nacionalidad, apariencia, etnicidad o estatus económico.</div>
+      <div class="unacceptable-item">Bromas o chistes de ámbito racista, sexista, homofóbico o cualquier intención de denigrar a un grupo específico.</div>
+      <div class="unacceptable-item">Comentarios, exposición o circulación de material gráfico violento, discriminatorio o sexualmente explícito en canales DPyC.</div>
+      <div class="unacceptable-item">Acercamientos sexuales no bienvenidos, solicitud de favores sexuales y otras conductas verbales o físicas de naturaleza sexual.</div>
+      <div class="unacceptable-item">Amenazar, incomodar o acosar a cualquier persona mediante mensajes directos y/o contacto directo.</div>
+      <div class="unacceptable-item">Cualquier uso indebido de la información de contacto de los miembros de la comunidad.</div>
+      <div class="unacceptable-item">Aplaudir o alentar cualquiera de las conductas anteriores.</div>
+    </div>
+
+    <!-- CÓMO REPORTAR -->
+    <div class="sec-divider"><div class="sec-line"></div><span class="sec-label">Cómo reportar</span><div class="sec-line"></div></div>
+    <div class="reporting-grid">
+      <div class="reporting-card">
+        <div class="reporting-card-icon">👥</div>
+        <h4> Directamente a los <p><a href="page-members.html" target="_blank"> representantes Institucionales</a></p></h4>
+      <!--  <p>Miembros del Comité Técnico Consultivo (CTC) de la DPyC de tu institución. <a href="page-members.html">Ver lista de representantes →</a></p>-->
+      </div>
+      <div class="reporting-card">
+        <div class="reporting-card-icon">🏛</div>
+        <h4> Directamente a la <p><a href="page-teamv2.html" target="_blank">  mesa directiva </a></p></h4>
+        <p>Presidente o Vicepresidente de la DPyC.</p>
+      </div>
+      <div class="reporting-card">
+        <div class="reporting-card-icon">📋</div>
+        <h4>Reporte Formal y Confidencial</h4>
+        <p><a href="https://forms.gle/JuRVGyA6UUuWLCWS6" target="_blank">Formulario de Reporte Confidencial de Conducta Inapropiada o Acoso →</a></p>
+      </div>
+    </div>
+
+    <!-- SANCIONES -->
+    <div class="sec-divider"><div class="sec-line"></div><span class="sec-label">Sanciones posibles</span><div class="sec-line"></div></div>
+    <div class="sanctions-list">
+      <div class="sanction-item"><div class="sanction-num">1</div>Advertencia verbal.</div>
+      <div class="sanction-item"><div class="sanction-num">2</div>Prohibición de presidir eventos de la DPyC o participar en sus cuerpos científicos.</div>
+      <div class="sanction-item"><div class="sanction-num">3</div>En casos extremos, expulsión de la comunidad siguiendo los procedimientos aprobados por la Asamblea General de la SMF.</div>
+    </div>
+    <div style="margin-top:1rem; font-size:0.82rem; color:var(--ink-soft); line-height:1.7; background:var(--cream-dark); border-radius:8px; padding:0.9rem 1rem; border-left:3px solid var(--dpyc-red);">
+      <strong style="color:var(--ink);">Prohibición de represalias:</strong> La retaliación por quejas de conducta inapropiada no será tolerada — constituye por sí misma una violación del Código de Conducta.
+    </div>
+
+  </main>
+
+  <footer>
+    <span>© 2025 División de Partículas y Campos · Sociedad Mexicana de Física</span>
+    <a href="index.html">← Inicio</a>
+  </footer>
+
+  <!-- ══ FLYER MODAL ══ -->
+  <div class="flyer-overlay" id="flyerOverlay" onclick="closeFlyer(event)">
+    <div class="flyer-modal" onclick="event.stopPropagation()">
+      <div class="flyer-modal-actions">
+        <button class="btn-sm secondary" onclick="closeFlyer()">✕ Cerrar</button>
+        <button class="btn-sm primary" onclick="printFlyer()">🖨 Imprimir</button>
+      </div>
+      <div id="flyer">
+        <!-- TOP -->
+        <div class="flyer-top">
+          <div class="flyer-top-logos">
+            <img src="assets/img/DPyCLogoNoBG.png" alt="DPyC Logo" style="height: 150px;">
+          </div>
+          <div style="font-size:1rem;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;color:var(--dpyc-blue-dark);margin-bottom:2px;">División de Partículas y Campos</div>
+          <div style="font-size:1.4rem;color:var(--ink-soft);">Sociedad Mexicana de Física</div>
+          <!--<div class="flyer-know">Conoce el</div>-->
+          <div class="flyer-headline">Código de Conducta</div>
+        </div>
+
+        <div class="flyer-responsibility">ES RESPONSABILIDAD DE TODOS Y TODAS:</div>
+
+        <div class="flyer-items">
+          <div class="flyer-item">
+            <div class="flyer-item-icon blue-icon">🤝</div>
+            <div class="flyer-item-text">
+              <strong>Mantén un ambiente profesional</strong>
+              en una atmósfera de tolerancia, respeto mutuo e inclusión.
+            </div>
+          </div>
+          <div class="flyer-item">
+            <div class="flyer-item-icon cream-icon">🚫</div>
+            <div class="flyer-item-text">
+              <strong>Abstente de toda forma de acoso</strong>
+              abuso, intimidación, bullying y maltrato de cualquier tipo.
+            </div>
+          </div>
+          <div class="flyer-item">
+            <div class="flyer-item-icon teal-icon">💬</div>
+            <div class="flyer-item-text">
+              <strong>Evita comentarios, imágenes o conductas</strong>
+              de contenido sexual, discriminatorio o violento en cualquier canal de la DPyC.
+            </div>
+          </div>
+          <div class="flyer-item">
+            <div class="flyer-item-icon purple-icon">🌍</div>
+            <div class="flyer-item-text">
+              <strong>Recuerda que lo aceptable varía entre culturas.</strong>
+              Asegúrate de que tus palabras y acciones comuniquen respeto hacia los demás.
+            </div>
+          </div>
+          <div class="flyer-item">
+            <div class="flyer-item-icon dark-icon">📢</div>
+            <div class="flyer-item-text">
+              <strong>Ayuda a nuestra comunidad</strong>
+              a cumplir este código y habla cuando observes posibles violaciones.
+            </div>
+          </div>
+        </div>
+
+        <div class="flyer-responsibility" style="background:var(--dpyc-blue-dark);color:#fff;font-size:0.65rem;">¿CÓMO REPORTAR?</div>
+
+        <div style="background:var(--cream-dark);padding:0.75rem 1.2rem;display:flex;gap:1rem;align-items:flex-start;">
+          <div style="flex:1;display:flex;flex-direction:column;gap:0.5rem;">
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.72rem;color:var(--ink-mid);">
+              <span>👥</span>
+              <span><a href="page-members.html" target="_blank" style="color:var(--dpyc-blue-dark);font-weight:500;text-decoration:none;">Representante institucional</a> de tu unidad académica ante el CTC</span>
+            </div>
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.72rem;color:var(--ink-mid);">
+              <span>🏛</span><span>Presidente o Vicepresidente de la DPyC</span>
+            </div>
+            <div style="display:flex;gap:8px;align-items:flex-start;font-size:0.72rem;color:var(--ink-mid);">
+              <span>📋</span><span>Formulario de Reporte Confidencial →</span>
+            </div>
+          </div>
+          <div style="flex-shrink:0;text-align:center;">
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=https://forms.gle/1mFnvFDLvcfh2N4v6" alt="QR Formulario de Reporte" style="width:90px;height:90px;border-radius:6px;border:1px solid var(--border);">
+            <div style="font-size:0.6rem;color:var(--ink-soft);margin-top:3px;">Reporte confidencial</div>
+          </div>
+        </div>
+
+        <div class="flyer-bottom">
+          <p>La retaliación por reportar conductas inapropiadas <strong>no será tolerada.</strong></p>
+          <a href="https://dpyc.smf.mx/page-conducta.html">dpyc.smf.mx · Código de Conducta</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function openFlyer() {
+      document.getElementById('flyerOverlay').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeFlyer(e) {
+      if (!e || e.target === document.getElementById('flyerOverlay')) {
+        document.getElementById('flyerOverlay').classList.remove('open');
+        document.body.style.overflow = '';
+      }
+    }
+    function printFlyer() {
+      const flyer = document.getElementById('flyer').outerHTML;
+      const w = window.open('', '_blank');
+      w.document.write(`<!DOCTYPE html><html><head><meta charset="utf-8">
+        <title>Panfleto Código de Conducta DPyC</title>
+        <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+        <style>
+          * { box-sizing: border-box; margin: 0; padding: 0; }
+          body { font-family: 'DM Sans', sans-serif; background: #fff; }
+          :root {
+            --dpyc-blue: #1a3a6e; --dpyc-blue-dark: #0f2347;
+            --dpyc-red: #c0392b; --dpyc-gold: #b8860b;
+          }
+          #flyer { width: 100%; max-width: 480px; margin: 0 auto; }
+          .flyer-top { background: #ffffff; padding: 1.5rem 1.5rem 1rem; text-align: center; border-bottom: 4px solid var(--dpyc-gold); }
+          .flyer-top-logos { display: flex; align-items: center; justify-content: center; gap: 1rem; margin-bottom: 0.75rem; }
+          .flyer-top-logos img { height: 48px; object-fit: contain; filter: none; }
+          .flyer-know { font-size: 0.7rem; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: #0f2347; margin-bottom: 0.25rem; }
+          .flyer-headline { font-size: 1.1rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; line-height: 1.2; color: #0f2347; margin-bottom: 0.25rem; }
+          .flyer-subline { font-size: 0.75rem; color: var(--ink-soft); }
+          .flyer-responsibility { background: var(--dpyc-gold); padding: 0.5rem 1.5rem; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--dpyc-blue-dark); text-align: center; }
+          .flyer-item { display: flex; align-items: stretch; border-bottom: 1px solid rgba(255,255,255,0.1); }
+          .flyer-item-icon { width: 56px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; padding: 0.9rem 0; }
+          .flyer-item-icon.blue-icon { background: #1e4a8a; }
+          .flyer-item-icon.white-icon { background: var(--white); }
+          .flyer-item-icon.teal-icon { background: #0e7c7b; }
+          .flyer-item-icon.purple-icon { background: #5b2d8e; }
+          .flyer-item-icon.cream-icon { background: var(--cream); }
+          .flyer-item-icon.dark-icon { background: #2c3e50; }
+          .flyer-item-text { flex: 1; padding: 0.8rem 1rem; font-size: 0.78rem; line-height: 1.55; color: rgba(255,255,255,0.92); background: var(--dpyc-blue-dark); }
+          .flyer-item-text strong { color: var(--ink); display: block; margin-bottom: 2px; font-size: 0.8rem; }
+          .flyer-bottom { background: var(--dpyc-blue); padding: 0.9rem 1.5rem; text-align: center; border-top: 2px solid var(--dpyc-gold); }
+          .flyer-bottom p { font-size: 0.7rem; color: rgba(255,255,255,0.7); margin-bottom: 0.3rem; }
+          .flyer-bottom a { color: var(--dpyc-gold); font-size: 0.75rem; font-weight: 500; text-decoration: none; }
+          .flyer-bottom strong { color: #fff; }
+          @media print { body { print-color-adjust: exact; -webkit-print-color-adjust: exact; } }
+        </style></head><body>${flyer}<script>window.onload=()=>{window.print();window.close();}<\/script></body></html>`);
+      w.document.close();
+    }
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeFlyer(); });
+  </script>
+</body>
+</html>
