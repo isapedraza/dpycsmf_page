@@ -329,6 +329,30 @@
     .hidden { display: none !important; }
 
     /* ── FOOTER ── */
+    /* ── BOTTOM ACTIONS ── */
+    .bottom-actions {
+      max-width: 820px; margin: 0 auto 0;
+      padding: 2rem 2rem 1rem;
+      display: flex; flex-wrap: wrap; align-items: center;
+      justify-content: space-between; gap: 1rem;
+      border-top: 1px solid var(--border);
+    }
+    .call-link {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 0.85rem; font-weight: 500;
+      background: var(--gold); color: #fff;
+      border-radius: 999px; padding: 9px 22px;
+      text-decoration: none; transition: background 0.15s;
+    }
+    .call-link:hover { background: var(--gold-light); }
+    .correction-link {
+      font-size: 0.8rem; color: var(--ink-soft);
+      text-decoration: none; display: inline-flex; align-items: center; gap: 6px;
+      border: 1px solid var(--border-strong); border-radius: 999px;
+      padding: 7px 16px; background: var(--white); transition: background 0.15s, color 0.15s;
+    }
+    .correction-link:hover { background: var(--cream-dark); color: var(--ink); }
+
     footer {
       text-align: center;
       padding: 2rem;
@@ -359,9 +383,12 @@
       <img src="assets/img/medallaDPyC.png" alt="Medalla DPyC">
     </div>
     <p class="intro-text">
-      La primera medalla fue entregada a Leon Lederman en 1999. Esta distinción representa el máximo reconocimiento que ofrece nuestra comunidad, y se otorga cada año a científicas y científicos, mexicanas(os) o extranjeras(os), que hayan contribuido notablemente al desarrollo de la física de partículas y campos en México, o a físicas(os) mexicanas(os) reconocidas(os) internacionalmente por sus aportaciones en esta área.
+      La primera medalla fue entregada a Leon Lederman en 1999. Esta distinción representa el máximo reconocimiento que ofrece nuestra comunidad, y se otorga cada año a científicas y científicos, mexicanas(os) o extranjeras(os), que hayan contribuido notablemente al desarrollo de la física de partículas y campos en México, o a físicas(os) mexicanas(os) reconocidas(os) internacionalmente por sus aportaciones en esta área. Este reconocimiento forma parte del legado impulsado por el Dr. Miguel Ángel Pérez Angón.
     </p>
   </header>
+  <div class="bottom-actions" style="justify-content: center;">
+    <a class="call-link" href="page-convocatoria-medalla.html">🏅 Convocatoria Medalla DPyC 2025 →</a>
+  </div>
 
   <div class="stats-bar">
     <div class="stat"><span class="stat-num">26</span><span class="stat-label">años de historia</span></div>
@@ -686,6 +713,11 @@
 
     </div><!-- /timeline -->
   </main>
+
+  <div class="bottom-actions">
+    <a class="call-link" href="page-convocatoria-medalla.html">🏅 Convocatoria Medalla DPyC 2025 →</a>
+    <a class="correction-link" href="https://forms.gle/BQBWUYKPmUMDpcNv7">✏️ Enviar corrección a la lista</a>
+  </div>
 
   <footer>
     División de Partículas y Campos · Sociedad Mexicana de Física

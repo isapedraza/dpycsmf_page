@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Summer Research Stays · DPyC SMF</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/x-icon" href="assets/img/favicon.png"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --cream: #faf8f4; --cream-dark: #f2ede4;
+      --gold: #b8860b; --gold-light: #d4a82a; --gold-pale: #f5edd0;
+      --ink: #1a1a1a; --ink-mid: #3d3d3d; --ink-soft: #6b6b6b;
+      --border: #e0d8cc; --border-strong: #c8bfb0; --white: #ffffff;
+      --nav-h: 60px;
+      --blue: #1a3a6e; --blue-bg: #e6f1fb; --blue-border: #b5d4f4;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', system-ui, sans-serif; color: var(--ink); background: var(--cream); }
+
+    /* ── NAV ── */
+    nav.topnav {
+      position: fixed; top: 0; left: 0; right: 0; height: var(--nav-h);
+      z-index: 1000; background: rgba(250,248,244,0.96);
+      backdrop-filter: blur(10px); border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; padding: 0 1.5rem; gap: 1rem;
+    }
+    .nav-brand { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--ink); text-decoration: none; flex-shrink: 0; }
+    .nav-brand span { color: var(--gold); }
+    .nav-spacer { flex: 1; }
+    .nav-back { font-size: 0.8rem; color: var(--ink-soft); text-decoration: none; transition: color 0.15s; }
+    .nav-back:hover { color: var(--gold); }
+
+    /* ── PAGE HEADER ── */
+    .page-header {
+      padding-top: var(--nav-h); background: var(--white);
+      border-bottom: 1px solid var(--border); position: relative; overflow: hidden;
+    }
+    .page-header::before {
+      content: ''; position: absolute; inset: 0;
+      background: repeating-linear-gradient(-45deg, transparent, transparent 40px, rgba(184,134,11,0.04) 40px, rgba(184,134,11,0.04) 41px);
+      pointer-events: none;
+    }
+    .page-header-inner {
+      max-width: 1000px; margin: 0 auto; padding: 2.5rem 2rem;
+      display: grid; grid-template-columns: 1fr auto;
+      gap: 2rem; align-items: center; position: relative; z-index: 1;
+    }
+    .page-eyebrow { font-size: 11px; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.5rem; }
+    .page-header h1 { font-family: 'Playfair Display', serif; font-size: clamp(1.6rem, 3vw, 2.4rem); font-weight: 600; color: var(--ink); margin-bottom: 0.4rem; }
+    .page-header-desc { font-size: 0.9rem; color: var(--ink-soft); line-height: 1.75; max-width: 520px; }
+    .header-icon { font-size: 4rem; flex-shrink: 0; }
+
+    /* ── STATS BAR ── */
+    .stats-bar {
+      background: var(--gold-pale); border-bottom: 1px solid #e8d9a8;
+      padding: 0.85rem 2rem; display: flex; justify-content: center; gap: 3rem; flex-wrap: wrap;
+    }
+    .stat { text-align: center; }
+    .stat-num { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 600; color: var(--gold); display: block; }
+    .stat-label { font-size: 10px; color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.08em; }
+
+    /* ── MAIN ── */
+    main { max-width: 1000px; margin: 0 auto; padding: 2.5rem 2rem 5rem; }
+
+    /* ── SECTION DIVIDER ── */
+    .sec-divider { display: flex; align-items: center; gap: 1rem; margin: 2.5rem 0 1.25rem; }
+    .sec-divider:first-child { margin-top: 0; }
+    .sec-line { flex: 1; height: 1px; background: var(--border); }
+    .sec-label { font-size: 11px; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); white-space: nowrap; }
+
+    /* ── PROSE ── */
+    .prose { font-size: 0.93rem; color: var(--ink-mid); line-height: 1.85; }
+    .prose p { margin-bottom: 0.9rem; }
+    .prose p:last-child { margin-bottom: 0; }
+
+    /* ── INFO BOX ── */
+    .info-box {
+      background: var(--blue-bg); border: 1px solid var(--blue-border);
+      border-radius: 10px; padding: 1rem 1.2rem; margin-bottom: 1.5rem;
+      font-size: 0.85rem; color: var(--blue); line-height: 1.7;
+    }
+    .info-box a { color: var(--blue); font-weight: 500; }
+
+    .note-box {
+      background: var(--cream-dark); border: 1px solid var(--border);
+      border-left: 3px solid var(--gold); border-radius: 0 10px 10px 0;
+      padding: 0.9rem 1.1rem; margin-bottom: 1.5rem;
+      font-size: 0.85rem; color: var(--ink-soft); line-height: 1.7;
+    }
+
+    /* ── ACTIVITIES ── */
+    .activities-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 0.9rem; margin-bottom: 1.5rem; }
+    .activity-card {
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: 12px; padding: 1rem 1.1rem;
+      transition: box-shadow 0.15s, border-color 0.15s;
+    }
+    .activity-card:hover { box-shadow: 0 3px 14px rgba(0,0,0,0.07); border-color: var(--border-strong); }
+    .activity-icon { font-size: 1.3rem; margin-bottom: 0.5rem; }
+    .activity-card p { font-size: 0.8rem; color: var(--ink-soft); line-height: 1.6; }
+
+    /* ── LABS TABLE ── */
+    .table-wrap { background: var(--white); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; margin-bottom: 1.5rem; }
+    table { width: 100%; border-collapse: collapse; }
+    thead th {
+      font-size: 0.73rem; font-weight: 500; color: var(--ink-soft);
+      text-align: left; padding: 0.8rem 1rem;
+      background: var(--cream-dark); border-bottom: 1px solid var(--border);
+    }
+    tbody tr { border-bottom: 1px solid var(--border); transition: background 0.1s; }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: var(--cream); }
+    tbody td { padding: 0.85rem 1rem; font-size: 0.84rem; color: var(--ink-mid); vertical-align: middle; }
+    .lab-name { font-weight: 500; color: var(--ink); }
+    .lab-prog a {
+      font-size: 0.78rem; color: var(--gold); font-weight: 500;
+      text-decoration: none; display: inline-flex; align-items: center; gap: 4px;
+      border: 1px solid #e8d9a8; border-radius: 999px; padding: 2px 10px;
+      background: var(--gold-pale); transition: background 0.15s;
+    }
+    .lab-prog a:hover { background: #ece0b5; }
+    .lab-flag { font-size: 1rem; margin-right: 6px; }
+    .topic-pill {
+      display: inline-block; font-size: 0.72rem; padding: 2px 8px;
+      border-radius: 4px; background: var(--blue-bg); color: var(--blue);
+      border: 1px solid var(--blue-border);
+    }
+
+    /* ── SELECTION STAGES ── */
+    .stages { display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1.5rem; }
+    .stage {
+      display: flex; gap: 1.2rem; align-items: flex-start;
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: 12px; padding: 1.1rem 1.2rem;
+    }
+    .stage-num {
+      width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0;
+      background: var(--gold-pale); border: 1px solid #e8d9a8;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 600; color: var(--gold);
+    }
+    .stage h4 { font-size: 0.92rem; font-weight: 500; color: var(--ink); margin-bottom: 4px; }
+    .stage p { font-size: 0.82rem; color: var(--ink-soft); line-height: 1.65; }
+
+    /* ── FUNDING ── */
+    .funding-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 0.75rem; margin-bottom: 1.5rem; }
+    .funding-item {
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: 10px; padding: 0.85rem 1rem; text-align: center;
+    }
+    .funding-icon { font-size: 1.4rem; display: block; margin-bottom: 4px; }
+    .funding-item p { font-size: 0.78rem; color: var(--ink-soft); line-height: 1.5; }
+
+    /* ── CTA ── */
+    .cta-box {
+      background: var(--gold); border-radius: 14px; padding: 1.5rem 2rem;
+      text-align: center; margin-top: 2.5rem;
+    }
+    .cta-box p { font-size: 0.9rem; color: rgba(255,255,255,0.9); margin-bottom: 0.75rem; line-height: 1.6; }
+    .cta-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: #fff; color: var(--gold); font-weight: 600;
+      font-family: 'DM Sans', sans-serif; font-size: 0.9rem;
+      padding: 11px 28px; border-radius: 999px;
+      text-decoration: none; transition: opacity 0.15s;
+    }
+    .cta-btn:hover { opacity: 0.9; }
+
+    /* ── INDICO WIDGET ── */
+    .indico-widget { background: var(--white); border: 1px solid var(--border); border-radius: 12px; padding: 1.2rem; margin-bottom: 1.5rem; min-height: 60px; }
+    .indico-item { padding: 0.6rem 0; border-bottom: 1px solid var(--cream-dark); }
+    .indico-item:last-child { border-bottom: none; }
+    .indico-item a { font-size: 0.88rem; font-weight: 500; color: var(--gold); text-decoration: none; }
+    .indico-item a:hover { text-decoration: underline; }
+    .indico-item .indico-date { font-size: 0.75rem; color: var(--ink-soft); margin-top: 2px; }
+    .indico-fallback { font-size: 0.82rem; color: var(--ink-soft); }
+    .indico-fallback a { color: var(--gold); }
+
+    footer { background: var(--white); border-top: 1px solid var(--border); padding: 1.4rem 2rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; font-size: 0.78rem; color: var(--ink-soft); }
+    footer a { color: var(--ink-soft); text-decoration: none; }
+    footer a:hover { color: var(--gold); }
+
+    @media (max-width: 640px) {
+      .page-header-inner { grid-template-columns: 1fr; }
+      .header-icon { display: none; }
+      thead .hide-sm { display: none; }
+      tbody td.hide-sm { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="topnav">
+    <a class="nav-brand" href="index.html">DPyC · <span>SMF</span></a>
+    <div class="nav-spacer"></div>
+    <a class="nav-back" href="index.html">← Inicio</a>
+  </nav>
+
+  <div class="page-header">
+    <div class="page-header-inner">
+      <div>
+        <p class="page-eyebrow">División de Partículas y Campos · SMF</p>
+        <h1>Summer Research Stays</h1>
+        <p class="page-header-desc">The DPyC selects Mexican undergraduate and master's students as candidates for summer research stays at leading international laboratories in particle physics and related areas.</p>
+      </div>
+      <div class="header-icon">✈️</div>
+    </div>
+  </div>
+
+  <div class="stats-bar">
+    <div class="stat"><span class="stat-num">5</span><span class="stat-label">partner laboratories</span></div>
+    <div class="stat"><span class="stat-num">~2</span><span class="stat-label">months duration</span></div>
+    <div class="stat"><span class="stat-num">2</span><span class="stat-label">selection stages</span></div>
+  </div>
+
+  <main>
+
+    <!-- PURPOSE -->
+    <div class="sec-divider"><div class="sec-line"></div><span class="sec-label">Purpose</span><div class="sec-line"></div></div>
+
+    <div class="prose">
+      <p>The purpose of this competition is to select Mexican undergraduate and master's students as candidates for summer research stays at international research centers, to strengthen their training in particle physics, astroparticle physics, accelerators, and related areas.</p>
+    </div>
+
+    <div class="note-box">
+      ⚠️ The DPyC does not guarantee that the host institution will accept the preselected students. Candidates are encouraged to carefully review the competition terms before applying.
+    </div>
+
+    <!-- PAST EDITIONS -->
+    <div class="sec-divider"><div class="sec-line"></div><span class="sec-label">Past editions</span><div class="sec-line"></div></div>
+
+    <div class="indico-widget" id="indicoWidget">
+      <p class="indico-fallback">Loading past editions from Indico…</p>
+    </div>
+
+    <!-- DESCRIPTION -->
+    <div class="sec-divider"><div class="sec-line"></div><span class="sec-label">About the stay</span><div class="sec-line"></div></div>
+
+    <div class="prose" style="margin-bottom:1.5rem;">
+      <p>During the summer research stay, students join an international laboratory and participate in academic and research activities designed to strengthen their training in particle physics, astroparticle physics, accelerators, or related fields. Over approximately two months, students work under the guidance of researchers and integrate into the host laboratory's daily life.</p>
+    </div>
+
+    <div class="activities-grid">
+      <div class="activity-card">
+        <div class="activity-icon">📚</div>
+        <p>Short, intensive courses related to the laboratory's research areas — theory, experimental methods, data analysis, detectors, and simulation.</p>
+      </div>
+      <div class="activity-card">
+        <div class="activity-icon">🔬</div>
+        <p>Supervised research project involving data analysis, simulation, detector studies, or theoretical calculations, depending on the laboratory.</p>
+      </div>
+      <div class="activity-card">
+        <div class="activity-icon">🎤</div>
+        <p>Seminars, group meetings, and scientific discussions providing exposure to active international research environments.</p>
+      </div>
+      <div class="activity-card">
+        <div class="activity-icon">💻</div>
+        <p>Collaborative work with research teams, developing technical, computational, and scientific skills.</p>
+      </div>
+      <div class="activity-card">
+        <div class="activity-icon">🏛</div>
+        <p>Laboratory visits, technical tours, and hands-on sessions depending on the host center's program.</p>
+      </div>
+      <div class="activity-card">
+        <div class="activity-icon">🎓</div>
+        <p>Final presentation or summary of work, providing valuable experience for academic and professional development.</p>
+      </div>
+    </div>
+
+    <!-- LABS -->
+    <div class="sec-divider"><div class="sec-line"></div><span class="sec-label">Participating laboratories</span><div class="sec-line"></div></div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th style="width:18%">Laboratory</th>
+            <th style="width:38%" class="hide-sm">Research topic</th>
+            <th style="width:44%">Summer program</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="lab-flag">🇺🇸</span><span class="lab-name">JLab</span></td>
+            <td class="hide-sm"><span class="topic-pill">Accelerator Physics</span></td>
+            <td class="lab-prog"><a href="https://www.jlab.org/div_dept/train/ug_prog/suli.html" target="_blank">SULI Program →</a></td>
+          </tr>
+          <tr>
+            <td><span class="lab-flag">🇺🇸</span><span class="lab-name">BNL</span></td>
+            <td class="hide-sm"><span class="topic-pill">BELLE Experiment Physics</span></td>
+            <td class="lab-prog"><a href="https://www.bnl.gov/education/programs/program.php?q=116" target="_blank">SULI – BNL →</a></td>
+          </tr>
+          <tr>
+            <td><span class="lab-flag">🇨🇦</span><span class="lab-name">SNOLAB</span></td>
+            <td class="hide-sm"><span class="topic-pill">Neutrino & Dark Matter Physics</span></td>
+            <td class="lab-prog"><a href="https://www.snolab.ca/education/susi" target="_blank">SuSi Lecture Program →</a></td>
+          </tr>
+          <tr>
+            <td><span class="lab-flag">🇨🇭</span><span class="lab-name">CERN</span></td>
+            <td class="hide-sm"><span class="topic-pill">Data Analysis & Detector Dev.</span></td>
+            <td class="lab-prog"><a href="https://home.cern/summer-student-programme" target="_blank">CERN Summer Student 2026 →</a></td>
+          </tr>
+          <tr>
+            <td><span class="lab-flag">🇩🇪</span><span class="lab-name">DESY</span></td>
+            <td class="hide-sm"><span class="topic-pill">Data Analysis & Detector Dev.</span></td>
+            <td class="lab-prog"><a href="https://www.desy.de/research/student_programme/summer_students/index_eng.html" target="_blank">DESY Summer Student 2026 →</a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- SELECTION -->
+    <div class="sec-divider"><div class="sec-line"></div><span class="sec-label">Selection process</span><div class="sec-line"></div></div>
+
+    <div class="stages">
+      <div class="stage">
+        <div class="stage-num">1</div>
+        <div>
+          <h4>Review of academic profile</h4>
+          <p>The committee evaluates submitted documents — academic transcripts, reference letters, motivation letters, and CVs — to assess academic preparation, research potential, and alignment with the program's objectives.</p>
+        </div>
+      </div>
+      <div class="stage">
+        <div class="stage-num">2</div>
+        <div>
+          <h4>In-person evaluation of practical skills</h4>
+          <p>Applicants who advance participate in an in-person assessment including short intensive courses, problem-solving activities, and an interview. This stage evaluates analytical abilities, scientific reasoning, communication skills, and overall suitability for the stay.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-box">
+      📋 The list of preselected candidates will be posted on this website. Check the schedule for exact dates.
+    </div>
+
+    <!-- FUNDING -->
+    <div class="sec-divider"><div class="sec-line"></div><span class="sec-label">Financial coverage</span><div class="sec-line"></div></div>
+
+    <div class="prose" style="margin-bottom:1.25rem;">
+      <p>The host institution partially funds the research stay. Depending on the host, support may include:</p>
+    </div>
+
+    <div class="funding-grid">
+      <div class="funding-item"><span class="funding-icon">✈️</span><p>Airfare</p></div>
+      <div class="funding-item"><span class="funding-icon">🏠</span><p>Lodging</p></div>
+      <div class="funding-item"><span class="funding-icon">💳</span><p>Stipend</p></div>
+      <div class="funding-item"><span class="funding-icon">🍽</span><p>Subsistence support</p></div>
+      <div class="funding-item"><span class="funding-icon">🏥</span><p>Health insurance</p></div>
+    </div>
+
+    <div class="note-box">
+      Once selected, the candidate commits to requesting any additional funding needed from their home institution to cover items not financed by the host — including visa costs if applicable. The DPyC supports, with documentation, the process for securing complementary funding from students' home institutions.
+    </div>
+
+    <!-- CTA -->
+    <div class="cta-box">
+      <p>Interested in applying or reviewing past editions of the competition?</p>
+      <a class="cta-btn" href="https://indico.nucleares.unam.mx/category/15/" target="_blank">📅 View all editions on Indico →</a>
+    </div>
+
+  </main>
+
+  <footer>
+    <span>© 2025 División de Partículas y Campos · Sociedad Mexicana de Física</span>
+    <span>
+      <a href="index.html">Inicio</a> ·
+      <a href="mailto:dpyc.smf.adms@gmail.com?subject=Contacto%20desde%20la%20p%C3%A1gina%20de%20la%20DPyC">dpyc.smf.adms@gmail.com</a>
+    </span>
+  </footer>
+
+  <script>
+    // Try to fetch past editions from Indico API and filter by "verano"
+    fetch('https://indico.nucleares.unam.mx/export/categ/15.json?limit=100&order=desc')
+      .then(r => r.json())
+      .then(data => {
+        const veranos = (data.results || []).filter(e =>
+          e.title.toLowerCase().includes('verano') ||
+          e.title.toLowerCase().includes('summer')
+        );
+        const el = document.getElementById('indicoWidget');
+        if (!veranos.length) {
+          el.innerHTML = `<p class="indico-fallback">No past editions found. <a href="https://indico.nucleares.unam.mx/category/15/" target="_blank">Browse all DPyC events →</a></p>`;
+          return;
+        }
+        el.innerHTML = veranos.map(e => `
+          <div class="indico-item">
+            <a href="${e.url}" target="_blank">${e.title}</a>
+            <div class="indico-date">${e.startDate?.date || ''} ${e.startDate?.date && e.endDate?.date && e.startDate.date !== e.endDate.date ? '– ' + e.endDate.date : ''}</div>
+          </div>`).join('');
+      })
+      .catch(() => {
+        document.getElementById('indicoWidget').innerHTML =
+          `<p class="indico-fallback">Could not load past editions automatically. <a href="https://indico.nucleares.unam.mx/category/15/" target="_blank">Browse all DPyC events on Indico →</a></p>`;
+      });
+  </script>
+</body>
+</html>
