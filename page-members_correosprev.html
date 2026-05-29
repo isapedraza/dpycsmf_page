@@ -122,13 +122,6 @@
     .member-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--border-strong); flex-shrink: 0; }
     .member-email { font-size: 0.8rem; color: var(--ink-soft); font-family: monospace; }
     .member-row.highlight .member-email { color: var(--gold); font-weight: 500; }
-    .member-name-link { font-size: 0.82rem; color: var(--ink); text-decoration: none; font-weight: 500; }
-    .member-name-link:hover { color: var(--gold); text-decoration: underline; }
-    .member-email-link { font-size: 0.78rem; color: var(--ink-soft); font-family: monospace; text-decoration: none; }
-    .member-email-link:hover { color: var(--gold); text-decoration: underline; }
-    .member-email-sub { font-size: 0.7rem; color: var(--ink-soft); font-family: monospace; }
-    .member-row.highlight .member-name-link { color: var(--gold); }
-    .member-info { flex: 1; }
 
     /* category filter pills */
     .cat-filters { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 1.25rem; }
@@ -150,16 +143,6 @@
       .header-stat { display: none; }
       .members-grid { grid-template-columns: 1fr; }
     }
-    .member-name-link { font-size: 0.82rem; color: var(--ink); text-decoration: none; font-weight: 500; }
-    .member-name-link:hover { color: var(--gold); text-decoration: underline; }
-    .member-email-link { font-size: 0.78rem; color: var(--ink-soft); font-family: monospace; text-decoration: none; }
-    .member-email-link:hover { color: var(--gold); text-decoration: underline; }
-    .member-email-sub { font-size: 0.7rem; color: var(--ink-soft); font-family: monospace; }
-    .member-row.highlight .member-name-link { color: var(--gold); }
-    .member-info { flex: 1; }
-    .member-name-link.rep { color: #2e7d32; font-weight: 700; }
-    .member-name-link.rep:hover { color: #1b5e20; }
-    .member-name-link.rep::after { content: ' ★'; font-size: 0.65rem; vertical-align: super; }
   </style>
 </head>
 <body>
@@ -452,202 +435,6 @@
       }
     ];
 
-
-    const reps = new Set([
-      "rosado@sirio.ifuap.buap.mx",
-      "ldiaz@ifuap.buap.mx",
-      "e.delacruz.burelo@cinvestav.mx",
-      "mariana@ifisica.uaslp.mx",
-      "fefo@ucol.mx",
-      "delepine@fisica.ugto.mx",
-      "alfredo.raya@umich.mx",
-      "alexis@nucleares.unam.mx",
-      "erler@fisica.unam.mx",
-      "murguia@ciencias.unam.mx",
-      "cristina.oropeza@ibero.mx",
-      "karen.mora@unach.mx",
-      "lao_lopez@uaeh.edu.mx",
-      "jose.benitez@unison.mx",
-      "cvalerio@uas.edu.mx",
-    ]);
-
-    // ── Name lookup map (email → full name) ──
-    const nameMap = {
-      // UNAM – ICN
-      "alberto@nucleares.unam.mx": "Alberto Güijosa",
-      "alexis@nucleares.unam.mx": "Alexis Aguilar-Arevalo",
-      "antonio.ortiz@nucleares.unam.mx": "Antonio Ortiz",
-      "ayala@nucleares.unam.mx": "Alejandro Ayala",
-      "bijker@nucleares.unam.mx": "Roelof Bijker",
-      "cesar.fernandez@nucleares.unam.mx": "César Fernández",
-      "dolivo@nucleares.unam.mx": "Juan Carlos D'Olivo",
-      "ecuautle@nucleares.unam.mx": "Eduardo Cuautle",
-      "garcia@nucleares.unam.mx": "Augusto García",
-      "guypaic@nucleares.unam.mx": "Guy Paic",
-      "hess@nucleares.unam.mx": "Peter Hess",
-      "lukas@nucleares.unam.mx": "Lukas Nellen",
-      "sarira@nucleares.unam.mx": "Sarira Sahu",
-      "urrutia@nucleares.unam.mx": "Luis Urrutia",
-      "vergara@nucleares.unam.mx": "Jorge Vergara",
-      "wolbi@nucleares.unam.mx": "Wolfgang Bietenholz",
-      // UNAM – IF
-      "aurore@fisica.unam.mx": "Aurore Courtoy",
-      "bespro@fisica.unam.mx": "Boris Espinoza",
-      "epeinado@fisica.unam.mx": "Eduardo Peinado",
-      "ericvj@fisica.unam.mx": "Eric Vázquez-Jáuregui",
-      "erler@fisica.unam.mx": "Jens Erler",
-      "grabski@fisica.unam.mx": "Varlen Grabski",
-      "gustavobh@estudiantes.fisica.unam.mx": "Gustavo B. H.",
-      "hleonvar@fisica.unam.mx": "Héctor León",
-      "m.catalina@fisica.unam.mx": "María Catalina",
-      "macorra@fisica.unam.mx": "Axel de la Macorra",
-      "matias@fisica.unam.mx": "Matías Moreno",
-      "myriam@fisica.unam.mx": "Myriam Mondragón",
-      "ramos@fisica.unam.mx": "Ramón Ramos",
-      "toledo@fisica.unam.mx": "Gabriela Toledo",
-      "torres@fisica.unam.mx": "Manuel Torres",
-      // UNAM – FC
-      "ansac@ciencias.unam.mx": "Ana Saúl",
-      "bernardo.apr@ciencias.unam.mx": "Bernardo Aguilar",
-      "francsam@ciencias.unam.mx": "Francisco Samuel",
-      "jorgejaber@ciencias.unam.mx": "Jorge Jaber",
-      "leonm@ciencias.unam.mx": "León Margolis",
-      "lserkin@ciencias.unam.mx": "Lorena Serkin",
-      "luis.hernandez@ciencias.unam.mx": "Luis Hernández",
-      "marianab@ciencias.unam.mx": "Mariana Benítez",
-      "mchernicoff@ciencias.unam.mx": "Mariano Chernicoff",
-      "murguia@ciencias.unam.mx": "Gabriela Murguía",
-      "pdr.mrcd@ciencias.unam.mx": "Pedro Mercado",
-      // UNAM – IM
-      "federico@matem.unam.mx": "Federico Finkel",
-      // CINVESTAV Física
-      "aguevara@fis.cinvestav.mx": "Arturo Guevara",
-      "aplorenz@fis.cinvestav.mx": "Abdel Pérez-Lorenzana",
-      "bcorduz@fis.cinvestav.mx": "Beatriz Corduz",
-      "bmarin@fis.cinvestav.mx": "Beatriz Marín",
-      "egarces@fis.cinvestav.mx": "Elizabeth Garcés",
-      "gerardo.herrera@fis.cinvestav.mx": "Gerardo Herrera Corral",
-      "ghernandez@fis.cinvestav.mx": "Guillermo Hernández",
-      "glopez@fis.cinvestav.mx": "Gabriel López Castro",
-      "iheredia@fis.cinvestav.mx": "Iván Heredia",
-      "jrendon@fis.cinvestav.mx": "Juan Rendón",
-      "kiel@fis.cinvestav.mx": "Kiel Howe",
-      "leonm@fis.cinvestav.mx": "León Morales",
-      "lopezr@fis.cinvestav.mx": "Rodolfo Bernardo López",
-      "luis.montano@fis.cinvestav.mx": "Luis Manuel Montaño",
-      "mduran@fis.cinvestav.mx": "Marco Durán",
-      "miguel-angel.perez@fis.cinvestav.mx": "Miguel Ángel Pérez Angón",
-      "omr@fis.cinvestav.mx": "Óscar Martínez",
-      "proig@fis.cinvestav.mx": "Pablo Roig",
-      "rblopez@fis.cinvestav.mx": "Rogelio Bernardo López",
-      "rhernand@fis.cinvestav.mx": "Rodolfo Hernández",
-      "rreyes@fis.cinvestav.mx": "Ramón Reyes",
-      // CINVESTAV
-      "alberto.sanchez.hdez@cinvestav.mx": "Alberto Sánchez Hernández",
-      "e.delacruz.burelo@cinvestav.mx": "Eduard De La Cruz Burelo",
-      "heriberto.castilla@cinvestav.mx": "Heriberto Castilla",
-      "pablo.roig@cinvestav.mx": "Pablo Roig",
-      // BUAP FCFM
-      "afernand@fcfm.buap.mx": "Arturo Fernández Téllez",
-      "barradas@fcfm.buap.mx": "Nora Barradas",
-      "cramirez@fcfm.buap.mx": "César Ramírez",
-      "gtejeda@fcfm.buap.mx": "Guillermo Tejeda",
-      "hsalazar@fcfm.buap.mx": "Humberto Salazar",
-      "irais.bautista@fcfm.buap.mx": "Irais Bautista",
-      "mim@fcfm.buap.mx": "María Isabel Morales",
-      "omartin@fcfm.buap.mx": "Omar Martín",
-      // BUAP IFUAP
-      "aherrera@ifuap.buap.mx": "Alejandro Herrera",
-      "ldiaz@ifuap.buap.mx": "Lorenzo Díaz-Cruz",
-      "rosado@sirio.ifuap.buap.mx": "Alfonso Rosado",
-      // BUAP general
-      "at224470108@alm.buap.mx": "Estudiante BUAP",
-      "cecilia.uribe@correo.buap.mx": "Cecilia Uribe",
-      "felix.gonzalezc@correo.buap.mx": "Félix González",
-      "isabel.pedraza@correo.buap.mx": "Isabel Pedraza",
-      "jeduardo.rosales@correo.buap.mx": "J. Eduardo Rosales",
-      "olga.felix@correo.buap.mx": "Olga Félix",
-      "yael.vasquezb@alumno.buap.mx": "Yael Vásquez",
-      // UdeG
-      "america@fisica.ugto.mx": "América Morales",
-      "carolup@fisica.ugto.mx": "Carolina López",
-      "dchavez@fisica.ugto.mx": "David Chávez",
-      "delepine@fisica.ugto.mx": "David Delepine",
-      "gerardo@fisica.ugto.mx": "Gerardo Herrera",
-      "kagihecha@fisica.ugto.mx": "Kagi Hecha",
-      "lucio@fisica.ugto.mx": "José Lucio",
-      "marco@fisica.ugto.mx": "Marco A.",
-      "mauro@fisica.ugto.mx": "Mauro Napsuciale",
-      "medinamluis@fisica.ugto.mx": "Luis Medina",
-      "oloaiza@fisica.ugto.mx": "Orlando Loaiza",
-      "raziel@fisica.ugto.mx": "Raziel García",
-      "selimibn@fisica.ugto.mx": "Selim Ibn-Shahroodin",
-      "vanniagm@fisica.ugto.mx": "Vannia Gómez",
-      "vaquera@fisica.ugto.mx": "Alfredo Vaquera",
-      "g.niz@ugto.mx": "Gustavo Niz",
-      "jbarranco@ugto.mx": "Juan Barranco",
-      // UMSNH
-      "adnan.bashir@umich.mx": "Adnan Bashir",
-      "alfredo.raya@umich.mx": "Alfredo Raya",
-      "axel.weber@umich.mx": "Axel Weber",
-      "cederik.de.leon@umich.mx": "Cederik de León",
-      "juan.arteaga@umich.mx": "Juan Arteaga",
-      "raul.torres@umich.mx": "Raúl Torres",
-      // UASLP
-      "mariana@ifisica.uaslp.mx": "Mariana Kirbash",
-      "morelos@dec1.ifisica.uaslp.mx": "Morelos Morales",
-      // UAS
-      "cvalerio@uas.edu.mx": "César Valerio",
-      "est.david.rope@uas.edu.mx": "David Rope (Est.)",
-      "isadoji@uas.edu.mx": "Isa Doji",
-      "juan.cabanillas@info.uas.edu.mx": "Juan Cabanillas",
-      "podesta.pedro@uas.edu.mx": "Pedro Podesta",
-      "roger@uas.edu.mx": "Roger Negrete",
-      // UAM
-      "admau@xanum.uam.mx": "Alejandro D. Mau",
-      "lhernandez.rosas@izt.uam.mx": "Luis Hernández Rosas",
-      // UAQ
-      "ahalmada@uaq.mx": "Alfredo Halmada",
-      // UANL
-      "francisco.floresbz@uanl.edu.mx": "Francisco Flores",
-      "nallaly.matacrr@uanl.edu.mx": "Nallaly Mata",
-      // UNACH
-      "karen.mora@unach.mx": "Karen Salomé Caballero Mora",
-      "marco.bedolla@unach.mx": "Marco Bedolla",
-      // UAEH
-      "lao_lopez@uaeh.edu.mx": "Lao López",
-      // UNISON
-      "jose.benitez@unison.mx": "José Benítez",
-      "lizardo.valencia@unison.mx": "Lizardo Valencia",
-      // UCol
-      "fefo@ucol.mx": "Alfonso Aranda",
-      // Ibero
-      "cristina.oropeza@ibero.mx": "Cristina Oropeza",
-      // UDLAP
-      "martin.hentschinski@udlap.mx": "Martin Hentschinski",
-      // INAOE
-      "alberto@inaoep.mx": "Alberto Carramiñana",
-      // MCTP
-      "lxgutierrez@mctp.mx": "Luis Gutiérrez",
-      // TecNM
-      "rogelio.rr@tehuacan.tecnm.mx": "Rogelio Reyes",
-      // CERN
-      "arelycg@cern.ch": "Arely Cortez García",
-      "cesar.ramirez@cern.ch": "César Ramírez",
-      "jesus.guillermo.contreras.nuno@cern.ch": "Guillermo Contreras Nuño",
-      // JLab
-      "acastill@jlab.org": "A. Castillo",
-      "chgarcia@jlab.org": "C. H. García",
-      // DESY
-      "michel.hernandez.villanueva@desy.de": "Michel Hernández Villanueva",
-      // IFIC
-      "andrea.lami@ific.uv.es": "Andrea Lami",
-      // UBA
-      "sassot@df.uba.ar": "Rodolfo Sassot",
-      // UT Austin
-      "michellecc@utexas.edu": "Michelle C.",
-    };
-
     let activeCat = 'all';
     let searchTerm = '';
 
@@ -702,18 +489,9 @@
             <div class="members-grid">
               ${displayMembers.map(m => {
                 const hl = term && m.toLowerCase().includes(term);
-                const name = nameMap[m];
-                const isPersonal = m.includes('hotmail') || m.includes('yahoo') || m.includes('gmail');
-                const isRep = reps.has(m);
-                const display = name
-                  ? `<a href="mailto:${m}" class="member-name-link${isRep ? ' rep' : ''}" title="${m}">${name}</a>`
-                  : `<a href="mailto:${m}" class="member-email-link">${m}</a>`;
-                const sub = name && isPersonal
-                  ? `<span class="member-email-sub">${m}</span>`
-                  : (name ? '' : '');
                 return `<div class="member-row${hl ? ' highlight' : ''}">
                   <div class="member-dot"></div>
-                  <div class="member-info">${display}${sub ? '<br>' + sub : ''}</div>
+                  <span class="member-email">${m}</span>
                 </div>`;
               }).join('')}
             </div>
