@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Reunión Anual RADPyC · DPyC SMF</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/x-icon" href="assets/img/favicon.png"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --cream: #faf8f4; --cream-dark: #f2ede4;
+      --gold: #b8860b; --gold-light: #d4a82a; --gold-pale: #f5edd0;
+      --ink: #1a1a1a; --ink-mid: #3d3d3d; --ink-soft: #6b6b6b;
+      --border: #e0d8cc; --border-strong: #c8bfb0; --white: #ffffff;
+      --nav-h: 60px;
+      --blue: #1a3a6e; --blue-bg: #e6f1fb; --blue-border: #b5d4f4;
+      --green: #3B6D11; --green-bg: #eaf3de; --green-border: #c0dd97;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', system-ui, sans-serif; color: var(--ink); background: var(--cream); }
+
+    /* ── NAV ── */
+    nav.topnav {
+      position: fixed; top: 0; left: 0; right: 0; height: var(--nav-h);
+      z-index: 1000; background: rgba(250,248,244,0.96);
+      backdrop-filter: blur(10px); border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; padding: 0 1.5rem; gap: 1rem;
+    }
+    .nav-brand { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--ink); text-decoration: none; flex-shrink: 0; }
+    .nav-brand span { color: var(--gold); }
+    .nav-spacer { flex: 1; }
+    .nav-back { font-size: 0.8rem; color: var(--ink-soft); text-decoration: none; transition: color 0.15s; }
+    .nav-back:hover { color: var(--gold); }
+
+    /* ── PAGE HEADER ── */
+    .page-header { padding-top: var(--nav-h); background: var(--white); border-bottom: 1px solid var(--border); position: relative; overflow: hidden; }
+    .page-header::before {
+      content: ''; position: absolute; inset: 0;
+      background: repeating-linear-gradient(-45deg, transparent, transparent 40px, rgba(184,134,11,0.04) 40px, rgba(184,134,11,0.04) 41px);
+      pointer-events: none;
+    }
+    .page-header-inner {
+      max-width: 1000px; margin: 0 auto; padding: 2.5rem 2rem;
+      display: grid; grid-template-columns: 1fr auto;
+      gap: 2rem; align-items: center; position: relative; z-index: 1;
+    }
+    .page-eyebrow { font-size: 11px; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.5rem; }
+    .page-header h1 { font-family: 'Playfair Display', serif; font-size: clamp(1.6rem, 3vw, 2.4rem); font-weight: 600; color: var(--ink); margin-bottom: 0.4rem; }
+    .page-header-desc { font-size: 0.9rem; color: var(--ink-soft); line-height: 1.75; max-width: 540px; }
+    .header-icon { font-size: 4rem; flex-shrink: 0; }
+
+    /* ── STATS ── */
+    .stats-bar { background: var(--gold-pale); border-bottom: 1px solid #e8d9a8; padding: 0.85rem 2rem; display: flex; justify-content: center; gap: 3rem; flex-wrap: wrap; }
+    .stat { text-align: center; }
+    .stat-num { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 600; color: var(--gold); display: block; }
+    .stat-label { font-size: 10px; color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.08em; }
+
+    /* ── MAIN ── */
+    main { max-width: 1000px; margin: 0 auto; padding: 2.5rem 2rem 5rem; }
+
+    .sec-divider { display: flex; align-items: center; gap: 1rem; margin: 2.5rem 0 1.25rem; }
+    .sec-divider:first-child { margin-top: 0; }
+    .sec-line { flex: 1; height: 1px; background: var(--border); }
+    .sec-label { font-size: 11px; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); white-space: nowrap; }
+
+    .prose { font-size: 0.93rem; color: var(--ink-mid); line-height: 1.85; margin-bottom: 1.5rem; }
+
+    /* ── NEXT EDITION ── */
+    .next-edition {
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: 14px; padding: 1.3rem 1.5rem; margin-bottom: 2.5rem;
+      display: flex; align-items: center; gap: 1.2rem; flex-wrap: wrap;
+    }
+    .next-edition-icon {
+      width: 56px; height: 56px; border-radius: 50%; flex-shrink: 0;
+      background: var(--gold-pale); border: 1px solid #e8d9a8;
+      display: flex; align-items: center; justify-content: center; font-size: 1.6rem;
+    }
+    .next-edition-body { flex: 1; min-width: 200px; }
+    .next-edition-badge {
+      display: inline-block; font-size: 10px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 2px 9px; border-radius: 999px; background: var(--green-bg); color: var(--green); border: 1px solid var(--green-border);
+      margin-bottom: 6px;
+    }
+    .next-edition-title { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 600; color: var(--ink); margin-bottom: 3px; }
+    .next-edition-meta { font-size: 0.82rem; color: var(--ink-soft); }
+    .next-edition-link {
+      font-size: 0.82rem; color: var(--gold); font-weight: 500; text-decoration: none;
+      border: 1px solid #e8d9a8; border-radius: 999px; padding: 7px 18px;
+      background: var(--gold-pale); transition: background 0.15s; white-space: nowrap;
+    }
+    .next-edition-link:hover { background: #ece0b5; }
+
+    /* ── CAROUSEL ── */
+    .carousel-wrap { position: relative; margin-bottom: 2.5rem; }
+    .carousel-track-outer { overflow: hidden; border-radius: 16px; border: 1px solid var(--border); }
+    .carousel-track { display: flex; transition: transform 0.5s cubic-bezier(.4,0,.2,1); will-change: transform; }
+    .carousel-slide { min-width: 100%; background: var(--white); }
+    .carousel-slide-img { position: relative; height: 380px; overflow: hidden; background: var(--cream-dark); }
+    .carousel-slide-img img { width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; }
+    .carousel-slide-caption {
+      position: absolute; left: 0; right: 0; bottom: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.65), transparent);
+      color: #fff; padding: 1.5rem 1.2rem 1rem; font-size: 0.85rem; line-height: 1.5;
+    }
+    .carousel-slide-caption strong { display: block; font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 600; margin-bottom: 2px; }
+    .carousel-placeholder {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      height: 100%; gap: 0.5rem; color: var(--ink-soft);
+    }
+    .carousel-placeholder .icon { font-size: 2.5rem; opacity: 0.4; }
+    .carousel-placeholder p { font-size: 0.85rem; }
+    .carousel-controls { display: flex; align-items: center; justify-content: center; gap: 1rem; margin-top: 1rem; }
+    .carousel-btn {
+      width: 36px; height: 36px; border-radius: 50%;
+      border: 1px solid var(--border-strong); background: var(--white);
+      color: var(--ink-soft); font-size: 1rem; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.15s, border-color 0.15s, color 0.15s;
+    }
+    .carousel-btn:hover { background: var(--gold-pale); border-color: var(--gold); color: var(--gold); }
+    .carousel-dots { display: flex; gap: 6px; }
+    .carousel-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--border-strong); cursor: pointer; transition: background 0.2s, transform 0.2s; }
+    .carousel-dot.active { background: var(--gold); transform: scale(1.3); }
+    .carousel-counter { font-size: 0.78rem; color: var(--ink-soft); min-width: 36px; text-align: center; }
+
+    /* ── EDITIONS LIST ── */
+    .editions-list { display: flex; flex-direction: column; gap: 1rem; }
+    .edition-card {
+      display: grid; grid-template-columns: 90px 1fr auto;
+      gap: 1.2rem; align-items: center;
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: 12px; padding: 1.1rem 1.3rem;
+      transition: box-shadow 0.15s, border-color 0.15s;
+    }
+    .edition-card:hover { box-shadow: 0 3px 14px rgba(0,0,0,0.07); border-color: var(--border-strong); }
+    .edition-num {
+      font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 600;
+      color: var(--gold); text-align: center;
+    }
+    .edition-num .roman { font-size: 0.95rem; display: block; color: var(--ink-soft); font-family: 'DM Sans', sans-serif; font-weight: 500; letter-spacing: 0.05em; }
+    .edition-title { font-size: 0.95rem; font-weight: 500; color: var(--ink); margin-bottom: 2px; }
+    .edition-meta { font-size: 0.78rem; color: var(--ink-soft); display: flex; gap: 10px; flex-wrap: wrap; }
+    .edition-meta span { display: inline-flex; align-items: center; gap: 4px; }
+    .edition-link {
+      font-size: 0.78rem; color: var(--gold); font-weight: 500; text-decoration: none;
+      border: 1px solid #e8d9a8; border-radius: 999px; padding: 5px 14px;
+      background: var(--gold-pale); transition: background 0.15s; white-space: nowrap;
+    }
+    .edition-link:hover { background: #ece0b5; }
+    .edition-badge {
+      display: inline-block; font-size: 0.68rem; padding: 1px 7px; border-radius: 4px;
+      background: var(--blue-bg); color: var(--blue); border: 1px solid var(--blue-border);
+      margin-left: 6px; font-weight: 500;
+    }
+
+    /* ── ABOUT GRID ── */
+    .about-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 0.9rem; margin-bottom: 1.5rem; }
+    .about-card { background: var(--white); border: 1px solid var(--border); border-radius: 12px; padding: 1rem 1.1rem; transition: box-shadow 0.15s; }
+    .about-card:hover { box-shadow: 0 3px 14px rgba(0,0,0,0.07); }
+    .about-icon { font-size: 1.3rem; margin-bottom: 0.5rem; }
+    .about-card h4 { font-size: 0.88rem; font-weight: 500; color: var(--ink); margin-bottom: 4px; }
+    .about-card p { font-size: 0.8rem; color: var(--ink-soft); line-height: 1.6; }
+
+    .cta-box { background: var(--gold); border-radius: 14px; padding: 1.5rem 2rem; text-align: center; margin-top: 2.5rem; }
+    .cta-box p { font-size: 0.9rem; color: rgba(255,255,255,0.9); margin-bottom: 0.75rem; line-height: 1.6; }
+    .cta-btn { display: inline-flex; align-items: center; gap: 8px; background: #fff; color: var(--gold); font-weight: 600; font-family: 'DM Sans', sans-serif; font-size: 0.9rem; padding: 11px 28px; border-radius: 999px; text-decoration: none; transition: opacity 0.15s; }
+    .cta-btn:hover { opacity: 0.9; }
+
+    footer { background: var(--white); border-top: 1px solid var(--border); padding: 1.4rem 2rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; font-size: 0.78rem; color: var(--ink-soft); }
+    footer a { color: var(--ink-soft); text-decoration: none; }
+    footer a:hover { color: var(--gold); }
+
+    @media (max-width: 640px) {
+      .page-header-inner { grid-template-columns: 1fr; }
+      .header-icon { display: none; }
+      .edition-card { grid-template-columns: 60px 1fr; }
+      .edition-link { grid-column: 1 / -1; justify-self: start; }
+      .carousel-slide-img { height: 240px; }
+      .next-edition { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="topnav">
+    <a class="nav-brand" href="index.html">DPyC · <span>SMF</span></a>
+    <div class="nav-spacer"></div>
+    <a class="nav-back" href="page-escuela.html">Escuela</a>
+    &nbsp;·&nbsp;
+    <a class="nav-back" href="page-workshop.html">Workshop</a>
+    &nbsp;·&nbsp;
+    <a class="nav-back" href="index.html">Inicio</a>
+  </nav>
+
+  <div class="page-header">
+    <div class="page-header-inner">
+      <div>
+        <p class="page-eyebrow">División de Partículas y Campos · SMF</p>
+        <h1>Reunión Anual DPyC · RADPyC</h1>
+        <p class="page-header-desc">Cada año, la DPyC organiza la Reunión Anual (RADPyC), un espacio dedicado principalmente a la exposición de resultados de estudiantes de posgrado y jóvenes investigadores en física de altas energías, junto con pláticas de revisión sobre temas de actualidad en el campo.</p>
+      </div>
+      <div class="header-icon">📣</div>
+    </div>
+  </div>
+
+  <div class="stats-bar">
+    <div class="stat"><span class="stat-num">XL</span><span class="stat-label">edición 2026</span></div>
+    <div class="stat"><span class="stat-num">1986</span><span class="stat-label">primera edición</span></div>
+    <div class="stat"><span class="stat-num">1</span><span class="stat-label">año entre ediciones</span></div>
+  </div>
+
+  <main>
+
+    <!-- ══ NEXT EDITION ══ -->
+    <div class="next-edition">
+      <div class="next-edition-icon">📅</div>
+      <div class="next-edition-body">
+        <span class="next-edition-badge">Próxima edición</span>
+        <div class="next-edition-title">XL Reunión Anual de la DPyC · RADPyC 2026</div>
+        <div class="next-edition-meta">17–19 de junio de 2026 · Auditorio José Ádem, CINVESTAV Zacatenco, Ciudad de México</div>
+      </div>
+      <a class="next-edition-link" href="https://indico.nucleares.unam.mx/event/2561/overview" target="_blank">Ver en Indico →</a>
+    </div>
+
+    <!-- ══ PHOTO CAROUSEL ══ -->
+    <div class="sec-divider"><div class="sec-line"></div><span class="sec-label">Galería de ediciones anteriores</span><div class="sec-line"></div></div>
+
+    <div class="carousel-wrap">
+      <div class="carousel-track-outer">
+        <div class="carousel-track" id="carouselTrack">
+
+          <div class="carousel-slide">
+            <div class="carousel-slide-img">
+              <div class="carousel-placeholder">
+                <span class="icon">📷</span>
+                <p>Fotos de RADPyC 2025 · Pachuca, Hidalgo</p>
+              </div>
+              <!-- Para añadir foto: <img src="assets/img/radpyc/radpyc2025_01.jpg" alt="XXXIX RADPyC — Pachuca 2025"> -->
+              <div class="carousel-slide-caption">
+                <strong>XXXIX RADPyC 2025</strong>
+                Universidad Autónoma del Estado de Hidalgo, Pachuca · Mayo 2025
+              </div>
+            </div>
+          </div>
+
+          <div class="carousel-slide">
+            <div class="carousel-slide-img">
+              <div class="carousel-placeholder">
+                <span class="icon">📷</span>
+                <p>Fotos de RADPyC 2024</p>
+              </div>
+              <!-- Para añadir foto: <img src="assets/img/radpyc/radpyc2024_01.jpg" alt="XXXVIII RADPyC 2024"> -->
+              <div class="carousel-slide-caption">
+                <strong>XXXVIII RADPyC 2024</strong>
+                Junio 2024
+              </div>
+            </div>
+          </div>
+
+          <div class="carousel-slide">
+            <div class="carousel-slide-img">
+              <div class="carousel-placeholder">
+                <span class="icon">📷</span>
+                <p>Fotos de RADPyC 2023 · CINVESTAV CDMX</p>
+              </div>
+              <!-- Para añadir foto: <img src="assets/img/radpyc/radpyc2023_01.jpg" alt="XXXVII RADPyC — CINVESTAV 2023"> -->
+              <div class="carousel-slide-caption">
+                <strong>XXXVII RADPyC 2023</strong>
+                Auditorio Arturo Rosenblueth / José Ádem, CINVESTAV, Ciudad de México · Junio 2023
+              </div>
+            </div>
+          </div>
+
+          <div class="carousel-slide">
+            <div class="carousel-slide-img">
+              <div class="carousel-placeholder">
+                <span class="icon">📷</span>
+                <p>Fotos de RADPyC 2018 · ICN-UNAM</p>
+              </div>
+              <!-- Para añadir foto: <img src="assets/img/radpyc/radpyc2018_01.jpg" alt="XXXII RADPyC — ICN-UNAM 2018"> -->
+              <div class="carousel-slide-caption">
+                <strong>XXXII RADPyC 2018</strong>
+                Auditorio Marcos Moshinsky, ICN-UNAM, Ciudad de México · Mayo 2018
+              </div>
+            </div>
+          </div>
+
+          <div class="carousel-slide">
+            <div class="carousel-slide-img">
+              <div class="carousel-placeholder">
+                <span class="icon">📷</span>
+                <p>Fotos de RADPyC 2016 · BUAP</p>
+              </div>
+              <!-- Para añadir foto: <img src="assets/img/radpyc/radpyc2016_01.jpg" alt="XXX RADPyC — BUAP 2016"> -->
+              <div class="carousel-slide-caption">
+                <strong>XXX RADPyC 2016</strong>
+                Edificio Carolino, BUAP, Puebla · Mayo 2016
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="carousel-controls">
+        <button class="carousel-btn" id="btnPrev" onclick="carousel(-1)" title="Anterior">‹</button>
+        <div class="carousel-dots" id="carouselDots"></div>
+        <button class="carousel-btn" id="btnNext" onclick="carousel(1)" title="Siguiente">›</button>
+        <span class="carousel-counter" id="carouselCounter">1 / 5</span>
+      </div>
+    </div>
+
+    <!-- ══ ABOUT ══ -->
+    <div class="sec-divider"><div class="sec-line"></div><span class="sec-label">Sobre la RADPyC</span><div class="sec-line"></div></div>
+    <div class="prose">
+      <p>La Reunión Anual de la División de Partículas y Campos (RADPyC) es organizada cada año por la DPyC-SMF. Su objetivo principal es brindar un espacio para que estudiantes de posgrado y jóvenes investigadores presenten los resultados de su trabajo, además de reunir a la comunidad de física de altas energías en México alrededor de pláticas de revisión sobre temas de actualidad.</p>
+    </div>
+    <div class="about-grid">
+      <div class="about-card">
+        <div class="about-icon">🎓</div>
+        <h4>Espacio para estudiantes</h4>
+        <p>Dedicada principalmente a la exposición de resultados de estudiantes de posgrado y jóvenes investigadores en física de altas energías.</p>
+      </div>
+      <div class="about-card">
+        <div class="about-icon">🎤</div>
+        <h4>Pláticas de revisión</h4>
+        <p>Investigadores reconocidos presentan pláticas sobre los temas más actuales del campo: colisionadores, neutrinos, materia oscura, ondas gravitacionales y más.</p>
+      </div>
+      <div class="about-card">
+        <div class="about-icon">📋</div>
+        <h4>Sesión de carteles</h4>
+        <p>El programa científico incluye pláticas invitadas, contribuciones orales y una sesión de carteles.</p>
+      </div>
+      <div class="about-card">
+        <div class="about-icon">🏛</div>
+        <h4>Sede rotativa anual</h4>
+        <p>Cada año una institución distinta de la comunidad DPyC es anfitriona de la reunión en distintas ciudades de México.</p>
+      </div>
+    </div>
+
+    <!-- ══ PAST EDITIONS ══ -->
+    <div class="sec-divider"><div class="sec-line"></div><span class="sec-label">Ediciones anteriores</span><div class="sec-line"></div></div>
+
+    <div class="editions-list">
+
+      <div class="edition-card">
+        <div class="edition-num">XXXIX<span class="roman">2025</span></div>
+        <div>
+          <div class="edition-title">XXXIX Reunión Anual de la DPyC<span class="edition-badge">Pachuca, Hidalgo</span></div>
+          <div class="edition-meta">
+            <span>📅 21–23 mayo 2025</span>
+            <span>📍 Universidad Autónoma del Estado de Hidalgo (UAEH), Pachuca</span>
+          </div>
+        </div>
+        <a class="edition-link" href="https://indico.nucleares.unam.mx/event/2366/" target="_blank">Ver en Indico →</a>
+      </div>
+
+      <div class="edition-card">
+        <div class="edition-num">XXXVIII<span class="roman">2024</span></div>
+        <div>
+          <div class="edition-title">XXXVIII Reunión Anual de la DPyC</div>
+          <div class="edition-meta">
+            <span>📅 5–7 junio 2024</span>
+          </div>
+        </div>
+        <a class="edition-link" href="https://indico.nucleares.unam.mx/event/2187/" target="_blank">Ver en Indico →</a>
+      </div>
+
+      <div class="edition-card">
+        <div class="edition-num">XXXVII<span class="roman">2023</span></div>
+        <div>
+          <div class="edition-title">XXXVII Reunión Anual de la DPyC<span class="edition-badge">CINVESTAV CDMX</span></div>
+          <div class="edition-meta">
+            <span>📅 12–14 junio 2023</span>
+            <span>📍 Auditorio Arturo Rosenblueth / José Ádem, CINVESTAV, Ciudad de México</span>
+          </div>
+        </div>
+        <a class="edition-link" href="https://indico.nucleares.unam.mx/event/2059/" target="_blank">Ver en Indico →</a>
+      </div>
+
+      <div class="edition-card">
+        <div class="edition-num">XXXVI<span class="roman">2022</span></div>
+        <div>
+          <div class="edition-title">XXXVI Reunión Anual de la DPyC<span class="edition-badge">En línea</span></div>
+          <div class="edition-meta">
+            <span>📅 8–10 septiembre 2022</span>
+            <span>📍 Organizada en conjunto por BUAP, UNAM, UdeG, UNISON y UNACH</span>
+          </div>
+        </div>
+        <a class="edition-link" href="https://indico.nucleares.unam.mx/event/1918/" target="_blank">Ver en Indico →</a>
+      </div>
+
+      <div class="edition-card">
+        <div class="edition-num">XXXIV<span class="roman">2020</span></div>
+        <div>
+          <div class="edition-title">XXXIV Reunión Anual de la DPyC<span class="edition-badge">En línea</span></div>
+          <div class="edition-meta">
+            <span>📅 9–10 julio 2020</span>
+            <span>📍 Organizada por CINVESTAV y Universidad Iberoamericana, Ciudad de México</span>
+          </div>
+        </div>
+        <a class="edition-link" href="https://indico.nucleares.unam.mx/event/1546/" target="_blank">Ver en Indico →</a>
+      </div>
+
+      <div class="edition-card">
+        <div class="edition-num">XXXIII<span class="roman">2019</span></div>
+        <div>
+          <div class="edition-title">XXXIII Reunión Anual de la DPyC<span class="edition-badge">Puebla</span></div>
+          <div class="edition-meta">
+            <span>📅 26–28 mayo 2019</span>
+            <span>📍 Edificio Carolino, BUAP, Puebla</span>
+          </div>
+        </div>
+        <a class="edition-link" href="https://indico.nucleares.unam.mx/event/1448/" target="_blank">Ver en Indico →</a>
+      </div>
+
+      <div class="edition-card">
+        <div class="edition-num">XXXII<span class="roman">2018</span></div>
+        <div>
+          <div class="edition-title">XXXII Reunión Anual de la DPyC<span class="edition-badge">ICN-UNAM</span></div>
+          <div class="edition-meta">
+            <span>📅 28–30 mayo 2018</span>
+            <span>📍 Auditorio Marcos Moshinsky, ICN-UNAM, Ciudad de México</span>
+          </div>
+        </div>
+        <a class="edition-link" href="https://indico.nucleares.unam.mx/event/1362/" target="_blank">Ver en Indico →</a>
+      </div>
+
+      <div class="edition-card">
+        <div class="edition-num">XXXI<span class="roman">2017</span></div>
+        <div>
+          <div class="edition-title">XXXI Reunión Anual de la DPyC<span class="edition-badge">CINVESTAV CDMX</span></div>
+          <div class="edition-meta">
+            <span>📅 24–26 mayo 2017</span>
+            <span>📍 Auditorio José Ádem, CINVESTAV, Ciudad de México</span>
+          </div>
+        </div>
+        <a class="edition-link" href="https://indico.nucleares.unam.mx/event/1243/" target="_blank">Ver en Indico →</a>
+      </div>
+
+      <div class="edition-card">
+        <div class="edition-num">XXX<span class="roman">2016</span></div>
+        <div>
+          <div class="edition-title">XXX Reunión Anual de la DPyC<span class="edition-badge">Puebla</span></div>
+          <div class="edition-meta">
+            <span>📅 23–25 mayo 2016</span>
+            <span>📍 Edificio Carolino, BUAP, Puebla</span>
+          </div>
+        </div>
+        <a class="edition-link" href="https://indico.nucleares.unam.mx/event/1085/" target="_blank">Ver en Indico →</a>
+      </div>
+
+      <div class="edition-card">
+        <div class="edition-num">XXVIII<span class="roman">2014</span></div>
+        <div>
+          <div class="edition-title">XXVIII Reunión Anual de la DPyC</div>
+          <div class="edition-meta">
+            <span>📅 26–28 mayo 2014</span>
+          </div>
+        </div>
+        <a class="edition-link" href="https://indico.nucleares.unam.mx/event/813/" target="_blank">Ver en Indico →</a>
+      </div>
+
+      <div class="edition-card">
+        <div class="edition-num">XXVII<span class="roman">2013</span></div>
+        <div>
+          <div class="edition-title">XXVII Reunión Anual de la DPyC</div>
+          <div class="edition-meta">
+            <span>📅 20–22 mayo 2013</span>
+          </div>
+        </div>
+        <a class="edition-link" href="https://indico.nucleares.unam.mx/event/728/" target="_blank">Ver en Indico →</a>
+      </div>
+
+    </div>
+
+    <div class="cta-box">
+      <p>Consulta el catálogo completo de eventos de la DPyC, incluyendo escuelas, talleres y reuniones anuales.</p>
+      <a class="cta-btn" href="https://indico.nucleares.unam.mx/category/15/" target="_blank">📅 Ver todos los eventos en Indico →</a>
+    </div>
+
+  </main>
+
+  <footer>
+    <span>© 2025 División de Partículas y Campos · Sociedad Mexicana de Física</span>
+    <span>
+      <a href="index.html">Inicio</a> ·
+      <a href="page-escuela.html">Escuela MSPF</a> ·
+      <a href="page-workshop.html">Workshop MWPF</a> ·
+      <a href="mailto:dpyc.smf.adms@gmail.com?subject=Contacto%20desde%20la%20p%C3%A1gina%20de%20la%20DPyC">dpyc.smf.adms@gmail.com</a>
+    </span>
+  </footer>
+
+  <script>
+    let current = 0;
+    const slides = document.querySelectorAll('.carousel-slide');
+    const total = slides.length;
+    const dotsEl = document.getElementById('carouselDots');
+    const counterEl = document.getElementById('carouselCounter');
+
+    slides.forEach((_, i) => {
+      const dot = document.createElement('div');
+      dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+      dot.onclick = () => goTo(i);
+      dotsEl.appendChild(dot);
+    });
+
+    function goTo(n) {
+      current = (n + total) % total;
+      document.getElementById('carouselTrack').style.transform = `translateX(-${current * 100}%)`;
+      document.querySelectorAll('.carousel-dot').forEach((d, i) => d.classList.toggle('active', i === current));
+      counterEl.textContent = `${current + 1} / ${total}`;
+    }
+    function carousel(dir) { goTo(current + dir); }
+
+    setInterval(() => carousel(1), 6000);
+  </script>
+</body>
+</html>

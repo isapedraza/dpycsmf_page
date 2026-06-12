@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Escuela Mexicana de Partículas y Campos · DPyC SMF</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/x-icon" href="assets/img/favicon.png"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --cream: #faf8f4; --cream-dark: #f2ede4;
+      --gold: #b8860b; --gold-light: #d4a82a; --gold-pale: #f5edd0;
+      --ink: #1a1a1a; --ink-mid: #3d3d3d; --ink-soft: #6b6b6b;
+      --border: #e0d8cc; --border-strong: #c8bfb0; --white: #ffffff;
+      --nav-h: 60px;
+      --blue: #1a3a6e; --blue-bg: #e6f1fb; --blue-border: #b5d4f4;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', system-ui, sans-serif; color: var(--ink); background: var(--cream); }
+
+    /* ── NAV ── */
+    nav.topnav {
+      position: fixed; top: 0; left: 0; right: 0; height: var(--nav-h);
+      z-index: 1000; background: rgba(250,248,244,0.96);
+      backdrop-filter: blur(10px); border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; padding: 0 1.5rem; gap: 1rem;
+    }
+    .nav-brand { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--ink); text-decoration: none; flex-shrink: 0; }
+    .nav-brand span { color: var(--gold); }
+    .nav-spacer { flex: 1; }
+    .nav-back { font-size: 0.8rem; color: var(--ink-soft); text-decoration: none; transition: color 0.15s; }
+    .nav-back:hover { color: var(--gold); }
+
+    /* ── PAGE HEADER ── */
+    .page-header { padding-top: var(--nav-h); background: var(--white); border-bottom: 1px solid var(--border); position: relative; overflow: hidden; }
+    .page-header::before {
+      content: ''; position: absolute; inset: 0;
+      background: repeating-linear-gradient(-45deg, transparent, transparent 40px, rgba(184,134,11,0.04) 40px, rgba(184,134,11,0.04) 41px);
+      pointer-events: none;
+    }
+    .page-header-inner {
+      max-width: 1000px; margin: 0 auto; padding: 2.5rem 2rem;
+      display: grid; grid-template-columns: 1fr auto;
+      gap: 2rem; align-items: center; position: relative; z-index: 1;
+    }
+    .page-eyebrow { font-size: 11px; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.5rem; }
+    .page-header h1 { font-family: 'Playfair Display', serif; font-size: clamp(1.6rem, 3vw, 2.4rem); font-weight: 600; color: var(--ink); margin-bottom: 0.4rem; }
+    .page-header-desc { font-size: 0.9rem; color: var(--ink-soft); line-height: 1.75; max-width: 540px; }
+    .header-icon { font-size: 4rem; flex-shrink: 0; }
+
+    /* ── STATS ── */
+    .stats-bar { background: var(--gold-pale); border-bottom: 1px solid #e8d9a8; padding: 0.85rem 2rem; display: flex; justify-content: center; gap: 3rem; flex-wrap: wrap; }
+    .stat { text-align: center; }
+    .stat-num { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 600; color: var(--gold); display: block; }
+    .stat-label { font-size: 10px; color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.08em; }
+
+    /* ── MAIN ── */
+    main { max-width: 1000px; margin: 0 auto; padding: 2.5rem 2rem 5rem; }
+
+    .sec-divider { display: flex; align-items: center; gap: 1rem; margin: 2.5rem 0 1.25rem; }
+    .sec-divider:first-child { margin-top: 0; }
+    .sec-line { flex: 1; height: 1px; background: var(--border); }
+    .sec-label { font-size: 11px; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); white-space: nowrap; }
+
+    .prose { font-size: 0.93rem; color: var(--ink-mid); line-height: 1.85; margin-bottom: 1.5rem; }
+
+    /* ── CAROUSEL ── */
+    .carousel-wrap { position: relative; margin-bottom: 2.5rem; }
+    .carousel-track-outer { overflow: hidden; border-radius: 16px; border: 1px solid var(--border); }
+    .carousel-track { display: flex; transition: transform 0.5s cubic-bezier(.4,0,.2,1); will-change: transform; }
+    .carousel-slide { min-width: 100%; background: var(--white); }
+    .carousel-slide-img { position: relative; height: 380px; overflow: hidden; background: var(--cream-dark); }
+    .carousel-slide-img img { width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; }
+    .carousel-slide-caption {
+      position: absolute; left: 0; right: 0; bottom: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.65), transparent);
+      color: #fff; padding: 1.5rem 1.2rem 1rem; font-size: 0.85rem; line-height: 1.5;
+    }
+    .carousel-slide-caption strong { display: block; font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 600; margin-bottom: 2px; }
+    .carousel-placeholder {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      height: 100%; gap: 0.5rem; color: var(--ink-soft);
+    }
+    .carousel-placeholder .icon { font-size: 2.5rem; opacity: 0.4; }
+    .carousel-placeholder p { font-size: 0.85rem; }
+    .carousel-controls { display: flex; align-items: center; justify-content: center; gap: 1rem; margin-top: 1rem; }
+    .carousel-btn {
+      width: 36px; height: 36px; border-radius: 50%;
+      border: 1px solid var(--border-strong); background: var(--white);
+      color: var(--ink-soft); font-size: 1rem; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.15s, border-color 0.15s, color 0.15s;
+    }
+    .carousel-btn:hover { background: var(--gold-pale); border-color: var(--gold); color: var(--gold); }
+    .carousel-dots { display: flex; gap: 6px; }
+    .carousel-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--border-strong); cursor: pointer; transition: background 0.2s, transform 0.2s; }
+    .carousel-dot.active { background: var(--gold); transform: scale(1.3); }
+    .carousel-counter { font-size: 0.78rem; color: var(--ink-soft); min-width: 36px; text-align: center; }
+
+    /* ── EDITIONS LIST ── */
+    .editions-list { display: flex; flex-direction: column; gap: 1rem; }
+    .edition-card {
+      display: grid; grid-template-columns: 90px 1fr auto;
+      gap: 1.2rem; align-items: center;
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: 12px; padding: 1.1rem 1.3rem;
+      transition: box-shadow 0.15s, border-color 0.15s;
+    }
+    .edition-card:hover { box-shadow: 0 3px 14px rgba(0,0,0,0.07); border-color: var(--border-strong); }
+    .edition-num {
+      font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 600;
+      color: var(--gold); text-align: center;
+    }
+    .edition-num .roman { font-size: 0.95rem; display: block; color: var(--ink-soft); font-family: 'DM Sans', sans-serif; font-weight: 500; letter-spacing: 0.05em; }
+    .edition-title { font-size: 0.95rem; font-weight: 500; color: var(--ink); margin-bottom: 2px; }
+    .edition-meta { font-size: 0.78rem; color: var(--ink-soft); display: flex; gap: 10px; flex-wrap: wrap; }
+    .edition-meta span { display: inline-flex; align-items: center; gap: 4px; }
+    .edition-link {
+      font-size: 0.78rem; color: var(--gold); font-weight: 500; text-decoration: none;
+      border: 1px solid #e8d9a8; border-radius: 999px; padding: 5px 14px;
+      background: var(--gold-pale); transition: background 0.15s; white-space: nowrap;
+    }
+    .edition-link:hover { background: #ece0b5; }
+    .edition-badge {
+      display: inline-block; font-size: 0.68rem; padding: 1px 7px; border-radius: 4px;
+      background: var(--blue-bg); color: var(--blue); border: 1px solid var(--blue-border);
+      margin-left: 6px; font-weight: 500;
+    }
+
+    /* ── ABOUT GRID ── */
+    .about-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 0.9rem; margin-bottom: 1.5rem; }
+    .about-card { background: var(--white); border: 1px solid var(--border); border-radius: 12px; padding: 1rem 1.1rem; transition: box-shadow 0.15s; }
+    .about-card:hover { box-shadow: 0 3px 14px rgba(0,0,0,0.07); }
+    .about-icon { font-size: 1.3rem; margin-bottom: 0.5rem; }
+    .about-card h4 { font-size: 0.88rem; font-weight: 500; color: var(--ink); margin-bottom: 4px; }
+    .about-card p { font-size: 0.8rem; color: var(--ink-soft); line-height: 1.6; }
+
+    .cta-box { background: var(--gold); border-radius: 14px; padding: 1.5rem 2rem; text-align: center; margin-top: 2.5rem; }
+    .cta-box p { font-size: 0.9rem; color: rgba(255,255,255,0.9); margin-bottom: 0.75rem; line-height: 1.6; }
+    .cta-btn { display: inline-flex; align-items: center; gap: 8px; background: #fff; color: var(--gold); font-weight: 600; font-family: 'DM Sans', sans-serif; font-size: 0.9rem; padding: 11px 28px; border-radius: 999px; text-decoration: none; transition: opacity 0.15s; }
+    .cta-btn:hover { opacity: 0.9; }
+
+    footer { background: var(--white); border-top: 1px solid var(--border); padding: 1.4rem 2rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; font-size: 0.78rem; color: var(--ink-soft); }
+    footer a { color: var(--ink-soft); text-decoration: none; }
+    footer a:hover { color: var(--gold); }
+
+    @media (max-width: 640px) {
+      .page-header-inner { grid-template-columns: 1fr; }
+      .header-icon { display: none; }
+      .edition-card { grid-template-columns: 60px 1fr; }
+      .edition-link { grid-column: 1 / -1; justify-self: start; }
+      .carousel-slide-img { height: 240px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="topnav">
+    <a class="nav-brand" href="index.html">DPyC · <span>SMF</span></a>
+    <div class="nav-spacer"></div>
+    <a class="nav-back" href="index.html">← Inicio</a>
+  </nav>
+
+  <div class="page-header">
+    <div class="page-header-inner">
+      <div>
+        <p class="page-eyebrow">División de Partículas y Campos · SMF</p>
+        <h1>Escuela Mexicana de Partículas y Campos</h1>
+        <p class="page-header-desc">Cada dos años, la DPyC organiza la Escuela Mexicana de Partículas y Campos (MSPF), un encuentro que complementa la formación de estudiantes de posgrado y jóvenes posdoctorantes en física de altas energías, con sesiones teóricas y experimentales impartidas por especialistas de prestigio internacional.</p>
+      </div>
+      <div class="header-icon">🎓</div>
+    </div>
+  </div>
+
+  <div class="stats-bar">
+    <div class="stat"><span class="stat-num">XX</span><span class="stat-label">ediciones desde 1986</span></div>
+    <div class="stat"><span class="stat-num">2023</span><span class="stat-label">última edición</span></div>
+    <div class="stat"><span class="stat-num">2</span><span class="stat-label">años entre ediciones</span></div>
+  </div>
+
+  <main>
+
+    <!-- ══ PHOTO CAROUSEL ══ -->
+    <div class="sec-divider"><div class="sec-line"></div><span class="sec-label">Galería de ediciones anteriores</span><div class="sec-line"></div></div>
+
+    <div class="carousel-wrap">
+      <div class="carousel-track-outer">
+        <div class="carousel-track" id="carouselTrack">
+
+          <div class="carousel-slide">
+            <div class="carousel-slide-img">
+              <div class="carousel-placeholder">
+                <span class="icon">📷</span>
+                <p>Fotos de la XX Escuela · Mérida, Yucatán 2023</p>
+              </div>
+              <!-- Para añadir foto: <img src="assets/img/mspf/mspf2023_01.jpg" alt="XX Escuela Mexicana de Partículas y Campos — Mérida 2023"> -->
+              <div class="carousel-slide-caption">
+                <strong>XX Escuela Mexicana de Partículas y Campos</strong>
+                Mérida, Yucatán · Octubre–Noviembre 2023
+              </div>
+            </div>
+          </div>
+
+          <div class="carousel-slide">
+            <div class="carousel-slide-img">
+              <div class="carousel-placeholder">
+                <span class="icon">📷</span>
+                <p>Fotos de la XIX Escuela · Edición en línea 2021</p>
+              </div>
+              <!-- Para añadir foto: <img src="assets/img/mspf/mspf2021_01.jpg" alt="XIX Escuela Mexicana de Partículas y Campos — 2021"> -->
+              <div class="carousel-slide-caption">
+                <strong>XIX Escuela Mexicana de Partículas y Campos</strong>
+                Edición en línea · Agosto 2021
+              </div>
+            </div>
+          </div>
+
+          <div class="carousel-slide">
+            <div class="carousel-slide-img">
+              <div class="carousel-placeholder">
+                <span class="icon">📷</span>
+                <p>Fotos de la XVIII Escuela · Hermosillo, Sonora 2018</p>
+              </div>
+              <!-- Para añadir foto: <img src="assets/img/mspf/mspf2018_01.jpg" alt="XVIII Escuela Mexicana de Partículas y Campos — Hermosillo 2018"> -->
+              <div class="carousel-slide-caption">
+                <strong>XVIII Escuela Mexicana de Partículas y Campos</strong>
+                Universidad de Sonora, Hermosillo · Octubre 2018
+              </div>
+            </div>
+          </div>
+
+          <div class="carousel-slide">
+            <div class="carousel-slide-img">
+              <div class="carousel-placeholder">
+                <span class="icon">📷</span>
+                <p>Fotos de la XVII Escuela · 2016</p>
+              </div>
+              <!-- Para añadir foto: <img src="assets/img/mspf/mspf2016_01.jpg" alt="XVII Escuela Mexicana de Partículas y Campos — 2016"> -->
+              <div class="carousel-slide-caption">
+                <strong>XVII Escuela Mexicana de Partículas y Campos</strong>
+                Noviembre 2016
+              </div>
+            </div>
+          </div>
+
+          <div class="carousel-slide">
+            <div class="carousel-slide-img">
+              <div class="carousel-placeholder">
+                <span class="icon">📷</span>
+                <p>Fotos de la XVI Escuela · Escuela conjunta 2014</p>
+              </div>
+              <!-- Para añadir foto: <img src="assets/img/mspf/mspf2014_01.jpg" alt="XVI Escuela Mexicana de Partículas y Campos — Escuela conjunta 2014"> -->
+              <div class="carousel-slide-caption">
+                <strong>XVI Escuela Mexicana de Partículas y Campos</strong>
+                Escuela conjunta BCVSPIN · MSPF · Mitchell · Diciembre 2014
+              </div>
+            </div>
+          </div>
+
+          <div class="carousel-slide">
+            <div class="carousel-slide-img">
+              <div class="carousel-placeholder">
+                <span class="icon">📷</span>
+                <p>Fotos de la XV Escuela · Puebla 2012</p>
+              </div>
+              <!-- Para añadir foto: <img src="assets/img/mspf/mspf2012_01.jpg" alt="XV Escuela Mexicana de Partículas y Campos — Puebla 2012"> -->
+              <div class="carousel-slide-caption">
+                <strong>XV Escuela Mexicana de Partículas y Campos</strong>
+                Puebla, Puebla · Septiembre 2012
+              </div>
+            </div>
+          </div>
+
+          <div class="carousel-slide">
+            <div class="carousel-slide-img">
+              <div class="carousel-placeholder">
+                <span class="icon">📷</span>
+                <p>Fotos de la XIV Escuela · Morelia 2010</p>
+              </div>
+              <!-- Para añadir foto: <img src="assets/img/mspf/mspf2010_01.jpg" alt="XIV Escuela Mexicana de Partículas y Campos — Morelia 2010"> -->
+              <div class="carousel-slide-caption">
+                <strong>XIV Escuela Mexicana de Partículas y Campos</strong>
+                Morelia, Michoacán · Noviembre 2010
+              </div>
+            </div>
+          </div>
+
+          <div class="carousel-slide">
+            <div class="carousel-slide-img">
+              <div class="carousel-placeholder">
+                <span class="icon">📷</span>
+                <p>Fotos de la XIII Escuela · Hermosillo 2008</p>
+              </div>
+              <!-- Para añadir foto: <img src="assets/img/mspf/mspf2008_01.jpg" alt="XIII Escuela Mexicana de Partículas y Campos — Hermosillo 2008"> -->
+              <div class="carousel-slide-caption">
+                <strong>XIII Escuela Mexicana de Partículas y Campos</strong>
+                Hermosillo, Sonora · Octubre 2008
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="carousel-controls">
+        <button class="carousel-btn" id="btnPrev" onclick="carousel(-1)" title="Anterior">‹</button>
+        <div class="carousel-dots" id="carouselDots"></div>
+        <button class="carousel-btn" id="btnNext" onclick="carousel(1)" title="Siguiente">›</button>
+        <span class="carousel-counter" id="carouselCounter">1 / 4</span>
+      </div>
+    </div>
+
+    <!-- ══ ABOUT ══ -->
+    <div class="sec-divider"><div class="sec-line"></div><span class="sec-label">Sobre la escuela</span><div class="sec-line"></div></div>
+    <div class="prose">
+      <p>La Escuela Mexicana de Partículas y Campos (MSPF, por sus siglas en inglés) está diseñada para complementar la formación de estudiantes de posgrado avanzados y jóvenes posdoctorantes que trabajan en física de altas energías, tanto en México como en el extranjero. El idioma de instrucción es el inglés.</p>
+    </div>
+    <div class="about-grid">
+      <div class="about-card">
+        <div class="about-icon">🌅</div>
+        <h4>Sesiones matutinas</h4>
+        <p>Revisiones teóricas y experimentales sobre temas de interés actual para la comunidad científica global, impartidas por especialistas de prestigio internacional.</p>
+      </div>
+      <div class="about-card">
+        <div class="about-icon">🌇</div>
+        <h4>Sesiones temáticas vespertinas</h4>
+        <p>Sesiones paralelas por la tarde dedicadas a temas específicos activamente investigados en México.</p>
+      </div>
+      <div class="about-card">
+        <div class="about-icon">🗣</div>
+        <h4>Ambiente informal</h4>
+        <p>Se fomenta un ambiente cercano y amigable para que el estudiantado participe activamente en las discusiones sin inhibiciones.</p>
+      </div>
+      <div class="about-card">
+        <div class="about-icon">🌎</div>
+        <h4>Alcance internacional</h4>
+        <p>Atrae a estudiantes y posdoctorantes de México y del extranjero, fortaleciendo redes de colaboración en física de partículas y campos.</p>
+      </div>
+    </div>
+
+    <!-- ══ PAST EDITIONS ══ -->
+    <div class="sec-divider"><div class="sec-line"></div><span class="sec-label">Ediciones anteriores</span><div class="sec-line"></div></div>
+
+    <div class="editions-list">
+
+      <div class="edition-card">
+        <div class="edition-num">XX<span class="roman">2023</span></div>
+        <div>
+          <div class="edition-title">XX Escuela Mexicana de Partículas y Campos<span class="edition-badge">Mérida, Yucatán</span></div>
+          <div class="edition-meta">
+            <span>📅 30 octubre – 3 noviembre 2023</span>
+            <span>📍 Mérida, Yucatán, México</span>
+          </div>
+        </div>
+        <a class="edition-link" href="https://indico.nucleares.unam.mx/event/2075/" target="_blank">Ver en Indico →</a>
+      </div>
+
+      <div class="edition-card">
+        <div class="edition-num">XIX<span class="roman">2021</span></div>
+        <div>
+          <div class="edition-title">XIX Escuela Mexicana de Partículas y Campos<span class="edition-badge">En línea</span></div>
+          <div class="edition-meta">
+            <span>📅 9–13 agosto 2021</span>
+            <span>📍 Modalidad virtual (pandemia COVID-19)</span>
+          </div>
+        </div>
+        <a class="edition-link" href="https://indico.nucleares.unam.mx/event/1717/" target="_blank">Ver en Indico →</a>
+      </div>
+
+      <div class="edition-card">
+        <div class="edition-num">XVIII<span class="roman">2018</span></div>
+        <div>
+          <div class="edition-title">XVIII Escuela Mexicana de Partículas y Campos<span class="edition-badge">Hermosillo, Sonora</span></div>
+          <div class="edition-meta">
+            <span>📅 21–27 octubre 2018</span>
+            <span>📍 Universidad de Sonora, Hermosillo</span>
+          </div>
+        </div>
+        <a class="edition-link" href="https://indico.nucleares.unam.mx/event/1393/" target="_blank">Ver en Indico →</a>
+      </div>
+
+      <div class="edition-card">
+        <div class="edition-num">XVII<span class="roman">2016</span></div>
+        <div>
+          <div class="edition-title">XVII Escuela Mexicana de Partículas y Campos</div>
+          <div class="edition-meta">
+            <span>📅 20–26 noviembre 2016</span>
+          </div>
+        </div>
+        <a class="edition-link" href="https://indico.nucleares.unam.mx/event/1145/" target="_blank">Ver en Indico →</a>
+      </div>
+
+      <div class="edition-card">
+        <div class="edition-num">XVI<span class="roman">2014</span></div>
+        <div>
+          <div class="edition-title">XVI Escuela Mexicana de Partículas y Campos<span class="edition-badge">Escuela conjunta</span></div>
+          <div class="edition-meta">
+            <span>📅 8–13 diciembre 2014</span>
+            <span>📍 Escuela conjunta BCVSPIN · MSPF · Mitchell</span>
+          </div>
+        </div>
+        <a class="edition-link" href="https://indico.nucleares.unam.mx/event/817/" target="_blank">Ver en Indico →</a>
+      </div>
+
+      <div class="edition-card">
+        <div class="edition-num">XV<span class="roman">2012</span></div>
+        <div>
+          <div class="edition-title">XV Escuela Mexicana de Partículas y Campos<span class="edition-badge">Puebla</span></div>
+          <div class="edition-meta">
+            <span>📅 6–15 septiembre 2012</span>
+            <span>📍 Puebla, Puebla, México</span>
+          </div>
+        </div>
+        <a class="edition-link" href="https://indico.nucleares.unam.mx/event/653/" target="_blank">Ver en Indico →</a>
+      </div>
+
+      <div class="edition-card">
+        <div class="edition-num">XIV<span class="roman">2010</span></div>
+        <div>
+          <div class="edition-title">XIV Escuela Mexicana de Partículas y Campos<span class="edition-badge">Morelia</span></div>
+          <div class="edition-meta">
+            <span>📅 4–12 noviembre 2010</span>
+            <span>📍 Morelia, Michoacán, México</span>
+          </div>
+        </div>
+        <a class="edition-link" href="https://indico.nucleares.unam.mx/event/209/" target="_blank">Ver en Indico →</a>
+      </div>
+
+      <div class="edition-card">
+        <div class="edition-num">XIII<span class="roman">2008</span></div>
+        <div>
+          <div class="edition-title">XIII Escuela Mexicana de Partículas y Campos<span class="edition-badge">Hermosillo</span></div>
+          <div class="edition-meta">
+            <span>📅 2–11 octubre 2008</span>
+            <span>📍 Hermosillo, Sonora, México</span>
+          </div>
+        </div>
+        <a class="edition-link" href="https://indico.nucleares.unam.mx/event/132/" target="_blank">Ver en Indico →</a>
+      </div>
+
+    </div>
+
+    <div class="cta-box">
+      <p>Consulta el catálogo completo de eventos de la DPyC, incluyendo escuelas, talleres y reuniones anuales.</p>
+      <a class="cta-btn" href="https://indico.nucleares.unam.mx/category/15/" target="_blank">📅 Ver todos los eventos en Indico →</a>
+    </div>
+
+  </main>
+
+  <footer>
+    <span>© 2025 División de Partículas y Campos · Sociedad Mexicana de Física</span>
+    <span>
+      <a href="index.html">Inicio</a> ·
+      <a href="mailto:dpyc.smf.adms@gmail.com?subject=Contacto%20desde%20la%20p%C3%A1gina%20de%20la%20DPyC">dpyc.smf.adms@gmail.com</a>
+    </span>
+  </footer>
+
+  <script>
+    let current = 0;
+    const slides = document.querySelectorAll('.carousel-slide');
+    const total = slides.length;
+    const dotsEl = document.getElementById('carouselDots');
+    const counterEl = document.getElementById('carouselCounter');
+
+    slides.forEach((_, i) => {
+      const dot = document.createElement('div');
+      dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+      dot.onclick = () => goTo(i);
+      dotsEl.appendChild(dot);
+    });
+
+    function goTo(n) {
+      current = (n + total) % total;
+      document.getElementById('carouselTrack').style.transform = `translateX(-${current * 100}%)`;
+      document.querySelectorAll('.carousel-dot').forEach((d, i) => d.classList.toggle('active', i === current));
+      counterEl.textContent = `${current + 1} / ${total}`;
+    }
+    function carousel(dir) { goTo(current + dir); }
+
+    setInterval(() => carousel(1), 6000);
+  </script>
+</body>
+</html>
