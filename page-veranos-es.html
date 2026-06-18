@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Estancias de Verano de Investigación · DPyC SMF</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/x-icon" href="assets/img/favicon.png"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --cream: #faf8f4; --cream-dark: #f2ede4;
+      --gold: #b8860b; --gold-light: #d4a82a; --gold-pale: #f5edd0;
+      --ink: #1a1a1a; --ink-mid: #3d3d3d; --ink-soft: #6b6b6b;
+      --border: #e0d8cc; --border-strong: #c8bfb0; --white: #ffffff;
+      --nav-h: 60px;
+      --blue: #1a3a6e; --blue-bg: #e6f1fb; --blue-border: #b5d4f4;
+      --green: #3B6D11; --green-bg: #eaf3de; --green-border: #c0dd97;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', system-ui, sans-serif; color: var(--ink); background: var(--cream); }
+
+    nav.topnav {
+      position: fixed; top: 0; left: 0; right: 0; height: var(--nav-h);
+      z-index: 1000; background: rgba(250,248,244,0.96);
+      backdrop-filter: blur(10px); border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; padding: 0 1.5rem; gap: 1rem;
+    }
+    .nav-brand { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--ink); text-decoration: none; flex-shrink: 0; }
+    .nav-brand span { color: var(--gold); }
+    .nav-spacer { flex: 1; }
+    .nav-back { font-size: 0.8rem; color: var(--ink-soft); text-decoration: none; transition: color 0.15s; }
+    .nav-back:hover { color: var(--gold); }
+
+    .page-header { padding-top: var(--nav-h); background: var(--white); border-bottom: 1px solid var(--border); position: relative; overflow: hidden; }
+    .page-header::before {
+      content: ''; position: absolute; inset: 0;
+      background: repeating-linear-gradient(-45deg, transparent, transparent 40px, rgba(184,134,11,0.04) 40px, rgba(184,134,11,0.04) 41px);
+      pointer-events: none;
+    }
+    .page-header-inner {
+      max-width: 1000px; margin: 0 auto; padding: 2.5rem 2rem;
+      display: grid; grid-template-columns: 1fr auto;
+      gap: 2rem; align-items: center; position: relative; z-index: 1;
+    }
+    .page-eyebrow { font-size: 11px; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.5rem; }
+    .page-header h1 { font-family: 'Playfair Display', serif; font-size: clamp(1.6rem, 3vw, 2.4rem); font-weight: 600; color: var(--ink); margin-bottom: 0.4rem; }
+    .page-header-desc { font-size: 0.9rem; color: var(--ink-soft); line-height: 1.75; max-width: 520px; }
+    .header-icon { font-size: 4rem; flex-shrink: 0; }
+
+    .stats-bar { background: var(--gold-pale); border-bottom: 1px solid #e8d9a8; padding: 0.85rem 2rem; display: flex; justify-content: center; gap: 3rem; flex-wrap: wrap; }
+    .stat { text-align: center; }
+    .stat-num { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 600; color: var(--gold); display: block; }
+    .stat-label { font-size: 10px; color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.08em; }
+
+    main { max-width: 1000px; margin: 0 auto; padding: 2.5rem 2rem 5rem; }
+
+    .sec-divider { display: flex; align-items: center; gap: 1rem; margin: 2.5rem 0 1.25rem; }
+    .sec-divider:first-child { margin-top: 0; }
+    .sec-line { flex: 1; height: 1px; background: var(--border); }
+    .sec-label { font-size: 11px; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); white-space: nowrap; }
+    .sec-badge { font-size: 10px; padding: 2px 8px; border-radius: 999px; background: var(--green-bg); color: var(--green); border: 1px solid var(--green-border); font-weight: 500; }
+
+    .prose { font-size: 0.93rem; color: var(--ink-mid); line-height: 1.85; margin-bottom: 1.5rem; }
+
+    .note-box { background: var(--cream-dark); border: 1px solid var(--border); border-left: 3px solid var(--gold); border-radius: 0 10px 10px 0; padding: 0.9rem 1.1rem; margin-bottom: 1.5rem; font-size: 0.85rem; color: var(--ink-soft); line-height: 1.7; }
+    .info-box { background: var(--blue-bg); border: 1px solid var(--blue-border); border-radius: 10px; padding: 1rem 1.2rem; margin-bottom: 1.5rem; font-size: 0.85rem; color: var(--blue); line-height: 1.7; }
+    .info-box a { color: var(--blue); font-weight: 500; }
+
+    /* ── 2026 EDITION ── */
+    .edition-hero {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;
+      margin-bottom: 1.5rem; align-items: start;
+    }
+    .edition-photo { border-radius: 14px; overflow: hidden; border: 1px solid var(--border); }
+    .edition-photo img { width: 100%; height: 280px; object-fit: cover; object-position: center top; display: block; }
+    .edition-photo-caption { font-size: 0.72rem; color: var(--ink-soft); padding: 0.5rem 0.75rem; background: var(--cream-dark); text-align: center; }
+
+    .edition-video { border-radius: 14px; overflow: hidden; border: 1px solid var(--border); background: #000; }
+    .edition-video iframe { width: 100%; height: 280px; display: block; border: none; }
+    .edition-video-caption { font-size: 0.72rem; color: var(--ink-soft); padding: 0.5rem 0.75rem; background: var(--cream-dark); text-align: center; }
+    .fb-fallback {
+      width: 100%; height: 280px; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 0.75rem;
+      background: var(--cream-dark); color: var(--ink-soft); font-size: 0.85rem;
+    }
+    .fb-fallback a { color: var(--gold); font-weight: 500; text-decoration: none; }
+    .fb-fallback a:hover { text-decoration: underline; }
+
+    /* ── WINNERS ── */
+    .winners-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
+    .winner-card {
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: 12px; padding: 1rem 1.1rem; text-align: center;
+      transition: box-shadow 0.15s, border-color 0.15s;
+    }
+    .winner-card:hover { box-shadow: 0 3px 14px rgba(0,0,0,0.07); border-color: var(--border-strong); }
+    .winner-lab-logo { height: 40px; object-fit: contain; margin-bottom: 0.6rem; }
+    .winner-lab-icon { font-size: 2rem; margin-bottom: 0.5rem; display: block; }
+    .winner-name { font-size: 0.85rem; font-weight: 500; color: var(--ink); margin-bottom: 4px; line-height: 1.3; }
+    .winner-lab { font-size: 0.75rem; font-weight: 500; color: var(--gold); }
+
+    /* CERN shortlist */
+    .shortlist-box {
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: 12px; padding: 1.1rem 1.3rem; margin-bottom: 1.5rem;
+    }
+    .shortlist-box h4 { font-size: 0.88rem; font-weight: 500; color: var(--ink); margin-bottom: 0.75rem; display: flex; align-items: center; gap: 8px; }
+    .shortlist-list { display: flex; flex-direction: column; gap: 0.4rem; }
+    .shortlist-item {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 0.84rem; color: var(--ink-mid);
+      padding: 0.4rem 0; border-bottom: 1px solid var(--cream-dark);
+    }
+    .shortlist-item:last-child { border-bottom: none; }
+    .shortlist-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--blue); flex-shrink: 0; }
+
+    /* ── TIMELINE ── */
+    .timeline-list { display: flex; flex-direction: column; gap: 0; margin-bottom: 1.5rem; }
+    .tl-item {
+      display: grid; grid-template-columns: 160px 1fr;
+      gap: 1rem; padding: 0.75rem 0;
+      border-bottom: 1px solid var(--cream-dark);
+      align-items: baseline; font-size: 0.84rem;
+    }
+    .tl-item:last-child { border-bottom: none; }
+    .tl-date { font-weight: 500; color: var(--gold); font-size: 0.8rem; }
+    .tl-type { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 500; padding: 1px 7px; border-radius: 4px; margin-right: 6px; }
+    .tl-type.deadline { background: #fde8d8; color: #6e2f0a; border: 1px solid #f9cc88; }
+    .tl-type.announce { background: var(--green-bg); color: var(--green); border: 1px solid var(--green-border); }
+    .tl-type.event { background: var(--blue-bg); color: var(--blue); border: 1px solid var(--blue-border); }
+    .tl-desc { color: var(--ink-mid); }
+
+    /* ── LABS ── */
+    .labs-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
+    .lab-card {
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: 12px; padding: 1rem; text-align: center;
+      transition: box-shadow 0.15s, border-color 0.15s;
+    }
+    .lab-card:hover { box-shadow: 0 3px 14px rgba(0,0,0,0.07); border-color: var(--border-strong); }
+    .lab-logo-img { height: 44px; object-fit: contain; margin-bottom: 0.6rem; display: block; margin-left: auto; margin-right: auto; }
+    .lab-flag { font-size: 1.4rem; display: block; margin-bottom: 4px; }
+    .lab-name { font-size: 0.9rem; font-weight: 600; color: var(--ink); margin-bottom: 2px; }
+    .lab-country { font-size: 0.72rem; color: var(--ink-soft); margin-bottom: 6px; }
+    .lab-topic { font-size: 0.72rem; padding: 2px 8px; border-radius: 4px; background: var(--blue-bg); color: var(--blue); border: 1px solid var(--blue-border); display: inline-block; margin-bottom: 8px; }
+    .lab-prog-link { font-size: 0.72rem; color: var(--gold); font-weight: 500; text-decoration: none; display: block; }
+    .lab-prog-link:hover { text-decoration: underline; }
+
+    /* Registration table */
+    .table-wrap { background: var(--white); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; margin-bottom: 1.5rem; }
+    table { width: 100%; border-collapse: collapse; }
+    thead th { font-size: 0.73rem; font-weight: 500; color: var(--ink-soft); text-align: left; padding: 0.8rem 1rem; background: var(--cream-dark); border-bottom: 1px solid var(--border); }
+    tbody tr { border-bottom: 1px solid var(--border); transition: background 0.1s; }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: var(--cream); }
+    tbody td { padding: 0.75rem 1rem; font-size: 0.84rem; color: var(--ink-mid); vertical-align: middle; }
+    .flag { margin-right: 6px; }
+    td a { color: var(--gold); text-decoration: none; font-weight: 500; font-size: 0.78rem; }
+    td a:hover { text-decoration: underline; }
+    .dpyc-badge { font-size: 0.72rem; color: var(--ink-soft); font-style: italic; }
+
+    /* Activities */
+    .activities-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 0.9rem; margin-bottom: 1.5rem; }
+    .activity-card { background: var(--white); border: 1px solid var(--border); border-radius: 12px; padding: 1rem 1.1rem; transition: box-shadow 0.15s; }
+    .activity-card:hover { box-shadow: 0 3px 14px rgba(0,0,0,0.07); }
+    .activity-icon { font-size: 1.3rem; margin-bottom: 0.5rem; }
+    .activity-card p { font-size: 0.8rem; color: var(--ink-soft); line-height: 1.6; }
+
+    /* Stages */
+    .stages { display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1.5rem; }
+    .stage { display: flex; gap: 1.2rem; align-items: flex-start; background: var(--white); border: 1px solid var(--border); border-radius: 12px; padding: 1.1rem 1.2rem; }
+    .stage-num { width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0; background: var(--gold-pale); border: 1px solid #e8d9a8; display: flex; align-items: center; justify-content: center; font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 600; color: var(--gold); }
+    .stage h4 { font-size: 0.92rem; font-weight: 500; color: var(--ink); margin-bottom: 4px; }
+    .stage p { font-size: 0.82rem; color: var(--ink-soft); line-height: 1.65; }
+
+    /* Funding */
+    .funding-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 0.75rem; margin-bottom: 1.5rem; }
+    .funding-item { background: var(--white); border: 1px solid var(--border); border-radius: 10px; padding: 0.85rem 1rem; text-align: center; }
+    .funding-icon { font-size: 1.4rem; display: block; margin-bottom: 4px; }
+    .funding-item p { font-size: 0.78rem; color: var(--ink-soft); line-height: 1.5; }
+
+    .cta-box { background: var(--gold); border-radius: 14px; padding: 1.5rem 2rem; text-align: center; margin-top: 2.5rem; }
+    .cta-box p { font-size: 0.9rem; color: rgba(255,255,255,0.9); margin-bottom: 0.75rem; line-height: 1.6; }
+    .cta-btn { display: inline-flex; align-items: center; gap: 8px; background: #fff; color: var(--gold); font-weight: 600; font-family: 'DM Sans', sans-serif; font-size: 0.9rem; padding: 11px 28px; border-radius: 999px; text-decoration: none; transition: opacity 0.15s; }
+    .cta-btn:hover { opacity: 0.9; }
+
+    footer { background: var(--white); border-top: 1px solid var(--border); padding: 1.4rem 2rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; font-size: 0.78rem; color: var(--ink-soft); }
+    footer a { color: var(--ink-soft); text-decoration: none; }
+    footer a:hover { color: var(--gold); }
+
+    /* FB Preview Card */
+    .fb-preview-card {
+      display: block; text-decoration: none; color: var(--ink);
+      border-radius: 14px; overflow: hidden; border: 1px solid var(--border);
+      background: var(--white); transition: box-shadow 0.2s, border-color 0.2s;
+    }
+    .fb-preview-card:hover { box-shadow: 0 6px 20px rgba(0,0,0,0.1); border-color: var(--border-strong); }
+    .fb-preview-img { position: relative; height: 200px; overflow: hidden; background: #111; }
+    .fb-preview-img img { width: 100%; height: 100%; object-fit: cover; object-position: center top; opacity: 0.85; }
+    .fb-play-btn {
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+      width: 52px; height: 52px; border-radius: 50%;
+      background: rgba(0,0,0,0.65); color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem; padding-left: 4px;
+      border: 2px solid rgba(255,255,255,0.8);
+      transition: background 0.15s;
+    }
+    .fb-preview-card:hover .fb-play-btn { background: rgba(0,0,0,0.85); }
+    .fb-preview-body { padding: 0.9rem 1rem; }
+    .fb-preview-source { display: flex; align-items: center; gap: 8px; margin-bottom: 0.6rem; }
+    .fb-source-logo { width: 32px; height: 32px; object-fit: contain; border-radius: 50%; border: 1px solid var(--border); background: var(--cream-dark); padding: 2px; flex-shrink: 0; }
+    .fb-source-name { font-size: 0.78rem; font-weight: 500; color: var(--ink); line-height: 1.2; }
+    .fb-source-sub { font-size: 0.68rem; color: var(--ink-soft); }
+    .fb-preview-title { font-size: 0.9rem; font-weight: 600; color: var(--ink); margin-bottom: 4px; line-height: 1.3; }
+    .fb-preview-desc { font-size: 0.75rem; color: var(--ink-soft); line-height: 1.55; margin-bottom: 8px; }
+    .fb-preview-cta { font-size: 0.75rem; color: var(--gold); font-weight: 500; }
+
+    @media (max-width: 640px) {
+      .page-header-inner { grid-template-columns: 1fr; }
+      .header-icon { display: none; }
+      .edition-hero { grid-template-columns: 1fr; }
+      .tl-item { grid-template-columns: 1fr; gap: 0.25rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="topnav">
+    <a class="nav-brand" href="index.html">DPyC · <span>SMF</span></a>
+    <div class="nav-spacer"></div>
+    <a class="nav-back" href="index.html">← Inicio</a>
+  </nav>
+
+  <div class="page-header">
+    <div class="page-header-inner">
+      <div>
+        <p class="page-eyebrow">División de Partículas y Campos · SMF</p>
+        <h1>Estancias de Verano de Investigación</h1>
+        <p class="page-header-desc">La DPyC selecciona a estudiantes mexicanos de licenciatura y maestría como candidatos para estancias de verano de investigación en los principales laboratorios internacionales de física de partículas y áreas afines.</p>
+      </div>
+      <div class="header-icon">✈️</div>
+    </div>
+  </div>
+
+  <div class="stats-bar">
+    <div class="stat"><span class="stat-num">5</span><span class="stat-label">laboratorios asociados</span></div>
+    <div class="stat"><span class="stat-num">~2</span><span class="stat-label">meses de duración</span></div>
+    <div class="stat"><span class="stat-num">2</span><span class="stat-label">etapas de selección</span></div>
+  </div>
+
+  <main>
+
+    <!-- ══ VIDEO 2024 ══ -->
+    <div class="sec-divider">
+      <div class="sec-line"></div>
+      <div style="display:flex;align-items:center;gap:8px;white-space:nowrap;">
+        <span class="sec-label">Edición 2024</span>
+        <span style="font-size:10px;padding:2px 8px;border-radius:999px;background:var(--blue-bg);color:var(--blue);border:1px solid var(--blue-border);font-weight:500;">Edición pasada</span>
+      </div>
+      <div class="sec-line"></div>
+    </div>
+
+    <a href="https://www.facebook.com/reel/1224715485271620" target="_blank" class="fb-preview-card" style="max-width:560px;margin:0 auto 2.5rem;">
+      <div class="fb-preview-img" style="height:240px;">
+        <img src="assets/img/veranos/veranos2024_preview.png" alt="Vista previa del video — Experiencias de Verano 2024" style="object-position:center top;">
+        <div class="fb-play-btn">▶</div>
+      </div>
+      <div class="fb-preview-body">
+        <div class="fb-preview-source">
+          <img src="assets/img/DPyCLogoNoBG.png" alt="DPyC" class="fb-source-logo">
+          <div>
+            <div class="fb-source-name">División de Partículas y Campos · SMF</div>
+            <div class="fb-source-sub">Facebook · Reel · Verano 2024</div>
+          </div>
+        </div>
+        <div class="fb-preview-title">Experiencia de los ganadores 2024</div>
+        <div class="fb-preview-desc">Tú como ellos puedes participar para hacer una estancia de verano experimental. Veranos en el Extranjero 2024 · DPyC-SMF</div>
+        <div class="fb-preview-cta">▶ Ver video en Facebook</div>
+      </div>
+    </a>
+
+    <!-- ══ 2026 EDITION ══ -->
+    <div class="sec-divider">
+      <div class="sec-line"></div>
+      <div style="display:flex;align-items:center;gap:8px;white-space:nowrap;">
+        <span class="sec-label">Edición 2026</span>
+        <span class="sec-badge">✓ Resultados anunciados</span>
+      </div>
+      <div class="sec-line"></div>
+    </div>
+    
+    <div style="background:var(--white);border:1px solid var(--border);border-radius:14px;padding:1.2rem;display:flex;flex-direction:column;gap:0.75rem;">
+        <p style="font-size:0.82rem;color:var(--ink-soft);line-height:1.7;">La segunda etapa se realizó de manera presencial en la <strong style="color:var(--ink)">Universidad Autónoma del Estado de Hidalgo (UAEH)</strong>, en Pachuca, Hidalgo, México, del 19 al 21 de enero de 2026.</p>
+        <p style="font-size:0.82rem;color:var(--ink-soft);line-height:1.7;">Los estudiantes participaron en cursos intensivos, sesiones de resolución de problemas y entrevistas. Seis estudiantes fueron seleccionados para realizar estancias en laboratorios internacionales.</p>
+        <a href="https://indico.nucleares.unam.mx/event/2507/" target="_blank" style="font-size:0.8rem;color:var(--gold);font-weight:500;text-decoration:none;">📅 Ver en Indico →</a>
+      </div>
+
+    
+      <div class="edition-hero">
+      
+      <div class="edition-photo">
+        <img src="assets/img/veranos/veranos2026_SecondStage.jpeg" alt="Participantes de la segunda etapa — UAEH Pachuca, enero 2026">
+        <div class="edition-photo-caption">Participantes de la segunda etapa · Universidad Autónoma del Estado de Hidalgo, Pachuca · 19–21 de enero de 2026</div>
+      </div>
+
+      
+      <div class="edition-photo">
+        <img src="assets/img/veranos/veranos2026_ganadores.jpeg" alt="Participantes de la segunda etapa — UAEH Pachuca, enero 2026">
+        <div class="edition-photo-caption">Estudiantes seleccionados para ser nominados a los laboratorios correspondientes</div>
+      </div>
+
+    </div>
+ 
+
+    
+
+    <!-- WINNERS -->
+    <h3 style="font-family:'Playfair Display',serif;font-size:1rem;font-weight:600;color:var(--ink);margin-bottom:1rem;">Estudiantes seleccionados — 2026</h3>
+    <div class="winners-grid">
+      <div class="winner-card">
+        <img class="lab-logo-img" src="assets/img/veranos/logo-desy.png" alt="DESY" style="background:var(--cream-dark);padding:4px;border-radius:4px;">
+        <div class="winner-name">Indra Itzel de León Cortés</div>
+        <div class="winner-lab">DESY</div>
+      </div>
+      <div class="winner-card">
+        <img class="lab-logo-img" src="assets/img/veranos/logo-jlab.png" alt="JLab" style="background:var(--cream-dark);padding:4px;border-radius:4px;">
+        <div class="winner-name">Joanne Michelle Rodríguez Romo</div>
+        <div class="winner-lab">JLab</div>
+      </div>
+      <div class="winner-card">
+        <img class="lab-logo-img" src="assets/img/veranos/logo-bnl.png" alt="BNL" style="background:var(--cream-dark);padding:4px;border-radius:4px;">
+        <div class="winner-name">Samantha Cervantez Neri</div>
+        <div class="winner-lab">BNL</div>
+      </div>
+      <div class="winner-card">
+        <img class="lab-logo-img" src="assets/img/veranos/logo-snolab.png" alt="SNOLAB" style="background:var(--cream-dark);padding:4px;border-radius:4px;">
+        <div class="winner-name">Martin Sandoval Blanco</div>
+        <div class="winner-lab">SNOLAB</div>
+      </div>
+      </div>
+
+    <!-- CERN Shortlist — remaining candidates -->
+    <div class="shortlist-box">
+      <h4>🔵 Lista corta de CERN <span style="font-size:0.75rem;font-weight:400;color:var(--ink-soft);">— candidatos no seleccionados</span></h4>
+      <div class="shortlist-list">
+        <div class="shortlist-item"><div class="shortlist-dot"></div>Cesar Nabor Pacheco</div>
+        <div class="shortlist-item"><div class="shortlist-dot"></div>Carlos Elishah Candanosa Salazar</div>
+        <div class="shortlist-item"><div class="shortlist-dot"></div>Mateo Lugo Riesenberger</div>
+        <div class="shortlist-item"><div class="shortlist-dot"></div>Mirian Ahuatzi Corona</div>
+        <div class="shortlist-item"><div class="shortlist-dot"></div>Rodrigo Alejandro Lopez Flores</div>
+      </div>
+    </div>
+
+    <h3 style="font-family:'Playfair Display',serif;font-size:1rem;font-weight:600;color:var(--ink);margin-bottom:1rem;">Estudiantes seleccionados por el CERN — 2026</h3>
+    <div class="winners-grid">
+    <div class="winner-card">
+        <img class="lab-logo-img" src="assets/img/veranos/logo-cern.png" alt="CERN" style="background:var(--cream-dark);padding:4px;border-radius:4px;">
+        <div class="winner-name">Mirian Ahuatzi Corona</div>
+        <div class="winner-lab">CERN</div>
+      </div>
+      <div class="winner-card">
+        <img class="lab-logo-img" src="assets/img/veranos/logo-cern.png" alt="CERN" style="background:var(--cream-dark);padding:4px;border-radius:4px;">
+        <div class="winner-name">Cesar Nabor Pacheco</div>
+        <div class="winner-lab">CERN</div>
+      </div>
+    </div>
+    </div>
+
+    <!-- TIMELINE 2026 -->
+    <div class="sec-divider"><div class="sec-line"></div><span class="sec-label">Cronograma 2026</span><div class="sec-line"></div></div>
+    <div class="timeline-list">
+      <div class="tl-item">
+        <span class="tl-date">30 de noviembre de 2025</span>
+        <span class="tl-desc"><span class="tl-type deadline">Fecha límite</span>Envío de solicitud y documentación</span>
+      </div>
+      <div class="tl-item">
+        <span class="tl-date">7 de enero de 2026</span>
+        <span class="tl-desc"><span class="tl-type announce">Anuncio</span>Publicación de candidatos seleccionados para la etapa 2</span>
+      </div>
+      <div class="tl-item">
+        <span class="tl-date">9 de enero de 2026</span>
+        <span class="tl-desc"><span class="tl-type deadline">Fecha límite</span>Confirmación de participación presencial en la etapa 2</span>
+      </div>
+      <div class="tl-item">
+        <span class="tl-date">19–21 de enero de 2026</span>
+        <span class="tl-desc"><span class="tl-type event">Evento</span>Cursos intensivos presenciales y evaluación · UAEH, Pachuca</span>
+      </div>
+      <div class="tl-item">
+        <span class="tl-date">23 de enero de 2026</span>
+        <span class="tl-desc"><span class="tl-type announce">Anuncio</span>Contacto con participantes de la lista corta</span>
+      </div>
+    </div>
+
+    <!-- REGISTRATION DEADLINES -->
+    <div class="sec-divider"><div class="sec-line"></div><span class="sec-label">Fechas límite de registro · 2026</span><div class="sec-line"></div></div>
+    <div class="info-box">
+      Se solicita a todos los estudiantes seleccionados para CERN y DESY registrarse en los sitios web oficiales de los laboratorios. El registro para JLab, BNL y SNOLAB es gestionado por la DPyC.
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Laboratorio</th>
+            <th>País</th>
+            <th>Fecha límite</th>
+            <th>Registro adicional</th>
+            <th>Decisión final del laboratorio</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="flag">🇨🇭</span><strong>CERN</strong></td>
+            <td>Suiza / Francia</td>
+            <td>26 de enero de 2026</td>
+            <td><a href="https://home.cern/summer-student-programme" target="_blank">Estudiante de Verano CERN 2026 →</a></td>
+            <td>Finales de abril de 2026</td>
+          </tr>
+          <tr>
+            <td><span class="flag">🇩🇪</span><strong>DESY</strong></td>
+            <td>Alemania</td>
+            <td>31 de enero de 2026</td>
+            <td><a href="https://www.desy.de/research/student_programme/summer_students/index_eng.html" target="_blank">Estudiante de Verano DESY 2026 →</a></td>
+            <td>Mediados de abril de 2026</td>
+          </tr>
+          <tr>
+            <td><span class="flag">🇺🇸</span><strong>JLab</strong></td>
+            <td>Estados Unidos</td>
+            <td>Principios de febrero</td>
+            <td><span class="dpyc-badge">Gestionado por la DPyC</span></td>
+            <td>Mediados de febrero</td>
+          </tr>
+          <tr>
+            <td><span class="flag">🇺🇸</span><strong>BNL</strong></td>
+            <td>Estados Unidos</td>
+            <td>Principios de febrero</td>
+            <td><span class="dpyc-badge">Gestionado por la DPyC</span></td>
+             <td>Mediados de febrero</td>
+          </tr>
+          <tr>
+            <td><span class="flag">🇨🇦</span><strong>SNOLAB</strong></td>
+            <td>Canadá</td>
+            <td>Principios de marzo</td>
+            <td><span class="dpyc-badge">Gestionado por la DPyC</span></td>
+            <td>Mediados de febrero</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ══ PURPOSE ══ -->
+    <div class="sec-divider"><div class="sec-line"></div><span class="sec-label">Propósito</span><div class="sec-line"></div></div>
+    <div class="prose">
+      <p>El propósito de esta convocatoria es seleccionar a estudiantes mexicanos de licenciatura y maestría como candidatos para estancias de verano de investigación en centros de investigación internacionales, con el fin de fortalecer su formación en física de partículas, física de astropartículas, aceleradores y áreas afines.</p>
+    </div>
+    <div class="note-box">⚠️ La DPyC no garantiza que la institución receptora aceptará a los estudiantes preseleccionados. Se recomienda a los candidatos revisar cuidadosamente los términos de la convocatoria antes de aplicar.</div>
+
+    <!-- ══ LABS ══ -->
+    <div class="sec-divider"><div class="sec-line"></div><span class="sec-label">Laboratorios participantes</span><div class="sec-line"></div></div>
+    <div class="labs-grid">
+      <div class="lab-card">
+        <img class="lab-logo-img" src="assets/img/veranos/logo-jlab.png" alt="JLab" style="background:var(--cream-dark);padding:4px;border-radius:4px;">
+        <div class="lab-name">JLab</div>
+        <div class="lab-country">🇺🇸 Estados Unidos</div>
+        <div class="lab-topic">Física de Aceleradores</div>
+        <a class="lab-prog-link" href="https://www.jlab.org/div_dept/train/ug_prog/suli.html" target="_blank">Programa SULI →</a>
+      </div>
+      <div class="lab-card">
+        <img class="lab-logo-img" src="assets/img/veranos/logo-bnl.png" alt="BNL" style="background:var(--cream-dark);padding:4px;border-radius:4px;">
+        <div class="lab-name">BNL</div>
+        <div class="lab-country">🇺🇸 Estados Unidos</div>
+        <div class="lab-topic">Experimento BELLE</div>
+        <a class="lab-prog-link" href="https://www.bnl.gov/education/programs/program.php?q=116" target="_blank">SULI – BNL →</a>
+      </div>
+      <div class="lab-card">
+        <img class="lab-logo-img" src="assets/img/veranos/logo-snolab.png" alt="SNOLAB" style="background:var(--cream-dark);padding:4px;border-radius:4px;">
+        <div class="lab-name">SNOLAB</div>
+        <div class="lab-country">🇨🇦 Canadá</div>
+        <div class="lab-topic">Neutrinos y Materia Oscura</div>
+        <a class="lab-prog-link" href="https://www.snolab.ca/education/susi" target="_blank">Programa SuSi →</a>
+      </div>
+      <div class="lab-card">
+        <img class="lab-logo-img" src="assets/img/veranos/logo-cern.png" alt="CERN" style="background:var(--cream-dark);padding:4px;border-radius:4px;">
+        <div class="lab-name">CERN</div>
+        <div class="lab-country">🇨🇭 Suiza</div>
+        <div class="lab-topic">Física de Partículas</div>
+        <a class="lab-prog-link" href="https://home.cern/summer-student-programme" target="_blank">Estudiante de Verano 2026 →</a>
+      </div>
+      <div class="lab-card">
+        <img class="lab-logo-img" src="assets/img/veranos/logo-desy.png" alt="DESY" style="background:var(--cream-dark);padding:4px;border-radius:4px;">
+        <div class="lab-name">DESY</div>
+        <div class="lab-country">🇩🇪 Alemania</div>
+        <div class="lab-topic">Física de Partículas</div>
+        <a class="lab-prog-link" href="https://www.desy.de/research/student_programme/summer_students/index_eng.html" target="_blank">Estudiante de Verano 2026 →</a>
+      </div>
+    </div>
+
+    <!-- ══ ABOUT THE STAY ══ -->
+    <div class="sec-divider"><div class="sec-line"></div><span class="sec-label">Sobre la estancia</span><div class="sec-line"></div></div>
+    <div class="prose">
+      <p>Durante la estancia de verano de investigación, los estudiantes se integran a un laboratorio internacional y participan en actividades académicas y de investigación diseñadas para fortalecer su formación. A lo largo de aproximadamente dos meses, los estudiantes trabajan bajo la guía de investigadores y se integran a la vida cotidiana del laboratorio anfitrión.</p>
+    </div>
+    <div class="activities-grid">
+      <div class="activity-card"><div class="activity-icon">📚</div><p>Cursos breves e intensivos — teoría, métodos experimentales, análisis de datos, detectores y simulación.</p></div>
+      <div class="activity-card"><div class="activity-icon">🔬</div><p>Proyecto de investigación supervisado: análisis de datos, simulación, estudios de detectores o cálculos teóricos.</p></div>
+      <div class="activity-card"><div class="activity-icon">🎤</div><p>Seminarios, reuniones de grupo y discusiones científicas en entornos de investigación internacionales activos.</p></div>
+      <div class="activity-card"><div class="activity-icon">💻</div><p>Trabajo colaborativo con equipos de investigación — habilidades técnicas, computacionales y científicas.</p></div>
+      <div class="activity-card"><div class="activity-icon">🏛</div><p>Visitas al laboratorio, recorridos técnicos y sesiones prácticas según el programa del centro anfitrión.</p></div>
+      <div class="activity-card"><div class="activity-icon">🎓</div><p>Presentación final o resumen del trabajo realizado — una experiencia valiosa para el desarrollo académico y profesional.</p></div>
+    </div>
+
+    <!-- ══ SELECTION ══ -->
+    <div class="sec-divider"><div class="sec-line"></div><span class="sec-label">Proceso de selección</span><div class="sec-line"></div></div>
+    <div class="stages">
+      <div class="stage">
+        <div class="stage-num">1</div>
+        <div>
+          <h4>Revisión del perfil académico</h4>
+          <p>El comité evalúa los documentos presentados — historial académico, cartas de recomendación, cartas de motivos y CV — para valorar la preparación académica, el potencial de investigación y la afinidad con los objetivos del programa.</p>
+        </div>
+      </div>
+      <div class="stage">
+        <div class="stage-num">2</div>
+        <div>
+          <h4>Evaluación presencial de habilidades prácticas</h4>
+          <p>Los candidatos que avancen participan en una evaluación presencial que incluye cursos intensivos breves, actividades de resolución de problemas y una entrevista. Esto permite evaluar las capacidades analíticas, el razonamiento científico, las habilidades de comunicación y la idoneidad general para la estancia. <em>En 2026 esta evaluación se realizó en la UAEH, Pachuca, del 19 al 21 de enero.</em></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ FUNDING ══ -->
+    <div class="sec-divider"><div class="sec-line"></div><span class="sec-label">Cobertura financiera</span><div class="sec-line"></div></div>
+    <div class="prose"><p>La institución anfitriona financia parcialmente la estancia de investigación. Dependiendo del anfitrión, el apoyo puede incluir:</p></div>
+    <div class="funding-grid">
+      <div class="funding-item"><span class="funding-icon">✈️</span><p>Boleto de avión</p></div>
+      <div class="funding-item"><span class="funding-icon">🏠</span><p>Alojamiento</p></div>
+      <div class="funding-item"><span class="funding-icon">💳</span><p>Beca / estipendio</p></div>
+      <div class="funding-item"><span class="funding-icon">🍽</span><p>Apoyo para manutención</p></div>
+      <div class="funding-item"><span class="funding-icon">🏥</span><p>Seguro médico</p></div>
+    </div>
+    <div class="note-box">Una vez seleccionado, el candidato se compromete a solicitar a su institución de origen cualquier financiamiento adicional que necesite. La DPyC apoya, con la documentación correspondiente, el proceso para obtener financiamiento complementario y así completar la estancia de investigación.</div>
+
+    <div class="cta-box">
+      <p>Consulta todas las ediciones pasadas de la convocatoria en Indico.</p>
+      <a class="cta-btn" href="https://indico.nucleares.unam.mx/event/2507/" target="_blank">📅 Edición 2026 en Indico →</a>
+    </div>
+
+  </main>
+
+  <footer>
+    <span>© 2025 División de Partículas y Campos · Sociedad Mexicana de Física</span>
+    <span>
+      <a href="index.html">Inicio</a> ·
+      <a href="mailto:dpyc.smf.adms@gmail.com?subject=Contacto%20desde%20la%20p%C3%A1gina%20de%20la%20DPyC">dpyc.smf.adms@gmail.com</a>
+    </span>
+  </footer>
+
+</body>
+</html>
