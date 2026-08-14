@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Escuela IMAN · Iniciativa para Mujeres en Altas eNergías · DPyC SMF</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/x-icon" href="assets/img/favicon.png"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --cream: #faf8f4; --cream-dark: #f2ede4;
+      --gold: #b8860b; --gold-light: #d4a82a; --gold-pale: #f5edd0;
+      --ink: #1a1a1a; --ink-mid: #3d3d3d; --ink-soft: #6b6b6b;
+      --border: #e0d8cc; --border-strong: #c8bfb0; --white: #ffffff;
+      --nav-h: 60px;
+      --blue: #1a3a6e; --blue-bg: #e6f1fb; --blue-border: #b5d4f4;
+      --plum: #6b2d6b; --plum-bg: #f3e6f3; --plum-border: #d9b8d9;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', system-ui, sans-serif; color: var(--ink); background: var(--cream); }
+
+    /* ── NAV ── */
+    nav.topnav {
+      position: fixed; top: 0; left: 0; right: 0; height: var(--nav-h);
+      z-index: 1000; background: rgba(250,248,244,0.96);
+      backdrop-filter: blur(10px); border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; padding: 0 1.5rem; gap: 1rem;
+    }
+    .nav-brand { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--ink); text-decoration: none; flex-shrink: 0; }
+    .nav-brand span { color: var(--gold); }
+    .nav-spacer { flex: 1; }
+    .nav-back { font-size: 0.8rem; color: var(--ink-soft); text-decoration: none; transition: color 0.15s; }
+    .nav-back:hover { color: var(--gold); }
+
+    /* ── PAGE HEADER ── */
+    .page-header { padding-top: var(--nav-h); background: var(--white); border-bottom: 1px solid var(--border); position: relative; overflow: hidden; }
+    .page-header::before {
+      content: ''; position: absolute; inset: 0;
+      background: repeating-linear-gradient(-45deg, transparent, transparent 40px, rgba(184,134,11,0.04) 40px, rgba(184,134,11,0.04) 41px);
+      pointer-events: none;
+    }
+    .page-header-inner {
+      max-width: 1000px; margin: 0 auto; padding: 2.5rem 2rem;
+      display: grid; grid-template-columns: 1fr auto;
+      gap: 2rem; align-items: center; position: relative; z-index: 1;
+    }
+    .page-eyebrow { font-size: 11px; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.5rem; }
+    .page-header h1 { font-family: 'Playfair Display', serif; font-size: clamp(1.6rem, 3vw, 2.4rem); font-weight: 600; color: var(--ink); margin-bottom: 0.4rem; }
+    .page-header-desc { font-size: 0.9rem; color: var(--ink-soft); line-height: 1.75; max-width: 560px; }
+    .header-icon { font-size: 4rem; flex-shrink: 0; }
+
+    /* ── STATS ── */
+    .stats-bar { background: var(--gold-pale); border-bottom: 1px solid #e8d9a8; padding: 0.85rem 2rem; display: flex; justify-content: center; gap: 3rem; flex-wrap: wrap; }
+    .stat { text-align: center; }
+    .stat-num { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 600; color: var(--gold); display: block; }
+    .stat-label { font-size: 10px; color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.08em; }
+
+    /* ── MAIN ── */
+    main { max-width: 1000px; margin: 0 auto; padding: 2.5rem 2rem 5rem; }
+
+    .sec-divider { display: flex; align-items: center; gap: 1rem; margin: 2.5rem 0 1.25rem; }
+    .sec-divider:first-child { margin-top: 0; }
+    .sec-line { flex: 1; height: 1px; background: var(--border); }
+    .sec-label { font-size: 11px; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); white-space: nowrap; }
+
+    .prose { font-size: 0.93rem; color: var(--ink-mid); line-height: 1.85; margin-bottom: 1.5rem; }
+    .prose ul { margin: 0.5rem 0 0.5rem 1.2rem; }
+    .prose li { margin-bottom: 0.35rem; }
+
+    /* ── CAROUSEL ── */
+    .carousel-wrap { position: relative; margin-bottom: 2.5rem; }
+    .carousel-track-outer { overflow: hidden; border-radius: 16px; border: 1px solid var(--border); }
+    .carousel-track { display: flex; transition: transform 0.5s cubic-bezier(.4,0,.2,1); will-change: transform; }
+    .carousel-slide { min-width: 100%; background: var(--white); }
+    .carousel-slide-img { position: relative; height: 600px; overflow: hidden; background: var(--cream-dark); }
+    .carousel-slide-img img { width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; }
+    .carousel-slide-caption {
+      position: absolute; left: 0; right: 0; bottom: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.65), transparent);
+      color: #fff; padding: 1.5rem 1.2rem 1rem; font-size: 0.85rem; line-height: 1.5;
+    }
+    .carousel-slide-caption strong { display: block; font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 600; margin-bottom: 2px; }
+    .carousel-placeholder {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      height: 100%; gap: 0.5rem; color: var(--ink-soft);
+    }
+    .carousel-placeholder .icon { font-size: 2.5rem; opacity: 0.4; }
+    .carousel-placeholder p { font-size: 0.85rem; }
+    .carousel-controls { display: flex; align-items: center; justify-content: center; gap: 1rem; margin-top: 1rem; }
+    .carousel-btn {
+      width: 36px; height: 36px; border-radius: 50%;
+      border: 1px solid var(--border-strong); background: var(--white);
+      color: var(--ink-soft); font-size: 1rem; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.15s, border-color 0.15s, color 0.15s;
+    }
+    .carousel-btn:hover { background: var(--gold-pale); border-color: var(--gold); color: var(--gold); }
+    .carousel-dots { display: flex; gap: 6px; }
+    .carousel-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--border-strong); cursor: pointer; transition: background 0.2s, transform 0.2s; }
+    .carousel-dot.active { background: var(--gold); transform: scale(1.3); }
+    .carousel-counter { font-size: 0.78rem; color: var(--ink-soft); min-width: 36px; text-align: center; }
+
+    /* ── EDITIONS LIST ── */
+    .editions-list { display: flex; flex-direction: column; gap: 1rem; }
+    .edition-card {
+      display: grid; grid-template-columns: 90px 1fr auto;
+      gap: 1.2rem; align-items: center;
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: 12px; padding: 1.1rem 1.3rem;
+      transition: box-shadow 0.15s, border-color 0.15s;
+    }
+    .edition-card:hover { box-shadow: 0 3px 14px rgba(0,0,0,0.07); border-color: var(--border-strong); }
+    .edition-num {
+      font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 600;
+      color: var(--gold); text-align: center;
+    }
+    .edition-num .roman { font-size: 0.95rem; display: block; color: var(--ink-soft); font-family: 'DM Sans', sans-serif; font-weight: 500; letter-spacing: 0.05em; }
+    .edition-title { font-size: 0.95rem; font-weight: 500; color: var(--ink); margin-bottom: 2px; }
+    .edition-meta { font-size: 0.78rem; color: var(--ink-soft); display: flex; gap: 10px; flex-wrap: wrap; }
+    .edition-meta span { display: inline-flex; align-items: center; gap: 4px; }
+    .edition-link {
+      font-size: 0.78rem; color: var(--gold); font-weight: 500; text-decoration: none;
+      border: 1px solid #e8d9a8; border-radius: 999px; padding: 5px 14px;
+      background: var(--gold-pale); transition: background 0.15s; white-space: nowrap;
+    }
+    .edition-link:hover { background: #ece0b5; }
+    .edition-badge {
+      display: inline-block; font-size: 0.68rem; padding: 1px 7px; border-radius: 4px;
+      background: var(--blue-bg); color: var(--blue); border: 1px solid var(--blue-border);
+      margin-left: 6px; font-weight: 500;
+    }
+    .edition-badge.upcoming {
+      background: var(--plum-bg); color: var(--plum); border: 1px solid var(--plum-border);
+    }
+
+    /* ── ABOUT GRID ── */
+    .about-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 0.9rem; margin-bottom: 1.5rem; }
+    .about-card { background: var(--white); border: 1px solid var(--border); border-radius: 12px; padding: 1rem 1.1rem; transition: box-shadow 0.15s; }
+    .about-card:hover { box-shadow: 0 3px 14px rgba(0,0,0,0.07); }
+    .about-icon { font-size: 1.3rem; margin-bottom: 0.5rem; }
+    .about-card h4 { font-size: 0.88rem; font-weight: 500; color: var(--ink); margin-bottom: 4px; }
+    .about-card p { font-size: 0.8rem; color: var(--ink-soft); line-height: 1.6; }
+
+    /* ── COURSES LIST ── */
+    .course-list { display: flex; flex-direction: column; gap: 0.6rem; margin-bottom: 1.5rem; }
+    .course-item {
+      display: flex; align-items: baseline; gap: 0.9rem;
+      background: var(--white); border: 1px solid var(--border); border-radius: 10px;
+      padding: 0.75rem 1.1rem;
+    }
+    .course-num { font-family: 'Playfair Display', serif; color: var(--gold); font-weight: 600; font-size: 0.95rem; min-width: 1.4rem; }
+    .course-name { font-size: 0.87rem; color: var(--ink-mid); }
+
+    /* ── PEOPLE GRID ── */
+    .people-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 0.7rem; margin-bottom: 1.5rem; }
+    .people-card {
+      background: var(--white); border: 1px solid var(--border); border-radius: 10px;
+      padding: 0.7rem 0.9rem; font-size: 0.83rem; color: var(--ink-mid);
+      display: flex; align-items: center; gap: 0.5rem;
+    }
+    .people-card .dot { color: var(--gold); font-size: 0.9rem; }
+
+    /* ── INSTITUTIONS ── */
+    .inst-list { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-bottom: 1.5rem; }
+    .inst-chip {
+      background: var(--white); border: 1px solid var(--border); border-radius: 999px;
+      padding: 0.45rem 1rem; font-size: 0.8rem; color: var(--ink-mid);
+    }
+
+    /* ── CONDUCT TABLE ── */
+    .conduct-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; margin-bottom: 1.5rem; }
+    .conduct-col { padding: 1rem 1.2rem; font-size: 0.83rem; line-height: 1.7; }
+    .conduct-col.ok { background: var(--white); color: var(--ink-mid); border-right: 1px solid var(--border); }
+    .conduct-col.no { background: #fbeceb; color: #7a2c26; }
+    .conduct-col h5 { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.6rem; }
+    .conduct-col.ok h5 { color: var(--gold); }
+    .conduct-col.no h5 { color: #b23b32; }
+    .conduct-col ul { list-style: none; }
+    .conduct-col li { margin-bottom: 0.5rem; padding-left: 0.9rem; position: relative; }
+    .conduct-col li::before { content: '—'; position: absolute; left: 0; opacity: 0.5; }
+
+    .cta-box { background: var(--gold); border-radius: 14px; padding: 1.5rem 2rem; text-align: center; margin-top: 2.5rem; }
+    .cta-box p { font-size: 0.9rem; color: rgba(255,255,255,0.9); margin-bottom: 0.75rem; line-height: 1.6; }
+    .cta-btn { display: inline-flex; align-items: center; gap: 8px; background: #fff; color: var(--gold); font-weight: 600; font-family: 'DM Sans', sans-serif; font-size: 0.9rem; padding: 11px 28px; border-radius: 999px; text-decoration: none; transition: opacity 0.15s; }
+    .cta-btn:hover { opacity: 0.9; }
+    .cta-btn.secondary { background: transparent; color: #fff; border: 1px solid rgba(255,255,255,0.6); margin-left: 0.6rem; }
+
+    footer { background: var(--white); border-top: 1px solid var(--border); padding: 1.4rem 2rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; font-size: 0.78rem; color: var(--ink-soft); }
+    footer a { color: var(--ink-soft); text-decoration: none; }
+    footer a:hover { color: var(--gold); }
+
+    @media (max-width: 640px) {
+      .page-header-inner { grid-template-columns: 1fr; }
+      .header-icon { display: none; }
+      .edition-card { grid-template-columns: 60px 1fr; }
+      .edition-link { grid-column: 1 / -1; justify-self: start; }
+      .carousel-slide-img { height: 240px; }
+      .conduct-grid { grid-template-columns: 1fr; }
+      .conduct-col.ok { border-right: none; border-bottom: 1px solid var(--border); }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="topnav">
+    <a class="nav-brand" href="index.html">DPyC · <span>SMF</span></a>
+    <div class="nav-spacer"></div>
+    <a class="nav-back" href="index.html">← Inicio</a>
+  </nav>
+
+  <div class="page-header">
+    <div class="page-header-inner">
+      <div>
+        <p class="page-eyebrow">División de Partículas y Campos · SMF</p>
+        <h1>Escuela IMAN — Iniciativa para Mujeres en Altas eNergías</h1>
+        <p class="page-header-desc">La escuela IMAN busca brindar a las estudiantes mexicanas la oportunidad de acceder a una formación especializada en física de altas energías, y crear un espacio donde la colaboración entre universidades mexicanas impulse la investigación, la divulgación y el desarrollo de nuevas vocaciones científicas en un entorno seguro y respetuoso.</p>
+      </div>
+      <div class="header-icon">🧲</div>
+    </div>
+  </div>
+
+  <div class="stats-bar">
+    <div class="stat"><span class="stat-num">1ª</span><span class="stat-label">edición realizada</span></div>
+    <div class="stat"><span class="stat-num">100+</span><span class="stat-label">solicitudes recibidas</span></div>
+    <div class="stat"><span class="stat-num">8</span><span class="stat-label">cursos impartidos</span></div>
+    <div class="stat"><span class="stat-num">10+</span><span class="stat-label">instituciones participantes</span></div>
+  </div>
+
+  <main>
+
+    <!-- ══ PHOTO CAROUSEL ══ -->
+    <div class="sec-divider"><div class="sec-line"></div><span class="sec-label">Galería de la escuela IMAN</span><div class="sec-line"></div></div>
+
+    <div class="carousel-wrap">
+      <div class="carousel-track-outer">
+        <div class="carousel-track" id="carouselTrack">
+
+          <div class="carousel-slide">
+            <div class="carousel-slide-img">
+              <div class="carousel-placeholder">
+                <span class="icon">📷</span>
+                <p>Fotos de la 1ª Escuela IMAN · Octubre 2025 – Enero 2026</p>
+                <img src="assets/img/iman/primeraescuela.png" alt="1ª Escuela IMAN — Octubre 2025 a Enero 2026">
+              </div>
+                
+              <!-- Para añadir foto: <img src="assets/img/iman/iman2025_01.jpg" alt="1ª Escuela IMAN — Octubre 2025 a Enero 2026"> -->
+              <div class="carousel-slide-caption">
+                <strong>1ª Escuela IMAN</strong>
+                Modalidad virtual · Octubre 2025 – Enero 2026
+              </div>
+            </div>
+          </div>
+
+          <div class="carousel-slide">
+            <div class="carousel-slide-img">
+              <div class="carousel-placeholder">
+                <span class="icon">🎓</span>
+                <p>Profesorado de la 1ª Escuela IMAN</p>
+                <img src="assets/img/iman/profesores.png" alt="Profesorado de la 1ª Escuela IMAN">
+              </div>
+              
+              <!-- Para añadir foto: <img src="assets/img/iman/profesorado2025.jpg" alt="Profesorado de la 1ª Escuela IMAN"> -->
+              <div class="carousel-slide-caption">
+                <strong>Profesorado de la 1ª edición</strong>
+                12 docentes de 10 instituciones mexicanas
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="carousel-controls">
+        <button class="carousel-btn" id="btnPrev" onclick="carousel(-1)" title="Anterior">‹</button>
+        <div class="carousel-dots" id="carouselDots"></div>
+        <button class="carousel-btn" id="btnNext" onclick="carousel(1)" title="Siguiente">›</button>
+        <span class="carousel-counter" id="carouselCounter">1 / 2</span>
+      </div>
+    </div>
+
+    <!-- ══ ABOUT ══ -->
+    <div class="sec-divider"><div class="sec-line"></div><span class="sec-label">Sobre la escuela</span><div class="sec-line"></div></div>
+    <div class="prose">
+      <p>IMAN (Iniciativa para Mujeres en Altas eNergías) es un proyecto de la División de Partículas y Campos de la Sociedad Mexicana de Física (DPyC-SMF), impartido en modalidad virtual y dirigido principalmente a mujeres mexicanas interesadas en explorar la física de altas energías. No es una escuela exclusiva para mujeres: algunos hombres pueden participar mediante invitación personalizada de alguna alumna, de modo que la proporción de mujeres nunca sea inferior al cincuenta por ciento. La nacionalidad tampoco es un criterio de exclusión, y se contempla a futuro invitar a estudiantes de universidades centroamericanas.</p>
+      <p>La iniciativa surge ante los altos índices de acoso y violencia que enfrentan las mujeres en las universidades mexicanas, así como ante la baja participación femenina en el Concurso de Verano Experimental en Laboratorios de Física de Altas Energías organizado cada año por la DPyC-SMF. IMAN ofrece formación general en física de altas energías y matemáticas relacionadas en un entorno seguro, para que las estudiantes lleguen mejor preparadas a prácticas de verano, así como a programas de maestría y doctorado.</p>
+    </div>
+    <div class="about-grid">
+      <div class="about-card">
+        <div class="about-icon">🎓</div>
+        <h4>Formación especializada</h4>
+        <p>Ocho cursos con contenidos teóricos, experimentales, fenomenológicos y de análisis de datos para estudiantes de física, ingeniería y carreras afines.</p>
+      </div>
+      <div class="about-card">
+        <div class="about-icon">🛡️</div>
+        <h4>Espacio seguro</h4>
+        <p>Un entorno de aprendizaje libre de acoso, con código de conducta activo y ruta de reporte confidencial para toda la comunidad IMAN.</p>
+      </div>
+      <div class="about-card">
+        <div class="about-icon">🤝</div>
+        <h4>Colaboración interuniversitaria</h4>
+        <p>Profesorado y estudiantado de universidades de todo el país, sentando las bases para futuras investigaciones conjuntas.</p>
+      </div>
+      <div class="about-card">
+        <div class="about-icon">🧭</div>
+        <h4>Programa de tutoría</h4>
+        <p>Cada estudiante interesada es emparejada con un investigador o investigadora para orientación en posgrado y desarrollo profesional.</p>
+      </div>
+      <div class="about-card">
+        <div class="about-icon">📜</div>
+        <h4>Microcredenciales</h4>
+        <p>Certificación opcional de las habilidades técnicas en herramientas computacionales y análisis de datos adquiridas durante los cursos.</p>
+      </div>
+      <div class="about-card">
+        <div class="about-icon">🌎</div>
+        <h4>Proyección internacional</h4>
+        <p>Se buscará gestionar becas del ICTP para que las alumnas más destacadas continúen su formación en física de altas energías y cosmología.</p>
+      </div>
+    </div>
+
+    <!-- ══ COURSES ══ -->
+    <div class="sec-divider"><div class="sec-line"></div><span class="sec-label">Cursos de la escuela</span><div class="sec-line"></div></div>
+    <div class="prose">
+      <p>La escuela ofrece ocho cursos pensados para llevar a las estudiantes desde los fundamentos hasta temas de investigación vigentes en física de altas energías. Solo se requieren conocimientos básicos de ecuaciones diferenciales parciales, mecánica clásica y electromagnetismo.</p>
+    </div>
+    <div class="course-list">
+      <div class="course-item"><span class="course-num">01</span><span class="course-name">Breve introducción al formalismo lagrangiano y hamiltoniano</span></div>
+      <div class="course-item"><span class="course-num">02</span><span class="course-name">Estructura teórica del Modelo Estándar</span></div>
+      <div class="course-item"><span class="course-num">03</span><span class="course-name">Introducción a la QCD</span></div>
+      <div class="course-item"><span class="course-num">04</span><span class="course-name">Aceleradores y detección experimental de partículas</span></div>
+      <div class="course-item"><span class="course-num">05</span><span class="course-name">Recopilación y análisis de datos en colisionadores</span></div>
+      <div class="course-item"><span class="course-num">06</span><span class="course-name">Astropartículas y materia oscura</span></div>
+      <div class="course-item"><span class="course-num">07</span><span class="course-name">Programación en Python para el análisis de datos</span></div>
+      <div class="course-item"><span class="course-num">08</span><span class="course-name">Teoría y detección de neutrinos</span></div>
+    </div>
+
+    <!-- ══ TEACHERS ══ -->
+    <div class="sec-divider"><div class="sec-line"></div><span class="sec-label">Profesorado de la 1ª edición</span><div class="sec-line"></div></div>
+    <div class="people-grid">
+      <div class="people-card"><span class="dot">●</span>Dra. Alba Carrillo</div>
+      <div class="people-card"><span class="dot">●</span>Dr. Juan Barranco</div>
+      <div class="people-card"><span class="dot">●</span>Dra. Isabel Pedraza</div>
+      <div class="people-card"><span class="dot">●</span>Dra. Haydee Hernández</div>
+      <div class="people-card"><span class="dot">●</span>Dr. Selim Gómez</div>
+      <div class="people-card"><span class="dot">●</span>Dr. Francisco Flores</div>
+      <div class="people-card"><span class="dot">●</span>Dra. Irais Bautista</div>
+      <div class="people-card"><span class="dot">●</span>Dra. Cristina Oropeza</div>
+      <div class="people-card"><span class="dot">●</span>Dr. Lao-Tsé López Lozano</div>
+      <div class="people-card"><span class="dot">●</span>Dra. Karla Cantún</div>
+      <div class="people-card"><span class="dot">●</span>Dra. Melina Gómez Bock</div>
+      <div class="people-card"><span class="dot">●</span>Dra. Laura Trueba</div>
+    </div>
+
+    <!-- ══ INSTITUTIONS ══ -->
+    <div class="sec-divider"><div class="sec-line"></div><span class="sec-label">Instituciones participantes</span><div class="sec-line"></div></div>
+    <div class="inst-list">
+      <span class="inst-chip">DPC-SMF</span>
+      <span class="inst-chip">UAEH · Univ. Autónoma del Estado de Hidalgo</span>
+      <span class="inst-chip">UPAEP</span>
+      <span class="inst-chip">Universidad de Guanajuato</span>
+      <span class="inst-chip">BUAP</span>
+      <span class="inst-chip">IBERO Ciudad de México</span>
+      <span class="inst-chip">UADY · Univ. Autónoma de Yucatán</span>
+      <span class="inst-chip">Tecnológico de Monterrey</span>
+      <span class="inst-chip">UANL · FCFM</span>
+      <span class="inst-chip">CIIEC</span>
+    </div>
+
+    <!-- ══ CODE OF CONDUCT ══
+    <div class="sec-divider"><div class="sec-line"></div><span class="sec-label">Código de conducta y ecosistema de colaboración</span><div class="sec-line"></div></div>
+    <div class="prose">
+      <p>Como comunidad IMAN y DPyC-SMF, promovemos interacciones basadas en la comunicación respetuosa, la ética profesional y el bienestar de todo el grupo. Cualquier forma de acoso, violencia, discriminación o vulneración de la privacidad de las y los participantes es inaceptable y puede ser reportada de forma confidencial a través de nuestros canales oficiales.</p>
+    </div>
+    <div class="conduct-grid">
+      <div class="conduct-col ok">
+        <h5>Colaboración esperada</h5>
+        <ul>
+          <li>Comunicación respetuosa y solidaria</li>
+          <li>Conducta ética respecto al trabajo realizado</li>
+          <li>Promoción activa del bienestar del grupo</li>
+        </ul>
+      </div>
+      <div class="conduct-col no">
+        <h5>Fricción inaceptable</h5>
+        <ul>
+          <li>Cualquier forma de acoso o violencia</li>
+          <li>Comportamientos discriminatorios o denigrantes</li>
+          <li>Vulneración de la seguridad o privacidad de los miembros</li>
+        </ul>
+      </div>
+    </div>
+    <div class="prose">
+      <p>Los reportes se dirigen a la Ombudsperson de la DPyC y, de ser necesario, pueden derivar en un Comité de Ética. Según la gravedad del caso, la resolución puede incluir mediación, sanciones (como la imposibilidad de participar como ponente en actividades de la DPyC) o, en casos extremos y de reincidencia, la expulsión como miembro de la DPyC con notificación a la SMF.</p>
+    </div> -->
+
+    <!-- ══ EDITIONS ══ -->
+    <div class="sec-divider"><div class="sec-line"></div><span class="sec-label">Ediciones de la escuela</span><div class="sec-line"></div></div>
+
+    <div class="editions-list">
+
+      <div class="edition-card">
+        <div class="edition-num">2ª<span class="roman">2026</span></div>
+        <div>
+          <div class="edition-title">2ª Escuela IMAN<span class="edition-badge upcoming">Próxima edición</span></div>
+          <div class="edition-meta">
+            <span>📅 Agosto – Septiembre 2026</span>
+            <span>💻 Modalidad virtual vía Zoom</span>
+          </div>
+        </div>
+        <a class="edition-link" href="https://docs.google.com/forms/d/e/1FAIpQLSeZSf8MOdtW3xF1rp2p-xC9P2OKs7Pr1x-rnokUJ1BjP-wqng/viewform" target="_blank">¡Inscríbete ahora!→</a>
+      </div>
+
+      <div class="edition-card">
+        <div class="edition-num">1ª<span class="roman">2025</span></div>
+        <div>
+          <div class="edition-title">1ª Escuela IMAN<span class="edition-badge">En línea</span></div>
+          <div class="edition-meta">
+            <span>📅 Octubre 2025 – Enero 2026</span>
+            <span>📍 Más de 100 solicitudes de todo el país</span>
+          </div>
+        </div>
+        <a class="edition-link" href="https://youtube.com/playlist?list=PLYsXYNeecNMOSQnqbi22oSO944eX32ONy&si=CqZw8RDLk_PFgDqr" target="_blank">Sesiones en Youtube. →</a>
+      </div>
+
+    </div>
+
+    <div class="cta-box">
+      <p>¿Quieres impartir un curso en la próxima edición o tienes dudas sobre la escuela IMAN? Escríbenos.</p>
+      <a class="cta-btn" href="mailto:melina.gomez@upaep.mx?subject=Contacto%20Escuela%20IMAN">✉️ Contactar al comité IMAN →</a>
+    </div>
+
+  </main>
+
+  <footer>
+    <span>© 2026 División de Partículas y Campos · Sociedad Mexicana de Física</span>
+    <span>
+      <a href="index.html">Inicio</a> ·
+      <a href="mailto:dpycsmf-diversidad@googlegroups.com?subject=Contacto%20desde%20la%20p%C3%A1gina%20de%20la%20DPyC">dpycsmf-diversidad@googlegroups.com</a>
+    </span>
+  </footer>
+
+  <script>
+    let current = 0;
+    const slides = document.querySelectorAll('.carousel-slide');
+    const total = slides.length;
+    const dotsEl = document.getElementById('carouselDots');
+    const counterEl = document.getElementById('carouselCounter');
+
+    slides.forEach((_, i) => {
+      const dot = document.createElement('div');
+      dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+      dot.onclick = () => goTo(i);
+      dotsEl.appendChild(dot);
+    });
+
+    function goTo(n) {
+      current = (n + total) % total;
+      document.getElementById('carouselTrack').style.transform = `translateX(-${current * 100}%)`;
+      document.querySelectorAll('.carousel-dot').forEach((d, i) => d.classList.toggle('active', i === current));
+      counterEl.textContent = `${current + 1} / ${total}`;
+    }
+    function carousel(dir) { goTo(current + dir); }
+
+    setInterval(() => carousel(1), 6000);
+  </script>
+</body>
+</html>
